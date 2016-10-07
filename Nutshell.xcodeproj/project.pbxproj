@@ -225,7 +225,7 @@
 		48EDC2C91BD99141003049D9 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48EDC2C81BD9912C003049D9 /* OpenSans-Light.ttf */; };
 		48FB1E4D1C17C38600C89F8E /* NutshellDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FB1E4C1C17C38500C89F8E /* NutshellDataController.swift */; };
 		48FB1E4E1C17C38600C89F8E /* NutshellDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FB1E4C1C17C38500C89F8E /* NutshellDataController.swift */; };
-		5276C0151DA76BFD004FF6B0 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5276C0141DA76BFC004FF6B0 /* HealthKit.framework */; };
+		5276C02C1DA77E95004FF6B0 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5276C02B1DA77E95004FF6B0 /* HealthKit.framework */; };
 		949A33B350C643B74EB54D43 /* Pods_Nutshell.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F2595C220F59CE15CFFD78 /* Pods_Nutshell.framework */; };
 /* End PBXBuildFile section */
 
@@ -397,7 +397,7 @@
 		48EDC2C51BD6B403003049D9 /* EventAddOrEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EventAddOrEditViewController.swift; path = ViewControllers/EventAddOrEditViewController.swift; sourceTree = "<group>"; };
 		48EDC2C81BD9912C003049D9 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		48FB1E4C1C17C38500C89F8E /* NutshellDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NutshellDataController.swift; path = DataModel/NutshellDataController.swift; sourceTree = "<group>"; };
-		5276C0141DA76BFC004FF6B0 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		5276C02B1DA77E95004FF6B0 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		5A3109656497A8086C86BD31 /* Pods_NutshellTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NutshellTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		691EA93AF2D5DC902113C37D /* Pods-Nutshell.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nutshell.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Nutshell/Pods-Nutshell.debug.xcconfig"; sourceTree = "<group>"; };
 		A08B5E3A2659E0859F53527E /* Pods-Nutshell.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nutshell.release.xcconfig"; path = "Pods/Target Support Files/Pods-Nutshell/Pods-Nutshell.release.xcconfig"; sourceTree = "<group>"; };
@@ -408,7 +408,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5276C0151DA76BFD004FF6B0 /* HealthKit.framework in Frameworks */,
+				5276C02C1DA77E95004FF6B0 /* HealthKit.framework in Frameworks */,
 				0334C8941BA7814700013096 /* CoreData.framework in Frameworks */,
 				949A33B350C643B74EB54D43 /* Pods_Nutshell.framework in Frameworks */,
 			);
@@ -486,7 +486,7 @@
 		0B896CBEA8D0BFD3140D313E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5276C0141DA76BFC004FF6B0 /* HealthKit.framework */,
+				5276C02B1DA77E95004FF6B0 /* HealthKit.framework */,
 				4814FEBC1BB0D5A100F66379 /* SwiftyJSON.framework */,
 				0334C8931BA7814700013096 /* CoreData.framework */,
 				11F2595C220F59CE15CFFD78 /* Pods_Nutshell.framework */,
