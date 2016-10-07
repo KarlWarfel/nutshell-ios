@@ -837,8 +837,9 @@
 				TargetAttributes = {
 					4859FCB41B9A4DE4000C1269 = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 75U4X84TEG;
+						DevelopmentTeam = 7PZ5PJAAVD;
 						LastSwiftMigration = 0800;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1394,11 +1395,12 @@
 				CODE_SIGN_ENTITLEMENTS = Nutshell/Nutshell.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 7PZ5PJAAVD;
 				INFOPLIST_FILE = Nutshell/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\"  \"-D\" \"DEBUG\"";
-				PRODUCT_BUNDLE_IDENTIFIER = org.tidepool.nutshell;
+				PRODUCT_BUNDLE_IDENTIFIER = org.karlwarfel.nutshell;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Nutshell/Nutshell-Bridging-Header.h";
@@ -1415,12 +1417,13 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Nutshell/Nutshell.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Tidepool Project (75U4X84TEG)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tidepool Project (75U4X84TEG)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 7PZ5PJAAVD;
 				INFOPLIST_FILE = Nutshell/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\"  \"-D\" \"RELEASE\"";
-				PRODUCT_BUNDLE_IDENTIFIER = org.tidepool.nutshell;
+				PRODUCT_BUNDLE_IDENTIFIER = org.karlwarfel.nutshell;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Nutshell/Nutshell-Bridging-Header.h";
