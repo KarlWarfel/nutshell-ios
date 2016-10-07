@@ -592,6 +592,7 @@
 		4859FCB71B9A4DE4000C1269 /* Nutshell */ = {
 			isa = PBXGroup;
 			children = (
+				4859FCC71B9A4DE4000C1269 /* Info.plist */,
 				482ECC851C94BC47002A015D /* LogFormatter.swift */,
 				486EAA7B1C305E39003B4497 /* Nutshell.entitlements */,
 				48AEB7C71C1CE33F00B2A214 /* Third Party */,
@@ -631,7 +632,6 @@
 				4837CC641BA71EA400BA2CDE /* NutshellUITextField.swift */,
 				4837CC661BA730F000BA2CDE /* NutshellUILabel.swift */,
 				4837CC681BA7394E00BA2CDE /* NutshellUIButton.swift */,
-				4859FCC71B9A4DE4000C1269 /* Info.plist */,
 				4859FCC21B9A4DE4000C1269 /* Assets.xcassets */,
 				485922A51B9C982D0056E605 /* Images */,
 				486F5DFF1B9F87AC00BA2A57 /* Fonts */,
