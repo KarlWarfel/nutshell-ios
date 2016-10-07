@@ -838,6 +838,7 @@
 					4859FCB41B9A4DE4000C1269 = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = 75U4X84TEG;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -849,6 +850,7 @@
 					};
 					4859FCCB1B9A4DE5000C1269 = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0800;
 						TestTargetID = 4859FCB41B9A4DE4000C1269;
 					};
 				};
@@ -1401,6 +1403,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Nutshell/Nutshell-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -1421,6 +1424,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Nutshell/Nutshell-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
@@ -1434,6 +1438,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.tidepool.NutshellTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Nutshell.app/Nutshell";
 			};
 			name = Debug;
@@ -1448,6 +1453,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.tidepool.NutshellTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Nutshell.app/Nutshell";
 			};
 			name = Release;
