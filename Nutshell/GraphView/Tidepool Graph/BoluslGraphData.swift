@@ -305,10 +305,10 @@ class BolusGraphDataLayer: TidepoolGraphDataLayer {
             layout.backgroundColor.setFill()
             bolusLabelPath.fill()
             
-            CGContextSaveGState(context)
-            CGContextClipToRect(context, bolusLabelRect);
+            CGContextSaveGState(context!)
+            CGContextClipToRect(context!, bolusLabelRect);
             bolusLabelTextContent.drawInRect(bolusLabelRect, withAttributes: bolusLabelFontAttributes)
-            CGContextRestoreGState(context)
+            CGContextRestoreGState(context!)
             
             if let extendedValue = bolus.extendedValue, duration = bolus.duration {
                 let width = floor(CGFloat(duration) * viewPixelsPerSec)
@@ -344,8 +344,8 @@ class BolusGraphDataLayer: TidepoolGraphDataLayer {
     private func drawBolusOverrideIcon(xOffset: CGFloat, yOffset: CGFloat, pointUp: Bool) {
         // The override icon has its origin at the y position corresponding to the suggested bolus value that was overridden. 
         let context = UIGraphicsGetCurrentContext()
-        CGContextSaveGState(context)
-        CGContextTranslateCTM(context, xOffset, yOffset)
+        CGContextSaveGState(context!)
+        CGContextTranslateCTM(context!, xOffset, yOffset)
         let flip: CGFloat = pointUp ? -1.0 : 1.0
         
         let bezierPath = UIBezierPath()
@@ -360,15 +360,15 @@ class BolusGraphDataLayer: TidepoolGraphDataLayer {
         bezierPath.closePath()
         kBolusOverrideIconColor.setFill()
         bezierPath.fill()
-        CGContextRestoreGState(context)
+        CGContextRestoreGState(context!)
     }
 
     private func drawBolusInterruptBar(xOffset: CGFloat, yOffset: CGFloat) {
         // Bar width matches width of bolus rect, height is 3.5 points
         let context = UIGraphicsGetCurrentContext()
-        CGContextSaveGState(context)
+        CGContextSaveGState(context!)
         let barWidth = kBolusRectWidth - 1.0
-        CGContextTranslateCTM(context, xOffset + 0.5, yOffset)
+        CGContextTranslateCTM(context!, xOffset + 0.5, yOffset)
         
         let bezierPath = UIBezierPath()
         bezierPath.moveToPoint(CGPointMake(0, 0))
@@ -379,16 +379,16 @@ class BolusGraphDataLayer: TidepoolGraphDataLayer {
         bezierPath.closePath()
         kBolusInterruptBarColor.setFill()
         bezierPath.fill()
-        CGContextRestoreGState(context)
+        CGContextRestoreGState(context!)
     }
 
     private func drawBolusExtensionInterruptBar(xOffset: CGFloat, centerY: CGFloat) {
         // Blip extension interrupt bar width is smaller than bolus interrupt bar by 10:24 ratio, x:14 here
         // Bar width is 5 points, and fits on the end of the delivered extension bar
         let context = UIGraphicsGetCurrentContext()
-        CGContextSaveGState(context)
+        CGContextSaveGState(context!)
         let barHeight = kExtensionLineHeight
-        CGContextTranslateCTM(context, xOffset, centerY-(barHeight/2.0))
+        CGContextTranslateCTM(context!, xOffset, centerY-(barHeight/2.0))
         
         let bezierPath = UIBezierPath()
         bezierPath.moveToPoint(CGPointMake(0, 0))
@@ -399,7 +399,7 @@ class BolusGraphDataLayer: TidepoolGraphDataLayer {
         bezierPath.closePath()
         kBolusInterruptBarColor.setFill()
         bezierPath.fill()
-        CGContextRestoreGState(context)
+        CGContextRestoreGState(context!)
     }
 
     private func drawBolusExtensionShape(originX: CGFloat, centerY: CGFloat, width: CGFloat, borderOnly: Bool = false, noEndShape: Bool = false) {

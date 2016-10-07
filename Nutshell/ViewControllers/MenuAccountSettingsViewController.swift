@@ -233,7 +233,7 @@ class MenuAccountSettingsViewController: UIViewController, UITextViewDelegate {
     
     // Intercept links in order to track metrics...
     func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
-        if URL.absoluteString.containsString("privacy-policy") {
+        if URL.absoluteString!.containsString("privacy-policy") {
             APIConnector.connector().trackMetric("Clicked privacy (Hamburger)")
         } else {
             APIConnector.connector().trackMetric("Clicked Terms of Use (Hamburger)")

@@ -64,7 +64,7 @@ class NutUtils {
         let rect = CGRectMake(0.0, 0.0, actualWidth, actualHeight)
         UIGraphicsBeginImageContext(rect.size)
         image.drawInRect(rect)
-        let img : UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        let img : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         let imageData = UIImageJPEGRepresentation(img, compressionQuality)
         UIGraphicsEndImageContext()
         NSLog("Compressed length: \(imageData!.length)")

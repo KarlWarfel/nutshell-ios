@@ -54,7 +54,7 @@ public class GraphingUtils {
         let imageOfFixedGraphBackground = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return imageOfFixedGraphBackground
+        return imageOfFixedGraphBackground!
     }
 
     func imageOfXAxisHeader() -> UIImage? {
@@ -89,10 +89,10 @@ public class GraphingUtils {
         
         layout.yAxisLineColor.setStroke()
         yAxisLinePath.lineWidth = lineWidth
-        CGContextSaveGState(context)
-        CGContextSetLineDash(context, 0, [2, 5], 2)
+        CGContextSaveGState(context!)
+        CGContextSetLineDash(context!, 0, [2, 5], 2)
         yAxisLinePath.stroke()
-        CGContextRestoreGState(context)
+        CGContextRestoreGState(context!)
     }
 
     // TODO: generalize so it can be shared!
@@ -107,10 +107,10 @@ public class GraphingUtils {
         let labelRect = CGRect(x: (rightCenter.x - textWidth), y: rightCenter.y-textHeight/2.0, width: textWidth, height: textHeight)
         
         let context = UIGraphicsGetCurrentContext()
-        CGContextSaveGState(context)
-        CGContextClipToRect(context, labelRect);
+        CGContextSaveGState(context!)
+        CGContextClipToRect(context!, labelRect);
         label.drawInRect(labelRect, withAttributes: labelFontAttributes)
-        CGContextRestoreGState(context)
+        CGContextRestoreGState(context!)
     }
 
     /// Draws y-axis labels on left, and dashed lines at various y offsets.

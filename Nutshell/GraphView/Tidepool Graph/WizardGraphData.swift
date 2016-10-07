@@ -127,10 +127,10 @@ class WizardGraphDataLayer: TidepoolGraphDataLayer {
             
             let labelTextHeight: CGFloat = ceil(labelAttrStr.boundingRectWithSize(CGSizeMake(labelRect.width, CGFloat.infinity), options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil).size.height)
             
-            CGContextSaveGState(context)
-            CGContextClipToRect(context, labelRect);
+            CGContextSaveGState(context!)
+            CGContextClipToRect(context!, labelRect);
             labelAttrStr.drawInRect(CGRectMake(labelRect.minX, labelRect.minY + (labelRect.height - labelTextHeight) / 2, labelRect.width, labelTextHeight))
-            CGContextRestoreGState(context)
+            CGContextRestoreGState(context!)
         }
     }
     

@@ -100,9 +100,9 @@ class SmbgGraphDataLayer: TidepoolGraphDataLayer {
         layout.backgroundColor.setFill()
         readingLabelPath.fill()
         
-        CGContextSaveGState(context)
-        CGContextClipToRect(context, readingLabelRect);
+        CGContextSaveGState(context!)
+        CGContextClipToRect(context!, readingLabelRect);
         readingLabelTextContent.drawInRect(readingLabelRect, withAttributes: readingLabelFontAttributes)
-        CGContextRestoreGState(context)
+        CGContextRestoreGState(context!)
     }
 }

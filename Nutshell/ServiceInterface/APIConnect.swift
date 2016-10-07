@@ -415,7 +415,7 @@ class APIConnector {
         }
         
         // Fire off the network request
-        return Alamofire.request(requestType!, url, headers: apiHeaders, parameters:parameters).validate()
+        return Alamofire.request(requestType!, url!, headers: apiHeaders, parameters:parameters).validate()
     }
     
     func getApiHeaders() -> [String: String]? {

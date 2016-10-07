@@ -267,7 +267,7 @@ class NutDataController: NSObject
     private func createPSC(storeBaseFileName: String) -> NSPersistentStoreCoordinator {
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
         var url = applicationDocumentsDirectory
-        url = url.URLByAppendingPathComponent(filenameAdjustedForTest(storeBaseFileName))
+        url = url.URLByAppendingPathComponent(filenameAdjustedForTest(storeBaseFileName))!
         let failureReason = "There was an error creating or loading the application's saved data."
         let pscOptions = [NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption: true]
         do {
@@ -393,7 +393,7 @@ class NutDataController: NSObject
     private func deleteAnyTidepoolData() {
         // Delete the underlying file
         var url = self.applicationDocumentsDirectory
-        url = url.URLByAppendingPathComponent(filenameAdjustedForTest(kTidepoolObjectsStoreFilename))
+        url = url.URLByAppendingPathComponent(filenameAdjustedForTest(kTidepoolObjectsStoreFilename))!
         var error: NSError?
         let fileExists = url.checkResourceIsReachableAndReturnError(&error)
         if (fileExists) {
