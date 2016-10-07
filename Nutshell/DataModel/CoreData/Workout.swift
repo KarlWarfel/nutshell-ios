@@ -267,8 +267,8 @@ class Workout: EventItem {
             return "HKWorkoutActivityTypeYoga"
         case HKWorkoutActivityType.Other:
             return "HKWorkoutActivityTypeOther"
-//        default:
-//            return "HKWorkoutActivityTypeOther"
+        default:
+            return "HKWorkoutActivityTypeOther"
         }
     }
 
