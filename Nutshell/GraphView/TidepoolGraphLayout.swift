@@ -121,8 +121,9 @@ class TidepoolGraphLayout: GraphLayout {
     
     private let kGraphWizardHeight: CGFloat = 27.0
     // After removing a constant height for the header and wizard values, the remaining graph vertical space is divided into four sections based on the following fractions (which should add to 1.0)
-    private let kGraphFractionForGlucose: CGFloat = 180.0/266.0
-    private let kGraphFractionForBolusAndBasal: CGFloat = 76.0/266.0
+    //kbw expand glucose part of graph
+    private let kGraphFractionForGlucose: CGFloat = 255.0/266.0 //180.0/266.0
+    private let kGraphFractionForBolusAndBasal: CGFloat = 1.0/266.0 //76.0/266.0
     // Each section has some base offset as well
     private let kGraphGlucoseBaseOffset: CGFloat = 2.0
     private let kGraphWizardBaseOffset: CGFloat = 2.0
