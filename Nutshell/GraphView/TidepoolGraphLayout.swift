@@ -24,7 +24,8 @@ class TidepoolGraphLayout: GraphLayout {
     init (viewSize: CGSize, mainEventTime: NSDate, tzOffsetSecs: Int) {
 
         self.mainEventTime = mainEventTime
-        let startPixelsPerHour = 80
+        //KBW condensed view to see a day of activity
+        let startPixelsPerHour = 13  //80
         let numberOfTiles = 7
         let cellTI = NSTimeInterval(viewSize.width * 3600.0/CGFloat(startPixelsPerHour))
         let graphTI = cellTI * NSTimeInterval(numberOfTiles)
@@ -80,11 +81,15 @@ class TidepoolGraphLayout: GraphLayout {
     //
     // NOTE: only supports minvalue==0 right now!
     let kGlucoseMinValue: CGFloat = 0.0
-    let kGlucoseMaxValue: CGFloat = 340.0
-    let kGlucoseRange: CGFloat = 340.0
+    //KBW changed maximum BGL
+    let kGlucoseMaxValue: CGFloat = 150.0//340.0
+    //KBW calculated range of BGL
+    let kGlucoseRange: CGFloat = 150.0 //kGlucoseMaxValue - kGlucoseMinValue //340.0
     let kGlucoseConversionToMgDl: CGFloat = 18.0
-    let highBoundary: CGFloat = 180.0
-    let lowBoundary: CGFloat = 80.0
+    //KBW changed high target - need to make this user setable
+    let highBoundary: CGFloat = 100.0 //180.0
+    //kbw schanged low target need to make this user setable
+    let lowBoundary: CGFloat = 70.0 //80.0
     // Colors
     let highColor = Styles.purpleColor
     let targetColor = Styles.greenColor
@@ -138,10 +143,13 @@ class TidepoolGraphLayout: GraphLayout {
         self.headerHeight = 32.0
         self.yAxisLineLeftMargin = 26.0
         self.yAxisLineRightMargin = 10.0
-        self.yAxisLineColor = UIColor.whiteColor()
+        //kbw change line colors so they stand out
+        self.yAxisLineColor = UIColor.grayColor()//whiteColor()
         self.backgroundColor = Styles.veryLightGreyColor
-        self.yAxisValuesWithLines = [80, 180]
-        self.yAxisValuesWithLabels = [40, 80, 180, 300]
+        //kbw chaged guide likes
+        self.yAxisValuesWithLines = [Int(lowBoundary), Int(highBoundary)]
+        //kbw changed labled
+        self.yAxisValuesWithLabels = [40, Int(lowBoundary), Int(highBoundary), Int(kGlucoseMaxValue)]
     
         self.axesLabelTextColor = UIColor(hex: 0x58595B)
         self.axesLabelTextFont = Styles.smallRegularFont
