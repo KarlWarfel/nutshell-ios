@@ -93,8 +93,10 @@ class NutshellHealthKitConfiguration: HealthKitConfiguration
                     // Default title format: "Run - 4.2 miles"
                     var title: String = Workout.userStringForHKWorkoutActivityTypeEnumString(we.subType!)
                     if let miles = we.distance {
-                        let floatMiles = Float(miles)
-                        title = title + " - " + String(format: "%.2f",floatMiles) + " miles"
+                        let floatMiles =  Float(trunc(Float(miles)*2.0)/2.0)
+                        //KBW added rounding function to show only the .5 resolution
+                        //KBW show only one digit of precision
+                        title = title + " - " + String(format: "%.1f",floatMiles) + " miles"
                     }
                     we.title = title
                     // Default notes string is the application name sourcing the event
