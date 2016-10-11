@@ -3,6 +3,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -53,8 +54,7 @@
                                                     <action selector="searchEditingDidEnd:" destination="oVB-ry-Lwj" eventType="editingDidEnd" id="xdQ-IE-mAR"/>
                                                 </connections>
                                             </textField>
-                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Search" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QuJ-Pq-qUA" userLabel="searchPlaceholder" customClass="NutshellUILabel" customModule="Nutshell" customModuleProvider="target">
-                                                <frame key="frameInset" minX="50" width="52" height="50"/>
+                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QuJ-Pq-qUA" userLabel="searchPlaceholder" customClass="NutshellUILabel" customModule="Nutshell" customModuleProvider="target">
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -327,26 +327,41 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="h4z-iC-Yiv">
-                        <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" image="menu-button" id="k2Y-dm-3tk">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </barButtonItem>
-                        <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3hf-bE-obs" userLabel="dismissKeyboard">
-                            <rect key="frame" x="85" y="7" width="150" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="40"/>
                             <connections>
-                                <action selector="dismissKeyboard:" destination="oVB-ry-Lwj" eventType="touchUpInside" id="3fq-tn-APz"/>
-                            </connections>
-                        </button>
-                        <barButtonItem key="rightBarButtonItem" image="add-button" id="AjV-8Q-vYz">
-                            <color key="tintColor" red="0.38431372549019605" green="0.48627450980392156" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <connections>
-                                <segue destination="vP0-F7-5bM" kind="presentation" identifier="HomeToAddEventSegue" id="dFt-cX-XeW"/>
+                                <action selector="toggleSideMenuWithSender:" destination="oVB-ry-Lwj" id="OAw-Cs-yRi"/>
                             </connections>
                         </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem image="add-button" id="AjV-8Q-vYz">
+                                <color key="tintColor" red="0.38431372549019605" green="0.48627450980392156" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <segue destination="vP0-F7-5bM" kind="presentation" identifier="HomeToAddEventSegue" id="dFt-cX-XeW"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="timeIcon" id="KAS-Fr-eLA">
+                                <color key="tintColor" red="0.38431372549999998" green="0.48627450979999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="barButton3Press:" destination="oVB-ry-Lwj" id="d9x-Is-Rux"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="checkboxChecked" id="TWA-An-bD1">
+                                <color key="tintColor" red="0.38431372549999998" green="0.48627450979999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="barButton2Press:" destination="oVB-ry-Lwj" id="cgG-bX-Kv0"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="favoriteStarDeselected" id="mUE-mT-Q5O">
+                                <color key="tintColor" red="0.38431372549999998" green="0.48627450979999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="barButton1Press:" destination="oVB-ry-Lwj" id="Whx-6g-14y"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="barButton3" destination="KAS-Fr-eLA" id="8GY-uq-khi"/>
                         <outlet property="coverView" destination="p1Z-R3-s10" id="x9s-ca-Xdd"/>
                         <outlet property="menuButton" destination="k2Y-dm-3tk" id="Mdl-ih-WZN"/>
                         <outlet property="searchPlaceholderLabel" destination="QuJ-Pq-qUA" id="zbU-o8-EJ4"/>
@@ -358,14 +373,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6ca-ao-v5B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="797" y="40"/>
+            <point key="canvasLocation" x="848.79999999999995" y="22.938530734632685"/>
         </scene>
         <!--Event View Nav Controller-->
         <scene sceneID="PPE-fc-DuL">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="MlM-Oh-SBV" customClass="EventViewNavController" customModule="Nutshell" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xoN-ni-B6S">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="xoN-ni-B6S">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <textAttributes key="titleTextAttributes">
@@ -424,6 +439,8 @@
     </scenes>
     <resources>
         <image name="add-button" width="23" height="23"/>
+        <image name="checkboxChecked" width="20" height="20"/>
+        <image name="favoriteStarDeselected" width="35" height="35"/>
         <image name="menu-button" width="22" height="15"/>
         <image name="placeSmallIcon" width="11" height="17"/>
         <image name="rightDisclosureArrow" width="9" height="15"/>
@@ -431,5 +448,6 @@
         <image name="separatorLine" width="100" height="2"/>
         <image name="starLargeBadge" width="22" height="30"/>
         <image name="starLargeSelectedBadge" width="22" height="30"/>
+        <image name="timeIcon" width="20" height="20"/>
     </resources>
 </document>
