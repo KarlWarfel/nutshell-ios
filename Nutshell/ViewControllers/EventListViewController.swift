@@ -66,11 +66,7 @@ class EventListViewController: BaseUIViewController, ENSideMenuDelegate {
     
     
     //kbw add dialog btton
-//    @IBOutlet weak var quickFilterButton3
-    //@IBOutlet var infoButtonMenu: UIBarButtonItem!
-    //@IBOutlet weak var infoBarQuickFilterButton1: UIButton!
-    //@IBOutlet weak var infoBarQuickFilterButton2: UIButton!
-   // @IBOutlet weak var infoBarQuickFilterButton3: UIButton!
+
     
     private var sortedNutEvents = [(String, NutEvent)]()
     private var filteredNutEvents = [(String, NutEvent)]()
@@ -101,10 +97,7 @@ class EventListViewController: BaseUIViewController, ENSideMenuDelegate {
             sideMenu.menuWidth = revealWidth
             sideMenu.bouncingEnabled = false
         }
-        //kbw add button
- /*       let barButton3var = UIBarButtonItem(title:"D-Wk",style:UIBarButtonItemStyle.Plain,target: self,action: "quickFilterButton3"
-                                         )
-     */
+      
         
     }
 
@@ -168,65 +161,7 @@ class EventListViewController: BaseUIViewController, ENSideMenuDelegate {
     }
 
     
-    
-    //KBW add quick filter 
-/*    @IBAction func infoBarQuickFilterButton1(sender: AnyObject){
-        switch searchTextField.text! {
-        case "🧀":
-            searchTextField.text = "BGL"
-        case "BGL":
-            searchTextField.text = "🧀"
-        default:
-            searchTextField.text = "🧀"
-        }
-        
-        updateFilteredAndReload()
-    }
-    @IBAction func infoBarQuickFilterButton2(sender: AnyObject){
-        switch searchTextField.text! {
-        case "💊":
-            searchTextField.text = "💉"
-        case "💉":
-            searchTextField.text = "💊"
-        default:
-            searchTextField.text = "💉"
-        }
-        
-        updateFilteredAndReload()
-    }
- */
-  /*  @IBAction func infoBarQuickFilterButton3Press(){
-        switch searchTextField.text! {
-        case "daily":
-            searchTextField.text = "weekly"
-        case "weekly":
-            searchTextField.text = "daily"
-        default:
-            searchTextField.text = "daily"
-        }
- 
-        updateFilteredAndReload()
-    }
- */
-    @IBAction func quickFilter3Button(sender: AnyObject) {
-    }
-
- /*   @IBAction func quickFilterButton3(barButtonItem: UIBarButtonItem){
-        switch searchTextField.text! {
-        case "daily":
-            searchTextField.text = "weekly"
-        case "weekly":
-            searchTextField.text = "daily"
-        default:
-            searchTextField.text = "daily"
-        }
-        
-        updateFilteredAndReload()
-    }
-*/
- 
-
-    
+   
     
     
     @IBAction func toggleSideMenu(sender: AnyObject) {
@@ -456,7 +391,8 @@ class EventListViewController: BaseUIViewController, ENSideMenuDelegate {
     private func configureSearchUI() {
         let searchOn = searchMode()
         searchPlaceholderLabel.hidden = searchOn
-        self.title = searchOn && !filterString.isEmpty ? "Events" : ""
+        //kbw removed title due to space
+        self.title = searchOn && !filterString.isEmpty ? "" : ""
     }
 
     private func updateFilteredAndReload() {

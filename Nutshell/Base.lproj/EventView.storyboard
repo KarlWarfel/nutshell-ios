@@ -346,13 +346,13 @@
                                     <action selector="barButton3Press:" destination="oVB-ry-Lwj" id="d9x-Is-Rux"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem image="checkboxChecked" id="TWA-An-bD1">
+                            <barButtonItem title="💊-💉" id="TWA-An-bD1">
                                 <color key="tintColor" red="0.38431372549999998" green="0.48627450979999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <action selector="barButton2Press:" destination="oVB-ry-Lwj" id="cgG-bX-Kv0"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem image="favoriteStarDeselected" id="mUE-mT-Q5O">
+                            <barButtonItem title="🧀-BGL" id="mUE-mT-Q5O">
                                 <color key="tintColor" red="0.38431372549999998" green="0.48627450979999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <action selector="barButton1Press:" destination="oVB-ry-Lwj" id="Whx-6g-14y"/>
@@ -439,8 +439,6 @@
     </scenes>
     <resources>
         <image name="add-button" width="23" height="23"/>
-        <image name="checkboxChecked" width="20" height="20"/>
-        <image name="favoriteStarDeselected" width="35" height="35"/>
         <image name="menu-button" width="22" height="15"/>
         <image name="placeSmallIcon" width="11" height="17"/>
         <image name="rightDisclosureArrow" width="9" height="15"/>
