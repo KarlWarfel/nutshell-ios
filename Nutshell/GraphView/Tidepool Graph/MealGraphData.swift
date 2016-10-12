@@ -68,10 +68,17 @@ class MealGraphDataLayer: GraphDataLayer {
             let events = try DatabaseUtils.getMealEvents(earlyStartTime, toTime: lateEndTime)
             for mealEvent in events {
                 if let eventTime = mealEvent.time {
+                    
+                    //kbw  filter out bgl values
+                    if (mealEvent.title!.lowercaseString.rangeOfString("🧀") != nil)
+                        ||
+                        (mealEvent.title!.lowercaseString.rangeOfString("💉novalog fast insulin") != nil)
+                    {
                     let deltaTime = eventTime.timeIntervalSinceDate(startTime)
                     var isMainEvent = false
                     isMainEvent = mealEvent.time == layout.mainEventTime
                     dataArray.append(MealGraphDataType(timeOffset: deltaTime, isMain: isMainEvent, event: mealEvent))
+                    }
                 }
             }
         } catch let error as NSError {
