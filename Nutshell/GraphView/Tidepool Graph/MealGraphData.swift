@@ -112,10 +112,46 @@ class MealGraphDataLayer: GraphDataLayer {
             let centerX = rect.origin.x + lineWidth/2.0
             let triangleSize: CGFloat = kMealTriangleTopWidth
             let triangleOrgX = centerX - triangleSize/2.0
+            
+            //kbw change direction of triangle 
+            var triangleDirection: CGFloat = -1.0
+            let tempEvent = DatabaseUtils.getNutEventItemWithId(mealDataType.id!)
+            if tempEvent!.title!.lowercaseString.rangeOfString("💉novalog fast insulin") != nil {
+                triangleDirection = 1.0
+                //testSize = (viewPixelsPerSec)*2.5*60.0*60.0
+            }
+            
+            //kbw build traingle
+            var centerOfHeader: CGFloat = 16.5
+            var centerOffset: CGFloat = 4*triangleDirection
+            var baseOfTriangle = centerOfHeader + centerOffset
+            //test new triangle creation
+            //base center of triangle
+            trianglePath.moveToPoint(CGPoint(x: triangleOrgX, y: baseOfTriangle))
+            //base edge to the right
+            
+            //kbw add line
+            trianglePath.addLineToPoint(CGPoint(x: triangleOrgX , y: baseOfTriangle))
+            trianglePath.addLineToPoint(CGPoint(x: triangleOrgX , y: baseOfTriangle+1.0*triangleDirection))
+            trianglePath.addLineToPoint(CGPoint(x: triangleOrgX, y: baseOfTriangle+1.0*triangleDirection))
+            trianglePath.addLineToPoint(CGPoint(x: triangleOrgX, y: baseOfTriangle))
+            
+            trianglePath.addLineToPoint(CGPoint(x: triangleOrgX + triangleSize, y: baseOfTriangle))
+            //apex other left edge
+            trianglePath.addLineToPoint(CGPoint(x: triangleOrgX + triangleSize/2.0, y: baseOfTriangle+(baseOfTriangle-centerOffset)*CGFloat(triangleDirection)))
+            //base edge
+            trianglePath.addLineToPoint(CGPoint(x: triangleOrgX, y: baseOfTriangle))
+            
+            
+            //old triangle 
+/*
             trianglePath.moveToPoint(CGPointMake(triangleOrgX, 0.0))
             trianglePath.addLineToPoint(CGPointMake(triangleOrgX + triangleSize, 0.0))
             trianglePath.addLineToPoint(CGPointMake(triangleOrgX + triangleSize/2.0, 13.5))
             trianglePath.addLineToPoint(CGPointMake(triangleOrgX, 0))
+*/
+            
+            
             trianglePath.closePath()
             trianglePath.miterLimit = 4;
             trianglePath.usesEvenOddFillRule = true;
