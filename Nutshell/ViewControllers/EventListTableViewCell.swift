@@ -77,6 +77,115 @@ class EventListTableViewCell: BaseUITableViewCell {
             placeIconView.tintColor = Styles.altDarkGreyColor
         }
         
+        titleLabel.textColor = UIColor.blackColor()
+        NutUtils.setFormatterTimezone(nutEvent.itemArray[nutEvent.itemArray.count-1].tzOffsetSecs)
+        var addOnText = ""
+        var addOnTextExpire = ""
+        var timeSinceNow=nutEvent.itemArray[nutEvent.itemArray.count-1].time.timeIntervalSinceNow
+        var timeActive = 0.0
+        var timeExpire = -365.0*24.0*60*60
+        
+        for item in nutEvent.itemArray {
+            //KBW is there an activity tag?
+            if item.notes.rangeOfString("#A(") != nil {
+                var minInTextArr = item.notes.characters.split("(")
+                var minInText = String(minInTextArr[1])
+                var minInTextArr2 = minInText.characters.split(")")
+                var minInTextNum = String(minInTextArr2[0])
+                //[item.notes.rangeOfString("#A(")!]
+                //let tempString = minInTextArr
+                NSLog("**Active tag found in %@  with note \(item.notes) ",item.title)
+                NSLog("  number string \(String(minInTextNum))")
+                ///addOnText="****Active****"
+                
+                //parse out time
+                timeActive = -4.0 * 60.0 * 60.0
+                timeActive = -60.0*Double(minInTextNum)!
+                addOnText="****Active****"
+                var addOnTextArr = item.notes.characters.split("\"")
+                if (addOnTextArr.count > 1) {
+                    addOnText = String(addOnTextArr[1])
+                }
+                else
+                {
+                    //addOnText = String("****Active****")
+                }
+                //and copy add on text
+                //titleLabel.textColor = UIColor.redColor()
+            }//End activity tag
+            
+            if item.notes.rangeOfString("#D(") != nil {
+                var minInTextArr = item.notes.characters.split("(")
+                var minInText = String(minInTextArr[1])
+                var minInTextArr2 = minInText.characters.split(")")
+                var minInTextNum = String(minInTextArr2[0])
+                //[item.notes.rangeOfString("#A(")!]
+                //let tempString = minInTextArr
+                NSLog("***DUE tag found in %@  with note \(item.notes) ",item.title)
+                NSLog("  number string \(String(minInTextNum))")
+                ///addOnText="****Active****"
+                
+                //parse out time
+                timeExpire = -24.0 * 60.0 * 60.0
+                timeExpire = -60.0*Double(minInTextNum)!
+                addOnText="****Active****"
+                var addOnTextArr = item.notes.characters.split("\"")
+                if (addOnTextArr.count > 1) {
+                    addOnTextExpire = String(addOnTextArr[1])
+                }
+                else
+                {
+                    //addOnText = String("****Active****")
+                }
+                //and copy add on text
+                //titleLabel.textColor = UIColor.redColor()
+            }//End Due tag
+            
+            
+            if item.notes.lowercaseString.rangeOfString("#daily") != nil {
+                timeExpire = -23.5*60.0*60
+                addOnTextExpire = "!!!! Due !!!!"
+                
+            }
+            if item.notes.lowercaseString.rangeOfString("#weekly") != nil {
+                timeExpire = -6.75*24.0*60.0*60
+                addOnTextExpire = "!!!! Due !!!!"
+            }
+            
+            
+            //KBW Find the most recent time
+            if timeSinceNow < item.time.timeIntervalSinceNow {
+                timeSinceNow = item.time.timeIntervalSinceNow
+                NSLog("**** found better time****")
+            }
+        }// loop through nut array
+        
+        
+        //check active flag and time?
+        NSLog("new cell refresh %@  time \(timeSinceNow) ",titleLabel.text!)
+        if timeSinceNow > timeActive {  //more recent than
+            //addOnText="****Active****"
+            titleLabel.text = titleLabel.text! + "\n" + addOnText
+            titleLabel.textColor = UIColor.blueColor()
+            //titleLabel.textColor = UIColor.darkTextColor()
+        }// Check active time
+       
+        
+        //kbw check if expired
+        if timeSinceNow < (timeExpire * 10.0) {  //way older then
+            //addOnText="****Active****"
+            titleLabel.text = titleLabel.text! + "\n" + "### Obsolete ###"
+            titleLabel.textColor = UIColor.lightGrayColor()
+        }// way older than
+        else{
+            if timeSinceNow < timeExpire {  //older than
+                //addOnText="****Active****"
+                titleLabel.text = titleLabel.text! + "\n" + addOnTextExpire
+                titleLabel.textColor = UIColor.redColor()
+            }// Check expire time
+        }
+        
+        
         for item in nutEvent.itemArray {
             if item.nutCracked {
                 nutCrackedStar.hidden = false
