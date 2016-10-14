@@ -285,6 +285,17 @@ class NutUtils {
         // Replace uppercase PM and AM with lowercase versions
         hourString = hourString.stringByReplacingOccurrencesOfString("PM", withString: "pm", options: NSStringCompareOptions.LiteralSearch, range: nil)
         hourString = hourString.stringByReplacingOccurrencesOfString("AM", withString: "am", options: NSStringCompareOptions.LiteralSearch, range: nil)
+        //kbw add delta hours 
+        var hoursAgo = Float(trunc(Float(date.timeIntervalSinceNow/(60.0*60.0))*10.0)/10.0)
+        if (hoursAgo < -24.0) {
+            //hoursAgo = hoursAgo/24.0
+           // hoursAgo = Double(Int(hoursAgo*10)/10.0)
+            hourString += "    \(Float(trunc(Float(hoursAgo/24.0)*10.0)/10.0)) days ago "
+        }
+        else
+        {
+            hourString += "    \(Float(trunc(Float(hoursAgo)*10.0)/10.0)) hours ago "
+        }
         return dayString + " at " + hourString
     }
 
