@@ -290,7 +290,7 @@ class NutUtils {
         if (hoursAgo < -24.0) {
             //hoursAgo = hoursAgo/24.0
            // hoursAgo = Double(Int(hoursAgo*10)/10.0)
-            hourString += "    \(Float(trunc(Float(hoursAgo/24.0)*10.0)/10.0)) days ago "
+            hourString += "    \(Float(trunc(Float(hoursAgo/24.0 )*10.0)/10.0)) days ago "
         }
         else
         {
@@ -298,5 +298,34 @@ class NutUtils {
         }
         return dayString + " at " + hourString
     }
-
+    
+    
+    //kbw to add text to a cell - for extra information
+    class func addOnText() -> String{
+        // use cases
+        // new food - fast or digesting state?
+        // new bgl - avg 7, 30 day, avg tod 7, 30 std dev 7, 30
+        // existing nut event - food insulin exercise BGL before and after, (slope delta BGL per hour
+        // existing nut event - bgl iob? timesincenow  
+        
+        return "test"
+    }
+    //kbw add function to add on text for bgl measurements
+    class func addOnTextBGL() -> String {
+        let beforeBGLpoint = self.beforeSMBG();
+        let afterBGLpoint  = self.afterSMBG();
+        let addOnTextString = "BGL from \(beforeBGLpoint) to \(afterBGLpoint)"
+        
+        return addOnTextString
+    }
+    //kbw find the SMBG before the time
+    class func beforeSMBG() ->Double {
+        return 85
+    }
+    //kbw find the SMBG after the time
+    class func afterSMBG() ->Double {
+        return 86
+    }
+    
+    
 }
