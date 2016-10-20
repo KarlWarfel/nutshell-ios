@@ -148,9 +148,10 @@ class TidepoolGraphLayout: GraphLayout {
         self.yAxisLineColor = UIColor.grayColor()//whiteColor()
         self.backgroundColor = Styles.veryLightGreyColor
         //kbw chaged guide likes
-        self.yAxisValuesWithLines = [Int(lowBoundary), Int(highBoundary)]
+        //kbw add mid point lable and line 
+        self.yAxisValuesWithLines = [Int(lowBoundary),85, Int(highBoundary)]
         //kbw changed labled
-        self.yAxisValuesWithLabels = [40, Int(lowBoundary), Int(highBoundary), Int(kGlucoseMaxValue)]
+        self.yAxisValuesWithLabels = [40, Int(lowBoundary),85, Int(highBoundary), Int(kGlucoseMaxValue)]
     
         self.axesLabelTextColor = UIColor(hex: 0x58595B)
         self.axesLabelTextFont = Styles.smallRegularFont

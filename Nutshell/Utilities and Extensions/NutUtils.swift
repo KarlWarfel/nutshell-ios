@@ -311,19 +311,24 @@ class NutUtils {
         return "test"
     }
     //kbw add function to add on text for bgl measurements
-    class func addOnTextBGL() -> String {
-        let beforeBGLpoint = self.beforeSMBG();
-        let afterBGLpoint  = self.afterSMBG();
+    class func addOnTextBGL(date: NSDate) -> String {
+        let beforeBGLpoint = self.beforeSMBG(date);
+        let afterBGLpoint  = self.afterSMBG(date);
         let addOnTextString = "BGL from \(beforeBGLpoint) to \(afterBGLpoint)"
+        //future:  add in delta and del / hour as well as flaging if it is moveing in the right direction and too much or too little insulin / correction.  
+        //future: advanced display averae and STDev for the past 7, 30 days as well as abg and stddev TOD for the past 7,30 days
         
         return addOnTextString
     }
     //kbw find the SMBG before the time
-    class func beforeSMBG() ->Double {
+    class func beforeSMBG(date: NSDate) ->Double {
+        //find smbg before date,
+        //return value and time?
         return 85
     }
     //kbw find the SMBG after the time
-    class func afterSMBG() ->Double {
+    class func afterSMBG(date: NSDate) ->Double {
+        //return value and time?
         return 86
     }
     

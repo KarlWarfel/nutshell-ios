@@ -74,7 +74,7 @@ class EventGroupTableViewCell: BaseUITableViewCell {
 
     private var photoContainerHeight: CGFloat = 79.0
     func configureCell(eventItem: NutEventItem) {
-        titleString.text = eventItem.notes
+        titleString.text = eventItem.notes + NutUtils.addOnTextBGL(eventItem.time)
         NutUtils.setFormatterTimezone(eventItem.tzOffsetSecs)
         timeString.text = NutUtils.standardUIDateString(eventItem.time)
         self.eventItem = eventItem
