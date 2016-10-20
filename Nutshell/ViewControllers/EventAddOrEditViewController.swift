@@ -171,15 +171,18 @@ class EventAddOrEditViewController: BaseUIViewController, UINavigationController
     private func configureInfoSection() {
         var titleText = Styles.placeholderTitleString
         var notesText = Styles.placeholderNotesString
+        var averageBGL = CGFloat(85.0)
         
         if let eventItem = eventItem {
             if eventItem.title.characters.count > 0 {
                 titleText = eventItem.title
             }
+            averageBGL = NutUtils.averageSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: eventItem.time)
             if eventItem.notes.characters.count > 0 {
-                //kbw added average bgl in add screen 
-                let averageBGL = NutUtils.averageSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: eventItem.time)
-                notesText = eventItem.notes + " \(averageBGL) 30 day average BGL "
+                notesText = eventItem.notes //+ "\n \(averageBGL) 7 day average BGL "
+            }
+            else{
+               notesText = Styles.placeholderNotesString //+ "\n \(averageBGL) 7 day average BGL "
             }
             
             picture0Image.hidden = true
@@ -202,9 +205,13 @@ class EventAddOrEditViewController: BaseUIViewController, UINavigationController
         }
 
         titleTextField.text = titleText
-        notesTextField.text = notesText
+        //kbw added average bgl in add screen
+ //       let averageBGL = NutUtils.averageSMBG(eventItem.time, startDate:eventItem.time.dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: eventItem.time)
+        notesTextField.text = notesText //+ "\n \(averageBGL) 7 day average BGL "
         configureTitleHint()
         configureNotesHint()
+        //kbw 
+//        notesTextField.text = notesText + "\n \(averageBGL) 7 day average BGL "
         configureDateView()
         configurePhotos()
         updateSaveButtonState()

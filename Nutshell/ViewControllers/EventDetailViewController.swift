@@ -328,7 +328,12 @@ class EventDetailViewController: BaseUIViewController, GraphContainerViewDelegat
             }
             
             titleLabel = addLabel(eventItem.title, labelStyle: "detailHeaderTitle", currentView: titleLabel)
-            notesLabel = addLabel(eventItem.notes, labelStyle: "detailHeaderNotes", currentView: notesLabel)
+            
+            var averageBGL = NutUtils.averageSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: eventItem.time)
+            var notesText = eventItem.notes + "\n \(averageBGL) 7 day average BGL "
+//            notesLabel = addLabel(eventItem.notes, labelStyle: "detailHeaderNotes", currentView: notesLabel)
+            notesLabel = addLabel(notesText, labelStyle: "detailHeaderNotes", currentView: notesLabel)
+            
             notesLabel!.hidden = eventItem.notes.isEmpty
 
             eventTime = eventItem.time
