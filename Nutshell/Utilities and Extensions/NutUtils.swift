@@ -314,23 +314,80 @@ class NutUtils {
     class func addOnTextBGL(date: NSDate) -> String {
         let beforeBGLpoint = self.beforeSMBG(date);
         let afterBGLpoint  = self.afterSMBG(date);
-        let addOnTextString = "BGL from \(beforeBGLpoint) to \(afterBGLpoint)"
+        let addOnTextString = "\nBGL from \(beforeBGLpoint) to \(afterBGLpoint)"
         //future:  add in delta and del / hour as well as flaging if it is moveing in the right direction and too much or too little insulin / correction.  
         //future: advanced display averae and STDev for the past 7, 30 days as well as abg and stddev TOD for the past 7,30 days
         
         return addOnTextString
     }
+    
+    
+    
+    //kbw todo refactor to just find a bgl at the closest of an interval?
     //kbw find the SMBG before the time
     class func beforeSMBG(date: NSDate) ->Double {
         //find smbg before date,
+        
+        let earlyStartTime = date.dateByAddingTimeInterval(-12.0*60.0*60.0); //loadStartTime()
+        let lateEndTime = date.dateByAddingTimeInterval(-0.0);//0.1*60.0*60.0);
+        var convertedValue = CGFloat(85);
+        convertedValue = closestSMBG(date, startDate: earlyStartTime , endDate: lateEndTime);
+  
         //return value and time?
-        return 85
+        return Double(convertedValue)
     }
+    
     //kbw find the SMBG after the time
     class func afterSMBG(date: NSDate) ->Double {
         //return value and time?
-        return 86
+        //find smbg before date,
+        
+        let earlyStartTime = date.dateByAddingTimeInterval(0.1*60.0*60.0); //loadStartTime()
+        let lateEndTime = date.dateByAddingTimeInterval(12.0*60.0*60.0);
+        var convertedValue = CGFloat(85);
+        convertedValue = closestSMBG(date, startDate: earlyStartTime , endDate: lateEndTime);
+  
+        //return value and time?
+        return Double(convertedValue)
+       
     }
     
-    
+    //build function to retunr the closed bGL to a date between two dates
+    class func closestSMBG(centerDate: NSDate ,startDate: NSDate, endDate: NSDate)->CGFloat{
+        
+        var convertedValue = CGFloat(85);
+        var deltaTime = 99999999.0
+        do {
+            let events = try DatabaseUtils.getTidepoolEvents(startDate, thruTime: endDate, objectTypes: ["smbg"])//[typeString()])
+            
+            for event in events {
+                if let event = event as? CommonData {
+                    if let eventTime = event.time {
+                        if (abs(eventTime.timeIntervalSinceDate(centerDate))<deltaTime){
+                            deltaTime=abs(eventTime.timeIntervalSinceDate(centerDate))
+                            
+                            if let smbgEvent = event as? SelfMonitoringGlucose {
+                                //NSLog("Adding smbg event: \(event)")
+                                if let value = smbgEvent.value {
+                                    let kGlucoseConversionToMgDl = CGFloat(18.0)
+                                    convertedValue = round(CGFloat(value) * kGlucoseConversionToMgDl)
+                                    NSLog("\(convertedValue) \(eventTime) ")
+                                    //dataArray.append(CbgGraphDataType(value: convertedValue, timeOffset: timeOffset))
+                                } else {
+                                    NSLog("ignoring smbg event with nil value")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch let error as NSError {
+            NSLog("Error: \(error)")
+        }
+        
+        //return value and time?
+        return convertedValue
+        
+        
+    }
 }
