@@ -315,10 +315,11 @@ class NutUtils {
         let beforeBGLpoint = self.beforeSMBG(date);
         let afterBGLpoint  = self.afterSMBG(date.dateByAddingTimeInterval(1.0*60.0*60.0));
         let afterafterBGLpoint = self.afterSMBG(date.dateByAddingTimeInterval(2.5*60*60.0));
-        var directionString = "\u{2B07}";
-        if(beforeBGLpoint < afterBGLpoint) {directionString = "\u{2B06}";}
+        let averageBGLpoint = self.averageSMBG(date, startDate: date.dateByAddingTimeInterval(-7.0*24*60*60.0), endDate: date)
+        var directionString = "\u{2198}";
+        if(beforeBGLpoint < afterBGLpoint) {directionString = "\u{2197}";}
         
-        let addOnTextString = "\n\(directionString) \(beforeBGLpoint) to \(afterBGLpoint) \(afterafterBGLpoint)"
+        let addOnTextString = "\n\(averageBGLpoint) 7 Day Average \n\(directionString) \(beforeBGLpoint) to \(afterBGLpoint) \(afterafterBGLpoint) "
         //future:  add in delta and del / hour as well as flaging if it is moveing in the right direction and too much or too little insulin / correction.  
         //future: advanced display averae and STDev for the past 7, 30 days as well as abg and stddev TOD for the past 7,30 days
         
@@ -391,6 +392,50 @@ class NutUtils {
         
         //return value and time?
         return convertedValue
+        
+        
+    }
+    
+    
+    //build function to retunr the closed bGL to a date between two dates
+    class func averageSMBG(centerDate: NSDate ,startDate: NSDate, endDate: NSDate)->CGFloat{
+        
+        var convertedValue = CGFloat(85);
+        var deltaTime = 99999999.0
+        var count = 0;
+        var totalSMBG = CGFloat(0.0);
+        do {
+            let events = try DatabaseUtils.getTidepoolEvents(startDate, thruTime: endDate, objectTypes: ["smbg"])//[typeString()])
+            
+            for event in events {
+                if let event = event as? CommonData {
+                    if let eventTime = event.time {
+                        if (abs(eventTime.timeIntervalSinceDate(centerDate))<deltaTime){
+                            deltaTime=abs(eventTime.timeIntervalSinceDate(centerDate))
+                            
+                            if let smbgEvent = event as? SelfMonitoringGlucose {
+                                //NSLog("Adding smbg event: \(event)")
+                                if let value = smbgEvent.value {
+                                    let kGlucoseConversionToMgDl = CGFloat(18.0)
+                                    convertedValue = round(CGFloat(value) * kGlucoseConversionToMgDl)
+                                    NSLog("\(convertedValue) \(eventTime) ")
+                                    count = count+1;
+                                    totalSMBG = totalSMBG+convertedValue
+                                    //dataArray.append(CbgGraphDataType(value: convertedValue, timeOffset: timeOffset))
+                                } else {
+                                    NSLog("ignoring smbg event with nil value")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch let error as NSError {
+            NSLog("Error: \(error)")
+        }
+        
+        //return value and time?
+        return totalSMBG/CGFloat(count) //convertedValue
         
         
     }

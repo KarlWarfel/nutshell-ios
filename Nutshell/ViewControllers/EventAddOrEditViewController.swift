@@ -177,7 +177,9 @@ class EventAddOrEditViewController: BaseUIViewController, UINavigationController
                 titleText = eventItem.title
             }
             if eventItem.notes.characters.count > 0 {
-                notesText = eventItem.notes
+                //kbw added average bgl in add screen 
+                let averageBGL = NutUtils.averageSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: eventItem.time)
+                notesText = eventItem.notes + " \(averageBGL) 30 day average BGL "
             }
             
             picture0Image.hidden = true
