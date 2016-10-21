@@ -319,7 +319,7 @@ class NutUtils {
         var directionString = "\u{2198}";
         if(beforeBGLpoint < afterBGLpoint) {directionString = "\u{2197}";}
         
-        let addOnTextString = "\n\(averageBGLpoint) 7 Day Average \n\(directionString) \(beforeBGLpoint) to \(afterBGLpoint) \(afterafterBGLpoint) "
+        let addOnTextString = "\n\(directionString) \(Int(beforeBGLpoint)) to \(Int(afterBGLpoint)),  \(Int(afterafterBGLpoint))" + (NSString(format: "\t %3.2f Avg", averageBGLpoint) as String)
         //future:  add in delta and del / hour as well as flaging if it is moveing in the right direction and too much or too little insulin / correction.  
         //future: advanced display averae and STDev for the past 7, 30 days as well as abg and stddev TOD for the past 7,30 days
         
