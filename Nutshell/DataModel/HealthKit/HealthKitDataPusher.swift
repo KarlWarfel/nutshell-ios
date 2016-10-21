@@ -43,7 +43,7 @@ class HealthKitDataPusher: NSObject {
     /// Check at most every 4 hours...
     let kMinTimeIntervalBetweenSyncs: NSTimeInterval = 60*60*4
     /// But ask for background time every 6 hours...
-    let kTimeIntervalForBackgroundFetch: NSTimeInterval = 60*60*4
+    let kTimeIntervalForBackgroundFetch: NSTimeInterval = 60*60*6
     
     /// Last time we checked for and pushed data to HealthKit or nil if never pushed
     var lastPushToHK: NSDate? {
