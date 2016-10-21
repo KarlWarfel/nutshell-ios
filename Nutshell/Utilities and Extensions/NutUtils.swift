@@ -397,7 +397,7 @@ class NutUtils {
     }
     
     
-    //build function to retunr the closed bGL to a date between two dates
+    //build function to retunr the average BGL to a date between two dates
     class func averageSMBG(centerDate: NSDate ,startDate: NSDate, endDate: NSDate)->CGFloat{
         
         var convertedValue = CGFloat(85);
@@ -439,4 +439,36 @@ class NutUtils {
         
         
     }
+    
+    //kbw add function to return hours fasting
+    class func fastingHours(date: NSDate) -> Double{
+        //dataArray = []
+        let maxFast = -7.0*24.0*60.0*60.0
+//        let endTime = date  //.dateByAddingTimeInterval(timeIntervalForView)
+//        let timeExtensionForDataFetch = NSTimeInterval(kMealTriangleTopWidth/viewPixelsPerSec)
+        let earlyStartTime = date.dateByAddingTimeInterval(maxFast)
+        let lateEndTime = date.dateByAddingTimeInterval(-1.0)  //endTime.dateByAddingTimeInterval(timeExtensionForDataFetch)
+        var fastingTime = maxFast
+        do {
+            let events = try DatabaseUtils.getMealEvents(earlyStartTime, toTime: lateEndTime)
+            for mealEvent in events {
+                if let eventTime = mealEvent.time {
+                    
+                    //kbw  filter out bgl values
+                    if (mealEvent.title!.lowercaseString.rangeOfString("🧀") != nil)
+                    {
+                        let deltaTime = eventTime.timeIntervalSinceDate(date)
+                        if (deltaTime > fastingTime) {fastingTime=deltaTime}
+                    }
+                    NSLog("\(mealEvent.title) \(fastingTime)")
+                }
+            }
+        } catch let error as NSError {
+            NSLog("Error: \(error)")
+        }
+        //NSLog("loaded \(dataArray.count) meal events")
+       return -1.0*(fastingTime+(4.0*60.0*60.0))/(60.0*60.0)
+    }
+    
+    
 }
