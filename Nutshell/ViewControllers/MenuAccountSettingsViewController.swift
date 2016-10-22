@@ -225,6 +225,12 @@ class MenuAccountSettingsViewController: UIViewController, UITextViewDelegate {
             healthStatusLine2.text = healthKitUploadStatusDexcomDataDelayed3Hours
             healthStatusLine3.text = ""
         }
+        //kbw over ride text for reporting
+        healthStatusLine1.text = NSString(format: "Average BGL: %3.1f/ %3.1f",
+                                          NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate()),
+                                        NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate())) as String
+        healthStatusLine2.text = ""
+        healthStatusLine3.text = NSString(format: "Fasting hours: %3.1f",NutUtils.fastingHours(NSDate())) as String
     }
     
     //
