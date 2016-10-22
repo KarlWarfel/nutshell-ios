@@ -319,7 +319,7 @@ class NutUtils {
         var directionString = "\u{2198}";
         if(beforeBGLpoint < afterBGLpoint) {directionString = "\u{2197}";}
         
-        let addOnTextString = "\n\(directionString) " + (NSString(format: "%3d to \t%3d,%3d     \t %3.2f Avg",Int(beforeBGLpoint),Int(afterBGLpoint), Int(afterafterBGLpoint),averageBGLpoint) as String)
+        let addOnTextString = "\n\(directionString) " + (NSString(format: "%3d to \t%3d,%3d     \t%3.2fAvg ",Int(beforeBGLpoint),Int(afterBGLpoint), Int(afterafterBGLpoint),averageBGLpoint) as String)
         //future:  add in delta and del / hour as well as flaging if it is moveing in the right direction and too much or too little insulin / correction.  
         //future: advanced display averae and STDev for the past 7, 30 days as well as abg and stddev TOD for the past 7,30 days
         
@@ -444,7 +444,7 @@ class NutUtils {
     //kbw add fasing hour method that return a well forwatted string 
     class func fastingHoursText(date: NSDate) -> String{
         
-        let fastingHoursTime = NutUtils.fastingHours(NSDate())
+        let fastingHoursTime = NutUtils.fastingHours(date)
         var fastingIcon = ""
         if (fastingHoursTime>0){
             if fastingHoursTime > 10.0 {

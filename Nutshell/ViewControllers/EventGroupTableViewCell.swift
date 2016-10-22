@@ -78,7 +78,7 @@ class EventGroupTableViewCell: BaseUITableViewCell {
         //kbw  filter out bgl values
         if (eventItem.title.lowercaseString.rangeOfString("🧀") != nil)
         {
-            titleString.text = titleString.text! + (NSString(format: "\n%3.1f fasting hours",NutUtils.fastingHours(eventItem.time)) as String)
+            titleString.text = titleString.text! + NutUtils.fastingHoursText(eventItem.time)//(NSString(format: "\n%3.1f fasting hours",NutUtils.fastingHours(eventItem.time)) as String)
         }
 
         NutUtils.setFormatterTimezone(eventItem.tzOffsetSecs)
