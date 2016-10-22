@@ -77,6 +77,10 @@ class EventGroupTableViewCell: BaseUITableViewCell {
         titleString.text = eventItem.notes + NutUtils.addOnTextBGL(eventItem.time)
         //kbw  filter out bgl values
         if (eventItem.title.lowercaseString.rangeOfString("🧀") != nil)
+            ||
+           (eventItem.title.lowercaseString.rangeOfString("BGL") != nil)
+            ||
+           (eventItem.title.lowercaseString.rangeOfString("💉") != nil)
         {
             titleString.text = titleString.text! + NutUtils.fastingHoursText(eventItem.time)//(NSString(format: "\n%3.1f fasting hours",NutUtils.fastingHours(eventItem.time)) as String)
         }

@@ -456,7 +456,7 @@ class NutUtils {
             return NSString(format: "%@Fasting hours: %3.1f",fastingIcon,fastingHoursTime) as String
         }
         else{
-            return NSString(format: "Digesting food %3.1f hours ago",fastingHoursTime) as String
+            return NSString(format: "Digesting food %3.1f hours ago",fastingHoursTime+4.0) as String
         }
         
         
