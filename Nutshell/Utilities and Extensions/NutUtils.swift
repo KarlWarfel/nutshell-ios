@@ -440,6 +440,29 @@ class NutUtils {
         
     }
     
+    
+    //kbw add fasing hour method that return a well forwatted string 
+    class func fastingHoursText(date: NSDate) -> String{
+        
+        let fastingHoursTime = NutUtils.fastingHours(NSDate())
+        var fastingIcon = ""
+        if (fastingHoursTime>0){
+            if fastingHoursTime > 10.0 {
+                fastingIcon = "\u{1F374} " //fork and knife
+            }
+            if fastingHoursTime > 24.0 {
+                fastingIcon = "\u{1F37D} " //fork and knife and plate
+            }
+            return NSString(format: "%@Fasting hours: %3.1f",fastingIcon,fastingHoursTime) as String
+        }
+        else{
+            return NSString(format: "Digesting food %3.1f hours ago",fastingHoursTime) as String
+        }
+        
+        
+        
+    }
+    
     //kbw add function to return hours fasting
     class func fastingHours(date: NSDate) -> Double{
         //dataArray = []
