@@ -465,9 +465,9 @@ class NutUtils {
                                     convertedValue = round(CGFloat(value) * kGlucoseConversionToMgDl)
                                     //NSLog("\(convertedValue) \(eventTime) ")
                                     var differenceTimeDays=centerDate.timeIntervalSinceDate(smbgEvent.time!)/(24.0*60.0*60.0)
-                                    var differenceTimeHours = differenceTimeDays-Double(Int(differenceTimeDays))
-                                    if (abs(0.5-differenceTimeHours)>(2.0/24.0)){//only could measurement within 2 hours of centerdate
-                                        NSLog("center vs event time \(centerDate) \(smbgEvent.time) \(differenceTimeHours)")
+                                    var differenceTimeHours = differenceTimeDays-Double(Int(differenceTimeDays+0.5))
+                                    if (abs(differenceTimeHours)<(2.0/24.0)){//only could measurement within 2 hours of centerdate
+                                        NSLog("CvE\(centerDate) \(smbgEvent.time)   \(differenceTimeHours)")
                                            count = count+1;
                                            totalSMBG = totalSMBG+convertedValue
                                     //dataArray.append(CbgGraphDataType(value: convertedValue, timeOffset: timeOffset))
