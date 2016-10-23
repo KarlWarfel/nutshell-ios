@@ -226,10 +226,12 @@ class MenuAccountSettingsViewController: UIViewController, UITextViewDelegate {
             healthStatusLine3.text = ""
         }
         //kbw over ride text for reporting
-        healthStatusLine1.text = NSString(format: "Average BGL: %3.1f/ %3.1f",
+        healthStatusLine1.text = NSString(format: "Average     BGL: \t%3.1f/ %3.1f",
                                           NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate()),
                                         NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate())) as String
-        healthStatusLine2.text = ""
+        healthStatusLine2.text = NSString(format: "Average ToD BGL: \t%3.1f/ %3.1f",
+                                          NutUtils.averageSMBGTOD(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate()),
+                                          NutUtils.averageSMBGTOD(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate())) as String
         healthStatusLine3.text = NutUtils.fastingHoursText(NSDate())//NSString(format: "Fasting hours: %3.1f",NutUtils.fastingHours(NSDate())) as String
     }
     

@@ -78,7 +78,7 @@ class EventGroupTableViewCell: BaseUITableViewCell {
         //kbw  filter out bgl values
         if (eventItem.title.lowercaseString.rangeOfString("🧀") != nil)
             ||
-           (eventItem.title.lowercaseString.rangeOfString("BGL") != nil)
+           (eventItem.title.lowercaseString.rangeOfString("bgl") != nil)
             ||
            (eventItem.title.lowercaseString.rangeOfString("💉") != nil)
         {

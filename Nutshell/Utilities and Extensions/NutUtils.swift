@@ -441,6 +441,56 @@ class NutUtils {
     }
     
     
+    //build function to retunr the average BGL to a date between two dates
+    //kbw refactor to use this method, add value to expand the window - error check window
+    class func averageSMBGTOD(centerDate: NSDate ,startDate: NSDate, endDate: NSDate)->CGFloat{
+        
+        var convertedValue = CGFloat(85);
+        var deltaTime = 99999999.0
+        var count = 0;
+        var totalSMBG = CGFloat(0.0);
+        do {
+            let events = try DatabaseUtils.getTidepoolEvents(startDate, thruTime: endDate, objectTypes: ["smbg"])//[typeString()])
+            
+            for event in events {
+                if let event = event as? CommonData {
+                    if let eventTime = event.time {
+                        if (abs(eventTime.timeIntervalSinceDate(centerDate))<deltaTime){
+                            deltaTime=abs(eventTime.timeIntervalSinceDate(centerDate))
+                            
+                            if let smbgEvent = event as? SelfMonitoringGlucose {
+                                //NSLog("Adding smbg event: \(event)")
+                                if let value = smbgEvent.value {
+                                    let kGlucoseConversionToMgDl = CGFloat(18.0)
+                                    convertedValue = round(CGFloat(value) * kGlucoseConversionToMgDl)
+                                    //NSLog("\(convertedValue) \(eventTime) ")
+                                    var differenceTimeDays=centerDate.timeIntervalSinceDate(smbgEvent.time!)/(24.0*60.0*60.0)
+                                    var differenceTimeHours = differenceTimeDays-Double(Int(differenceTimeDays))
+                                    if (abs(0.5-differenceTimeHours)>(2.0/24.0)){//only could measurement within 2 hours of centerdate
+                                        NSLog("center vs event time \(centerDate) \(smbgEvent.time) \(differenceTimeHours)")
+                                           count = count+1;
+                                           totalSMBG = totalSMBG+convertedValue
+                                    //dataArray.append(CbgGraphDataType(value: convertedValue, timeOffset: timeOffset))
+                                    }
+                                } else {
+                                    NSLog("ignoring smbg event with nil value")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch let error as NSError {
+            NSLog("Error: \(error)")
+        }
+        
+        //return value and time?
+        return totalSMBG/CGFloat(count) //convertedValue
+        
+        
+    }
+    
+    
     //kbw add fasing hour method that return a well forwatted string 
     class func fastingHoursText(date: NSDate) -> String{
         
