@@ -74,7 +74,13 @@ class EventGroupTableViewCell: BaseUITableViewCell {
 
     private var photoContainerHeight: CGFloat = 79.0
     func configureCell(eventItem: NutEventItem) {
-        titleString.text = eventItem.notes + NutUtils.addOnTextBGL(eventItem.time)
+        if (eventItem.title.lowercaseString.rangeOfString("monthly") != nil)
+        {
+        titleString.text = eventItem.notes + (NSString(format: "\n 30 day average:",NutUtils.averageSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-30.0*24*60*60), endDate: eventItem.time))  as String)
+        }
+        else{
+            titleString.text = eventItem.notes + NutUtils.addOnTextBGL(eventItem.time)
+        }
         //kbw  filter out bgl values
         if (eventItem.title.lowercaseString.rangeOfString("🧀") != nil)
             ||
