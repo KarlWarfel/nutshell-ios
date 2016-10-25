@@ -360,7 +360,7 @@ class NutUtils {
     //build function to retunr the closed bGL to a date between two dates
     class func closestSMBG(centerDate: NSDate ,startDate: NSDate, endDate: NSDate)->CGFloat{
         
-        var convertedValue = CGFloat(85);
+        var convertedValue = CGFloat(999.9);
         var deltaTime = 99999999.0
         do {
             let events = try DatabaseUtils.getTidepoolEvents(startDate, thruTime: endDate, objectTypes: ["smbg"])//[typeString()])
@@ -445,10 +445,14 @@ class NutUtils {
     //kbw refactor to use this method, add value to expand the window - error check window
     class func averageSMBGTOD(centerDate: NSDate ,startDate: NSDate, endDate: NSDate)->CGFloat{
         
-        var convertedValue = CGFloat(85);
-        var deltaTime = 99999999.0
+        var convertedValue = CGFloat(0);
+        var deltaTime = 99999999.0;
+        var timeWindow = 2.0;
         var count = 0;
         var totalSMBG = CGFloat(0.0);
+        var minSMBG = CGFloat(-999.0);
+        var maxSMBG = CGFloat(0.0);
+        var sdtDev  = CGFloat(0.0);
         do {
             let events = try DatabaseUtils.getTidepoolEvents(startDate, thruTime: endDate, objectTypes: ["smbg"])//[typeString()])
             
@@ -466,10 +470,12 @@ class NutUtils {
                                     //NSLog("\(convertedValue) \(eventTime) ")
                                     var differenceTimeDays=centerDate.timeIntervalSinceDate(smbgEvent.time!)/(24.0*60.0*60.0)
                                     var differenceTimeHours = differenceTimeDays-Double(Int(differenceTimeDays+0.5))
-                                    if (abs(differenceTimeHours)<(2.0/24.0)){//only could measurement within 2 hours of centerdate
+                                    if (abs(differenceTimeHours)<(timeWindow/24.0)){//only could measurement within 2 hours of centerdate
                                         NSLog("CvE\(centerDate) \(smbgEvent.time)   \(differenceTimeHours)")
                                            count = count+1;
                                            totalSMBG = totalSMBG+convertedValue
+                                        if (convertedValue>maxSMBG) {maxSMBG=convertedValue}
+                                        if (convertedValue<minSMBG) {minSMBG=convertedValue}
                                     //dataArray.append(CbgGraphDataType(value: convertedValue, timeOffset: timeOffset))
                                     }
                                 } else {
