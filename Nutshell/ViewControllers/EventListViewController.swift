@@ -24,7 +24,77 @@ class EventListViewController: BaseUIViewController, ENSideMenuDelegate {
     @IBOutlet weak var tableView: NutshellUITableView!
     @IBOutlet weak var coverView: UIControl!
     //kbw add for quick filter
-    @IBOutlet weak var barButton3: UIBarButtonItem!
+/*    @IBOutlet weak var barButton4: UIBarButtonItem!
+    @IBAction func barButton4Press(sender: AnyObject) {
+        switch searchTextField.text! {
+        case "report":
+            searchTextField.text = "metric"
+        case "metric":
+            searchTextField.text = "symptom"
+        case "symptom":
+            searchTextField.text = "report"
+        default:
+            searchTextField.text = "report"
+        }
+        
+        updateFilteredAndReload()
+    }
+ */
+ //   @IBOutlet weak var barButton3: UIBarButtonItem!
+    @IBAction func barbuttonFood(sender: AnyObject) {
+        switch searchTextField.text! {
+        case "🧀":
+            searchTextField.text = "BGL"
+        case "BGL":
+            searchTextField.text = "🧀"
+        default:
+            searchTextField.text = "🧀"
+        }
+        
+        updateFilteredAndReload()
+    }
+    
+    @IBAction func barbuttonMed(sender: AnyObject) {
+        switch searchTextField.text! {
+        case "💊":
+            searchTextField.text = "💉"
+        case "💉":
+            searchTextField.text = "💊"
+        default:
+            searchTextField.text = "💊"
+        }
+        
+        updateFilteredAndReload()
+    }
+    
+    
+    @IBAction func barbuttonRepeat(sender: AnyObject) {
+        switch searchTextField.text! {
+        case "daily":
+            searchTextField.text = "weekly"
+        case "weekly":
+            searchTextField.text = "daily"
+        default:
+            searchTextField.text = "daily"
+        }
+        
+        updateFilteredAndReload()
+    }
+    
+    @IBAction func barbuttonReport(sender: AnyObject) {
+        switch searchTextField.text! {
+        case "report":
+            searchTextField.text = "metric"
+        case "metric":
+            searchTextField.text = "symptom"
+        case "symptom":
+            searchTextField.text = "report"
+        default:
+            searchTextField.text = "report"
+        }
+        
+        updateFilteredAndReload()
+    }
     @IBAction func barButton3Press(sender: AnyObject) {
         switch searchTextField.text! {
         case "daily":
@@ -45,7 +115,7 @@ class EventListViewController: BaseUIViewController, ENSideMenuDelegate {
         case "💉":
             searchTextField.text = "💊"
         default:
-            searchTextField.text = "💉"
+            searchTextField.text = "💊"
         }
         
         updateFilteredAndReload()

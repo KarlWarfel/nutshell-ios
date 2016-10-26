@@ -24,7 +24,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Pl9-hd-HdO"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="vp9-lf-HJa" userLabel="view">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yu7-Gk-FTH" userLabel="eventListSceneContainer" customClass="UIControl">
@@ -87,10 +87,10 @@
                                         <color key="backgroundColor" red="0.94901960784313721" green="0.95294117647058818" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="eventListCell" rowHeight="70" id="OeA-ji-N23" userLabel="eventListCell" customClass="EventListTableViewCell" customModule="Nutshell" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="28" width="320" height="70"/>
+                                                <rect key="frame" x="0.0" y="28" width="375" height="70"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OeA-ji-N23" id="QLe-TP-wyT">
-                                                    <frame key="frameInset" width="320" height="70"/>
+                                                    <frame key="frameInset" width="375" height="70"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NEV-rB-Eah" userLabel="backgroundView" customClass="NutShellUIViewWithHighlight" customModule="Nutshell" customModuleProvider="target">
@@ -173,10 +173,10 @@
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="eventListCellWithLoc" rowHeight="102" id="A0g-43-HJ0" customClass="EventListTableViewCell" customModule="Nutshell" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="98" width="320" height="102"/>
+                                                <rect key="frame" x="0.0" y="98" width="375" height="102"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="A0g-43-HJ0" id="124-Kc-60p">
-                                                    <frame key="frameInset" width="320" height="102"/>
+                                                    <frame key="frameInset" width="375" height="102"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oDf-oW-Jwv" userLabel="backgroundView" customClass="NutShellUIViewWithHighlight" customModule="Nutshell" customModuleProvider="target">
@@ -340,28 +340,32 @@
                                     <segue destination="vP0-F7-5bM" kind="presentation" identifier="HomeToAddEventSegue" id="dFt-cX-XeW"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem image="timeIcon" id="KAS-Fr-eLA">
+                            <barButtonItem title="🕓" id="KAS-Fr-eLA">
                                 <color key="tintColor" red="0.38431372549999998" green="0.48627450979999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
-                                    <action selector="barButton3Press:" destination="oVB-ry-Lwj" id="d9x-Is-Rux"/>
+                                    <action selector="barbuttonRepeat:" destination="oVB-ry-Lwj" id="2Th-ut-aMF"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="💊-💉" id="TWA-An-bD1">
+                            <barButtonItem title=" 💊💉 " id="TWA-An-bD1">
                                 <color key="tintColor" red="0.38431372549999998" green="0.48627450979999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
-                                    <action selector="barButton2Press:" destination="oVB-ry-Lwj" id="cgG-bX-Kv0"/>
+                                    <action selector="barbuttonMed:" destination="oVB-ry-Lwj" id="nf0-no-KgR"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="🧀-BGL" id="mUE-mT-Q5O">
+                            <barButtonItem title=" 🧀↗️ " id="mUE-mT-Q5O">
                                 <color key="tintColor" red="0.38431372549999998" green="0.48627450979999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
-                                    <action selector="barButton1Press:" destination="oVB-ry-Lwj" id="Whx-6g-14y"/>
+                                    <action selector="barbuttonFood:" destination="oVB-ry-Lwj" id="CVF-uB-DTg"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="📓" id="fF3-RC-vlA">
+                                <connections>
+                                    <action selector="barbuttonReport:" destination="oVB-ry-Lwj" id="DUS-Yw-2zu"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
-                        <outlet property="barButton3" destination="KAS-Fr-eLA" id="8GY-uq-khi"/>
                         <outlet property="coverView" destination="p1Z-R3-s10" id="x9s-ca-Xdd"/>
                         <outlet property="menuButton" destination="k2Y-dm-3tk" id="Mdl-ih-WZN"/>
                         <outlet property="searchPlaceholderLabel" destination="QuJ-Pq-qUA" id="zbU-o8-EJ4"/>
@@ -394,7 +398,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OeG-qi-T86" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="375.5" y="40.5"/>
+            <point key="canvasLocation" x="39" y="22"/>
         </scene>
         <!--EventAddEdit-->
         <scene sceneID="hMX-Ah-KBf">
@@ -446,6 +450,5 @@
         <image name="separatorLine" width="100" height="2"/>
         <image name="starLargeBadge" width="22" height="30"/>
         <image name="starLargeSelectedBadge" width="22" height="30"/>
-        <image name="timeIcon" width="20" height="20"/>
     </resources>
 </document>

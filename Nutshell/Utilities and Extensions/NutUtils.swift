@@ -335,11 +335,12 @@ class NutUtils {
         
         let earlyStartTime = date.dateByAddingTimeInterval(-12.0*60.0*60.0); //loadStartTime()
         let lateEndTime = date.dateByAddingTimeInterval(-0.0);//0.1*60.0*60.0);
-        var convertedValue = CGFloat(85);
-        convertedValue = closestSMBG(date, startDate: earlyStartTime , endDate: lateEndTime);
+        //kbw stream lines before and after functions
+//        var convertedValue = CGFloat(85);
+//        convertedValue = closestSMBG(date, startDate: earlyStartTime , endDate: lateEndTime);
   
         //return value and time?
-        return Double(convertedValue)
+        return Double(closestSMBG(date, startDate: earlyStartTime , endDate: lateEndTime))
     }
     
     //kbw find the SMBG after the time
@@ -349,11 +350,12 @@ class NutUtils {
         
         let earlyStartTime = date.dateByAddingTimeInterval(0.1*60.0*60.0); //loadStartTime()
         let lateEndTime = date.dateByAddingTimeInterval(12.0*60.0*60.0);
-        var convertedValue = CGFloat(85);
-        convertedValue = closestSMBG(date, startDate: earlyStartTime , endDate: lateEndTime);
+        //kbw streamlines before and after functions  
+//        var convertedValue = CGFloat(85);
+//        convertedValue = closestSMBG(date, startDate: earlyStartTime , endDate: lateEndTime);
   
         //return value and time?
-        return Double(convertedValue)
+        return Double(closestSMBG(date, startDate: earlyStartTime , endDate: lateEndTime))
        
     }
     
