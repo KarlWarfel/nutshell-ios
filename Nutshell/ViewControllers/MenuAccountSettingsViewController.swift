@@ -230,8 +230,8 @@ class MenuAccountSettingsViewController: UIViewController, UITextViewDelegate {
                                           NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate()),
                                         NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate())) as String
         healthStatusLine2.text = NSString(format: "Average ToD BGL: \t%3.1f/ %3.1f",
-                                          NutUtils.averageSMBGTOD(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate()),
-                                          NutUtils.averageSMBGTOD(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate())) as String
+                                          NutUtils.averageSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                                          NutUtils.averageSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate())) as String
         healthStatusLine3.text = NutUtils.fastingHoursText(NSDate())//NSString(format: "Fasting hours: %3.1f",NutUtils.fastingHours(NSDate())) as String
     }
     

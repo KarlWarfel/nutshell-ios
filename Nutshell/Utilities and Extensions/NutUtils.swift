@@ -319,8 +319,14 @@ class NutUtils {
         var directionString = "\u{2198}";
         if(beforeBGLpoint < afterBGLpoint) {directionString = "\u{2197}";}
         
-        let addOnTextString = "\n\(directionString) " + (NSString(format: "%3d to \t%3d,%3d     \t%3.2fAvg ",Int(beforeBGLpoint),Int(afterBGLpoint), Int(afterafterBGLpoint),averageBGLpoint) as String)
-        //future:  add in delta and del / hour as well as flaging if it is moveing in the right direction and too much or too little insulin / correction.  
+        let addOnTextString = "\n\(directionString) " +
+            (NSString(format: "%3d to \t%3d,%3d     \t%3.2fAvg ",Int(beforeBGLpoint),Int(afterBGLpoint), Int(afterafterBGLpoint),averageBGLpoint) as String)
+            +
+            (NSString(format: "\n      %3.1f/%3.1f wk/mo avg at ToD ",
+                        NutUtils.averageSMBGTOD(date.dateByAddingTimeInterval(+0.0*60.0*60.0), startDate: date.dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: date.dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                        NutUtils.averageSMBGTOD(date.dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: date.dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: date)) as String)
+ 
+        //future:  add in delta and del / hour as well as flaging if it is moveing in the right direction and too much or too little insulin / correction.
         //future: advanced display averae and STDev for the past 7, 30 days as well as abg and stddev TOD for the past 7,30 days
         
         return addOnTextString
