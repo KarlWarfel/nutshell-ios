@@ -76,10 +76,20 @@ class EventGroupTableViewCell: BaseUITableViewCell {
     func configureCell(eventItem: NutEventItem) {
         if (eventItem.title.lowercaseString.rangeOfString("monthly") != nil)
         {
-        titleString.text = eventItem.notes + (NSString(format: "\n 30 day average: %3.1f",NutUtils.averageSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-30.0*24*60*60), endDate: eventItem.time))  as String)
+            titleString.text = eventItem.notes + (NSString(format: "\n 30 day average: %3.1f",NutUtils.averageSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-30.0*24*60*60), endDate: eventItem.time))  as String)
         }
-        else{
-            titleString.text = eventItem.notes + NutUtils.addOnTextBGL(eventItem.time)
+        else
+        {
+            if (eventItem.title.lowercaseString.rangeOfString("experiment of the week") != nil)
+            {
+                titleString.text = eventItem.notes + (NSString(format: "\n 7 day average: %3.1f",NutUtils.averageSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-7.0*24*60*60), endDate: eventItem.time))  as String)
+            }
+            else
+            {
+                
+                
+                titleString.text = eventItem.notes + NutUtils.addOnTextBGL(eventItem.time)
+            }
         }
         //kbw  filter out bgl values
         if (eventItem.title.lowercaseString.rangeOfString("🧀") != nil)

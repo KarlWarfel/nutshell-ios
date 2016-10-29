@@ -330,7 +330,7 @@ class EventDetailViewController: BaseUIViewController, GraphContainerViewDelegat
             titleLabel = addLabel(eventItem.title, labelStyle: "detailHeaderTitle", currentView: titleLabel)
             
             var averageBGL = NutUtils.averageSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: eventItem.time)
-            var notesText = eventItem.notes + NutUtils.fastingHoursText(eventItem.time)//"\n \(averageBGL) 7 day average BGL "
+            var notesText = eventItem.notes + "\n" + NutUtils.fastingHoursText(eventItem.time)//"\n \(averageBGL) 7 day average BGL "
 //            notesLabel = addLabel(eventItem.notes, labelStyle: "detailHeaderNotes", currentView: notesLabel)
             notesLabel = addLabel(notesText, labelStyle: "detailHeaderNotes", currentView: notesLabel)
             
@@ -553,7 +553,7 @@ class EventDetailViewController: BaseUIViewController, GraphContainerViewDelegat
             nextFrame.origin.x += locationIconWidth/2.0
             nextFrame.size.width -= locationIconWidth
             centerLabelInTopFrame(locationLabel, frame: nextFrame)
-            if let locationIcon = locationIcon, locationLabel = locationLabel {
+            if let locationIcon = locationIcon, let locationLabel = locationLabel {
                 // place icon to left of first line of location...
                 var iconFrame: CGRect = locationIcon.bounds
                 iconFrame.origin.x = ceil(locationLabel.frame.origin.x - iconFrame.width - klocationIconOffset)
