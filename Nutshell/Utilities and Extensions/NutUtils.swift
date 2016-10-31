@@ -16,6 +16,7 @@
 import UIKit
 import CoreData
 import Photos
+import Darwin
 
 class NutUtils {
 
@@ -505,6 +506,62 @@ class NutUtils {
     }
     
     
+    
+    class func varianceSMBGTOD(centerDate: NSDate ,startDate: NSDate, endDate: NSDate)->CGFloat{
+        var variance = CGFloat(0.0)
+        var count = CGFloat(0.0)
+        var sum   = CGFloat(0.0)
+        var convertedValue = CGFloat(0);
+        var deltaTime = 99999999.0;
+        var timeWindow = 2.0;
+        var average  = self.averageSMBGTOD(centerDate, startDate: startDate, endDate: endDate)
+        do {
+            let events = try DatabaseUtils.getTidepoolEvents(startDate, thruTime: endDate, objectTypes: ["smbg"])//[typeString()])
+            
+            for event in events {
+                if let event = event as? CommonData {
+                    if let eventTime = event.time {
+                        if (abs(eventTime.timeIntervalSinceDate(centerDate))<deltaTime){
+                            deltaTime=abs(eventTime.timeIntervalSinceDate(centerDate))
+                            
+                            if let smbgEvent = event as? SelfMonitoringGlucose {
+                                //NSLog("Adding smbg event: \(event)")
+                                if let value = smbgEvent.value {
+                                    let kGlucoseConversionToMgDl = CGFloat(18.0)
+                                    convertedValue = round(CGFloat(value) * kGlucoseConversionToMgDl)
+                                    //NSLog("\(convertedValue) \(eventTime) ")
+                                    var differenceTimeDays=centerDate.timeIntervalSinceDate(smbgEvent.time!)/(24.0*60.0*60.0)
+                                    var differenceTimeHours = differenceTimeDays-Double(Int(differenceTimeDays+0.5))
+                                    if (abs(differenceTimeHours)<(timeWindow/24.0)){//only could measurement within 2 hours of centerdate
+                                        NSLog("CvE\(centerDate) \(smbgEvent.time)   \(differenceTimeHours)")
+                                        count = count+1;
+                                        sum += (convertedValue-average)*(convertedValue-average)
+                                    }
+                                } else {
+                                    NSLog("ignoring smbg event with nil value")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch let error as NSError {
+            NSLog("Error: \(error)")
+        }
+        return sum/count 
+    }
+    
+    
+    class func standardDeviationSMBGTOD(centerDate: NSDate ,startDate: NSDate, endDate: NSDate)->CGFloat{
+        var stdDev = CGFloat(0.0)
+        var variance  = self.varianceSMBGTOD(centerDate, startDate: startDate, endDate: endDate)
+        
+        return (CGFloat(Darwin.sqrt(Double(variance))))
+    }
+
+    
+    
+    
     //kbw add fasing hour method that return a well forwatted string 
     class func fastingHoursText(date: NSDate) -> String{
         
@@ -517,10 +574,10 @@ class NutUtils {
             if fastingHoursTime > 24.0 {
                 fastingIcon = "\u{1F37D} " //fork and knife and plate
             }
-            return NSString(format: "%@Fasting hours: %3.1f",fastingIcon,fastingHoursTime) as String
+            return NSString(format: "%@Fasting hours: %3.2f",fastingIcon,fastingHoursTime) as String
         }
         else{
-            return NSString(format: "Digesting food %3.1f hours ago",fastingHoursTime+4.0) as String
+            return NSString(format: "Digesting food %3.2f hours ago",fastingHoursTime+4.0) as String
         }
         
         
@@ -555,6 +612,39 @@ class NutUtils {
         }
         //NSLog("loaded \(dataArray.count) meal events")
        return -1.0*(fastingTime+(4.0*60.0*60.0))/(60.0*60.0)
+    }
+    
+    
+    class func generateCSV() -> String{
+        let csvString = nutEventCSVString
+        return csvString()
+    }
+    
+    class func nutEventCSVString() -> String{
+        var nutString = ""
+        let date = NSDate()
+        let maxFast = -356.0*24.0*60.0*60.0
+        
+        let earlyStartTime = date.dateByAddingTimeInterval(maxFast)
+        let lateEndTime = date.dateByAddingTimeInterval(-1.0)  //
+        
+        do {
+            let events = try DatabaseUtils.getMealEvents(earlyStartTime, toTime: lateEndTime)
+            for mealEvent in events {
+                if let eventTime = mealEvent.time {
+                    
+                    //kbw  filter out bgl values
+                    //NSLog(" \(mealEvent.title!) \(mealEvent.notes!)")
+                    nutString = (NSString(format: "nut event scan: %@,%@,",mealEvent.time!,mealEvent.title!,mealEvent.notes!) as String) as String
+                    NSLog("\(nutString)")
+                }
+            }
+        } catch let error as NSError {
+            NSLog("Error: \(error)")
+        }
+        
+        
+        return nutString
     }
     
     
