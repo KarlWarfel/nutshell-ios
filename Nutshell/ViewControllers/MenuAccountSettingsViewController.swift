@@ -229,9 +229,12 @@ class MenuAccountSettingsViewController: UIViewController, UITextViewDelegate {
             healthStatusLine3.text = ""
         }
         //kbw over ride text for reporting
-        healthStatusLine1.text = NSString(format: "Average     BGL: \t%3.1f/ %3.2f/nstdDev ToD BGL:  /n",
+        healthStatusLine1.text = NSString(format: "Average     BGL: \t%3.1f/ %3.2f\nstdDev ToD BGL:  \t%3.1f/ %3.2f",
                                           NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate()),
-                                        NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate())) as String
+                                          NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate()),
+                                          NutUtils.standardDeviationSMBG(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                                          NutUtils.standardDeviationSMBG(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate())
+            ) as String
         healthStatusLine2.text = NSString(format: "Average ToD BGL: \t%3.1f/ %3.2f\nstdDev ToD BGL:  \t%3.1f/ %3.2f",
                                           NutUtils.averageSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
                                           NutUtils.averageSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate()),

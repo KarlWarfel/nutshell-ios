@@ -409,6 +409,10 @@ class NutUtils {
     //build function to retunr the average BGL to a date between two dates
     class func averageSMBG(centerDate: NSDate ,startDate: NSDate, endDate: NSDate)->CGFloat{
         
+        return averageSMBGTOD(centerDate, startDate: startDate, endDate: endDate, timeWindow: 24.0)
+        
+/*
+        
         var convertedValue = CGFloat(85);
         var deltaTime = 99999999.0
         var count = 0;
@@ -445,7 +449,7 @@ class NutUtils {
         
         //return value and time?
         return totalSMBG/CGFloat(count) //convertedValue
-        
+*/
         
     }
     
@@ -565,11 +569,17 @@ class NutUtils {
     }
 
     
-    
+    class func varianceSMBG(centerDate: NSDate ,startDate: NSDate, endDate: NSDate)->CGFloat{
+        
+        return varianceSMBGTOD(centerDate, startDate: startDate, endDate: endDate, timeWindow: 24.0)
+    }
+
     
     class func varianceSMBGTOD(centerDate: NSDate ,startDate: NSDate, endDate: NSDate)->CGFloat{
         
-
+        return varianceSMBGTOD(centerDate, startDate: startDate, endDate: endDate, timeWindow: 2.0)
+        
+   /*
         
         var variance = CGFloat(0.0)
         var count = CGFloat(0.0)
@@ -612,6 +622,7 @@ class NutUtils {
             NSLog("Error: \(error)")
         }
         return sum/count 
+ */
     }
  
     
@@ -660,6 +671,13 @@ class NutUtils {
     }
     
 
+    
+    class func standardDeviationSMBG(centerDate: NSDate ,startDate: NSDate, endDate: NSDate)->CGFloat{
+        var stdDev = CGFloat(0.0)
+        var variance  = self.varianceSMBG(centerDate, startDate: startDate, endDate: endDate)
+        
+        return (CGFloat(Darwin.sqrt(Double(variance))))
+    }
     
     class func standardDeviationSMBGTOD(centerDate: NSDate ,startDate: NSDate, endDate: NSDate)->CGFloat{
         var stdDev = CGFloat(0.0)
