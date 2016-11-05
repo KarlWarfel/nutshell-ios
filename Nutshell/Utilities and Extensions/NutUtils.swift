@@ -633,7 +633,7 @@ class NutUtils {
         var convertedValue = CGFloat(0);
         var deltaTime = 99999999.0;
     //    var timeWindow = 2.0;
-        var average  = self.averageSMBGTOD(centerDate, startDate: startDate, endDate: endDate)
+        var average  = self.averageSMBGTOD(centerDate, startDate: startDate, endDate: endDate, timeWindow: timeWindow)
         do {
             let events = try DatabaseUtils.getTidepoolEvents(startDate, thruTime: endDate, objectTypes: ["smbg"])//[typeString()])
             
