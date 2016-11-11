@@ -239,12 +239,54 @@ class MenuAccountSettingsViewController: UIViewController, UITextViewDelegate {
         let cal = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian )!
         let newCal = cal.startOfDayForDate(NSDate())
         let newDate = newCal.dateByAddingTimeInterval(0)
+        //kbw add dynamic seperators so it is easy to see what time bin we are in
+        var ts1 = "|"
+        var ts2 = "|"
+        var ts3 = "|"
+        var ts4 = "|"
+        var ts5 = "|"
         
-        healthStatusLine2.text = NSString(format: "Average ToD BGL: \t%3.1f/ %3.2f\nStdDev ToD BGL:  \t%3.1f/ %3.2f\n%3.1f\t%3.1f\t.%3.1f.\t%3.1f\t%3.1f\t%3.1f\n%3.1f\t%3.1f\t.%3.1f.\t%3.1f\t%3.1f\t%3.1f\n",
+        let date = NSDate()
+        var hour = 0
+        let calendar = NSCalendar.currentCalendar()
+        if #available(iOS 8.0, *) {
+            calendar.getHour(&hour, minute: nil, second: nil, nanosecond: nil, fromDate: date)
+        }
+        
+        switch hour {
+        case 23,0,1,2:
+            ts1 = "< "
+        case 3,4,5,6:
+            ts1 = " >"
+            ts2 = "< "
+        case 7,8,9,10:
+            ts2 = " >"
+            ts3 = "< "
+        case 11,12,13,14:
+            ts3 = " >"
+            ts4 = "< "
+        case 15,16,17,18:
+            ts4 = " >"
+            ts5 = "< "
+        case 19,20,21,22:
+            ts5 = " >"
+           
+            
+        default:
+            
+                ts1 = "|"
+                ts2 = "|"
+                ts3 = "|"
+                ts4 = "|"
+                ts5 = "|"
+            
+        }// switch statements
+        
+        healthStatusLine2.text = NSString(format: "Average ToD BGL: \t%3.1f/ %3.2f\nStdDev ToD BGL:  \t%3.1f/ %3.2f\n%3.1f\(ts1)%3.1f\(ts2)%3.1f\(ts3)%3.1f\(ts4)%3.1f\(ts5)%3.1f\n%3.1f\(ts1)%3.1f\(ts2)%3.1f\(ts3)%3.1f\(ts4)%3.1f\(ts5)%3.1f\n",
                                           NutUtils.averageSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
-                                          NutUtils.averageSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate()),
+                                          NutUtils.averageSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
                                           NutUtils.standardDeviationSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
-                                          NutUtils.standardDeviationSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate()),
+                                          NutUtils.standardDeviationSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
                                           
                                           NutUtils.averageSMBGTOD(newCal.dateByAddingTimeInterval(+4.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
                                           NutUtils.averageSMBGTOD(newCal.dateByAddingTimeInterval(+8.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),

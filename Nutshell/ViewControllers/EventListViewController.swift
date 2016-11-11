@@ -163,7 +163,7 @@ class EventListViewController: BaseUIViewController, ENSideMenuDelegate {
             sideMenu.delegate = self
             menuButton.target = self
             menuButton.action = #selector(EventListViewController.toggleSideMenu(_:))
-            let revealWidth = min(ceil((240.0/320.0) * self.view.bounds.width), 281.0)
+            let revealWidth = min(ceil((280.0/320.0) * self.view.bounds.width), 299.0)
             sideMenu.menuWidth = revealWidth
             sideMenu.bouncingEnabled = false
         }

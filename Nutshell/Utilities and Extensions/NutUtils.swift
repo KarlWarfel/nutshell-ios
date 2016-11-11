@@ -681,7 +681,7 @@ class NutUtils {
     
     class func standardDeviationSMBGTOD(centerDate: NSDate ,startDate: NSDate, endDate: NSDate)->CGFloat{
         var stdDev = CGFloat(0.0)
-        var variance  = self.varianceSMBGTOD(centerDate, startDate: startDate, endDate: endDate)
+        var variance  = self.varianceSMBGTOD(centerDate, startDate: startDate, endDate: endDate, timeWindow: 2.0)
         
         return (CGFloat(Darwin.sqrt(Double(variance))))
     }
