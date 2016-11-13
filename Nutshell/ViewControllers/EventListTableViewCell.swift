@@ -185,7 +185,20 @@ class EventListTableViewCell: BaseUITableViewCell {
             }// Check expire time
         }
         
+        if   titleLabel.text!.lowercaseString.rangeOfString("quick summary") != nil {
+            titleLabel.text = titleLabel.text! + NutUtils.fastingHoursText(NSDate()) + "\n" +
+                (NSString(format: "\u{00B5} ToD BG:\t%3.1f/ %3.2f\n\u{03C3} ToD BG:\t%3.1f/ %3.2f\n...guidance here...",
+                    NutUtils.averageSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                    NutUtils.averageSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                    NutUtils.standardDeviationSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                    NutUtils.standardDeviationSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0))
+                    ) as String)as String
+            //add avgBGLTOD 30 day and std dev?
+            //add fasting time
+            //add IOB?
+        }
         
+        //kbw should this be rolled into other itemarray for loop?
         for item in nutEvent.itemArray {
             if item.nutCracked {
                 nutCrackedStar.hidden = false

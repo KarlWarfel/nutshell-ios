@@ -229,7 +229,7 @@ class MenuAccountSettingsViewController: UIViewController, UITextViewDelegate {
             healthStatusLine3.text = ""
         }
         //kbw over ride text for reporting
-        healthStatusLine1.text = NSString(format: "Average     BGL: \t%3.1f/ %3.2f\nStdDev    BGL:  \t\t%3.1f/ %3.2f",
+        healthStatusLine1.text = NSString(format: "\u{00B5} BGL:\t%3.1f/ %3.2f\n\u{03C3} BGL:\t%3.1f/ %3.2f",
                                           NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate()),
                                           NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate()),
                                           NutUtils.standardDeviationSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
@@ -253,23 +253,24 @@ class MenuAccountSettingsViewController: UIViewController, UITextViewDelegate {
             calendar.getHour(&hour, minute: nil, second: nil, nanosecond: nil, fromDate: date)
         }
         
+        
         switch hour {
-        case 23,0,1,2:
-            ts1 = "< "
-        case 3,4,5,6:
-            ts1 = " >"
-            ts2 = "< "
-        case 7,8,9,10:
-            ts2 = " >"
-            ts3 = "< "
-        case 11,12,13,14:
-            ts3 = " >"
-            ts4 = "< "
-        case 15,16,17,18:
-            ts4 = " >"
-            ts5 = "< "
-        case 19,20,21,22:
-            ts5 = " >"
+        case 2,3,4,5:
+            ts1 = "▪️ "
+        case 6,7,8,9:
+            ts1 = " ▪️"
+            ts2 = "▪️ "
+        case 10,11,12,13:
+            ts2 = " ▪️"
+            ts3 = "▪️ "
+        case 14,15,16,17:
+            ts3 = " ▪️"
+            ts4 = "▪️ "
+        case 18,19,20,21:
+            ts4 = " ▪️"
+            ts5 = "▪️ "
+        case 22,23,0,1:
+            ts5 = " ▪️"
            
             
         default:
@@ -282,7 +283,25 @@ class MenuAccountSettingsViewController: UIViewController, UITextViewDelegate {
             
         }// switch statements
         
-        healthStatusLine2.text = NSString(format: "Average ToD BGL: \t%3.1f/ %3.2f\nStdDev ToD BGL:  \t%3.1f/ %3.2f\n%3.1f\(ts1)%3.1f\(ts2)%3.1f\(ts3)%3.1f\(ts4)%3.1f\(ts5)%3.1f\n%3.1f\(ts1)%3.1f\(ts2)%3.1f\(ts3)%3.1f\(ts4)%3.1f\(ts5)%3.1f\n",
+        healthStatusLine2.text =  NSString(format: "\n%3.1f\(ts1)%3.1f\(ts2)%3.1f\(ts3)%3.1f\(ts4)%3.1f\(ts5)%3.1f\n%3.1f\(ts1)%3.1f\(ts2)%3.1f\(ts3)%3.1f\(ts4)%3.1f\(ts5)%3.1f\n",
+                                           NutUtils.averageSMBGTOD(newCal.dateByAddingTimeInterval(+4.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                                           NutUtils.averageSMBGTOD(newCal.dateByAddingTimeInterval(+8.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                                           NutUtils.averageSMBGTOD(newCal.dateByAddingTimeInterval(+12.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                                           NutUtils.averageSMBGTOD(newCal.dateByAddingTimeInterval(+16.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                                           NutUtils.averageSMBGTOD(newCal.dateByAddingTimeInterval(+20.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                                           NutUtils.averageSMBGTOD(newCal.dateByAddingTimeInterval(+24.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                                           
+                                           NutUtils.standardDeviationSMBGTOD(newCal.dateByAddingTimeInterval(+4.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                                           NutUtils.standardDeviationSMBGTOD(newCal.dateByAddingTimeInterval(+8.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                                           NutUtils.standardDeviationSMBGTOD(newCal.dateByAddingTimeInterval(+12.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                                           NutUtils.standardDeviationSMBGTOD(newCal.dateByAddingTimeInterval(+16.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                                           NutUtils.standardDeviationSMBGTOD(newCal.dateByAddingTimeInterval(+20.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                                           NutUtils.standardDeviationSMBGTOD(newCal.dateByAddingTimeInterval(+24.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0))
+            )as String
+            
+ /*
+            
+            NSString(format: "Average ToD BGL: \t%3.1f/ %3.2f\nStdDev ToD BGL:  \t%3.1f/ %3.2f\n%3.1f\(ts1)%3.1f\(ts2)%3.1f\(ts3)%3.1f\(ts4)%3.1f\(ts5)%3.1f\n%3.1f\(ts1)%3.1f\(ts2)%3.1f\(ts3)%3.1f\(ts4)%3.1f\(ts5)%3.1f\n",
                                           NutUtils.averageSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
                                           NutUtils.averageSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
                                           NutUtils.standardDeviationSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
@@ -302,8 +321,11 @@ class MenuAccountSettingsViewController: UIViewController, UITextViewDelegate {
                                           NutUtils.standardDeviationSMBGTOD(newCal.dateByAddingTimeInterval(+20.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
                                           NutUtils.standardDeviationSMBGTOD(newCal.dateByAddingTimeInterval(+24.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0))
             )as String
+ 
+ */
         
-        healthStatusLine3.text = NutUtils.fastingHoursText(NSDate())//NSString(format: "Fasting hours: %3.1f",NutUtils.fastingHours(NSDate())) as String
+        healthStatusLine3.text = "" //NutUtils.fastingHoursText(NSDate())//NSString(format: "Fasting hours: %3.1f",NutUtils.fastingHours(NSDate())) as String
+        //kbw moved fasting time to quick status
     }
     
     //
