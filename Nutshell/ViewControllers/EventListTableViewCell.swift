@@ -186,7 +186,7 @@ class EventListTableViewCell: BaseUITableViewCell {
         }
         
         if   titleLabel.text!.lowercaseString.rangeOfString("quick summary") != nil {
-            titleLabel.text = titleLabel.text! + NutUtils.fastingHoursText(NSDate()) + "\n" +
+            titleLabel.text = titleLabel.text! + NutUtils.fastingHoursText(NSDate()) + "\n" + NutUtils.iobText(NSDate()) + "\n" +
                 (NSString(format: "\u{00B5} ToD BG:\t%3.1f/ %3.2f\n\u{03C3} ToD BG:\t%3.1f/ %3.2f\n...guidance here...",
                     NutUtils.averageSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
                     NutUtils.averageSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),

@@ -97,13 +97,22 @@ class EventGroupTableViewCell: BaseUITableViewCell {
             }
         }
         //kbw  filter out bgl values
-        if (eventItem.title.lowercaseString.rangeOfString("🧀") != nil)
+        if (eventItem.title.lowercaseString.rangeOfString("bgl") != nil)
             ||
            (eventItem.title.lowercaseString.rangeOfString("bgl") != nil)
             ||
-           (eventItem.title.lowercaseString.rangeOfString("💉") != nil)
+           (eventItem.title.lowercaseString.rangeOfString("bgl") != nil)
         {
-            titleString.text = titleString.text! + NutUtils.fastingHoursText(eventItem.time)//(NSString(format: "\n%3.1f fasting hours",NutUtils.fastingHours(eventItem.time)) as String)
+            titleString.text = titleString.text! +  NutUtils.fastingHoursText(eventItem.time) + "\n" + NutUtils.iobText(eventItem.time)//(NSString(format: "\n%3.1f fasting hours",NutUtils.fastingHours(eventItem.time)) as String)
+        }
+        
+        if (eventItem.title.lowercaseString.rangeOfString("🧀") != nil)
+            ||
+            (eventItem.title.lowercaseString.rangeOfString("🧀") != nil)
+            ||
+            (eventItem.title.lowercaseString.rangeOfString("🧀") != nil)
+        {
+            titleString.text = titleString.text! +  NutUtils.fastingHoursText(eventItem.time) //+ "\n" + NutUtils.iobText(eventItem.time)//(NSString(format: "\n%3.1f fasting hours",NutUtils.fastingHours(eventItem.time)) as String)
         }
 
         NutUtils.setFormatterTimezone(eventItem.tzOffsetSecs)

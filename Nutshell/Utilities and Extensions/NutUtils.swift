@@ -321,7 +321,7 @@ class NutUtils {
         if(beforeBGLpoint < afterBGLpoint) {directionString = "\u{2197}";}
         
         let addOnTextString = "\n\(directionString) " +
-            (NSString(format: "%3d to \t%3d,%3d     \t%3.2fAvg ",Int(beforeBGLpoint),Int(afterBGLpoint), Int(afterafterBGLpoint),averageBGLpoint) as String)
+            (NSString(format: "%3d to \t%3d,%3d     \t%3.2fAvg\n",Int(beforeBGLpoint),Int(afterBGLpoint), Int(afterafterBGLpoint),averageBGLpoint) as String)
 /*            +
             (NSString(format: "\n      %3.1f/%3.1f wk/mo avg at ToD ",
                         NutUtils.averageSMBGTOD(date.dateByAddingTimeInterval(+0.0*60.0*60.0), startDate: date.dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: date.dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
@@ -701,15 +701,14 @@ class NutUtils {
             if fastingHoursTime > 24.0 {
                 fastingIcon = "\u{1F37D} " //fork and knife and plate
             }
-            return NSString(format: "%@Fasting hours: %3.2f",fastingIcon,fastingHoursTime) as String
+            return NSString(format: "%@Fasting hours: %3.1f",fastingIcon,fastingHoursTime) as String
         }
         else{
-            return NSString(format: "Digesting food %3.2f hours ago",fastingHoursTime+4.0) as String
+            return NSString(format: "Digesting for %3.1f hrs",fastingHoursTime+4.0) as String
         }
-        
-        
-        
-    }
+    }//fastingHoursText
+    
+    
     
     //kbw add function to return hours fasting
     class func fastingHours(date: NSDate) -> Double{
@@ -740,6 +739,64 @@ class NutUtils {
         //NSLog("loaded \(dataArray.count) meal events")
        return -1.0*(fastingTime+(4.0*60.0*60.0))/(60.0*60.0)
     }
+    
+    
+    //kbw add function to return hours - refactor and combine with fasting hours
+    class func iobHours(date: NSDate) -> Double{
+        //dataArray = []
+        let maxIoB = -1.0*24.0*60.0*60.0
+        //        let endTime = date  //.dateByAddingTimeInterval(timeIntervalForView)
+        //        let timeExtensionForDataFetch = NSTimeInterval(kMealTriangleTopWidth/viewPixelsPerSec)
+        let earlyStartTime = date.dateByAddingTimeInterval(maxIoB)
+        let lateEndTime = date.dateByAddingTimeInterval(+0.5*60.0*60.0)  //endTime.dateByAddingTimeInterval(timeExtensionForDataFetch)
+        var iobTime = maxIoB
+        do {
+            let events = try DatabaseUtils.getMealEvents(earlyStartTime, toTime: lateEndTime)
+            for mealEvent in events {
+                if let eventTime = mealEvent.time {
+                    
+                    //kbw  filter out bgl values
+                    if (mealEvent.title!.lowercaseString.rangeOfString("💉novalog") != nil)
+                    {
+                        let deltaTime = eventTime.timeIntervalSinceDate(date)
+                        if (deltaTime > iobTime) {iobTime=deltaTime}
+                    }
+                    NSLog("\(mealEvent.title) \(iobTime)")
+                }
+            }
+        } catch let error as NSError {
+            NSLog("Error: \(error)")
+        }
+        //NSLog("loaded \(dataArray.count) meal events")
+        return -1.0*((iobTime)/(60.0*60.0))//+(4.0*60.0*60.0))/(60.0*60.0)
+    }
+
+    
+    
+    
+    
+    //kbw a
+    class func iobText(date: NSDate) -> String{
+        
+        let iobTime = NutUtils.iobHours(date)
+        var iobIcon = ""
+        if (iobTime<2.5){
+            if iobTime > 1.5 {
+                iobIcon = "💉❗️" //
+            }
+            else
+            {
+                iobIcon = "💉‼️" //syrynge
+            }
+            return NSString(format: "%@ IoB for %3.1f hrs",iobIcon,iobTime) as String
+        }
+        else{
+            return NSString(format: "Insulin %3.1f hrs ago",iobTime) as String
+        }
+    }//iobText
+    
+    
+    
     
     
     class func generateCSV() -> String{
