@@ -748,7 +748,7 @@ class NutUtils {
         //        let endTime = date  //.dateByAddingTimeInterval(timeIntervalForView)
         //        let timeExtensionForDataFetch = NSTimeInterval(kMealTriangleTopWidth/viewPixelsPerSec)
         let earlyStartTime = date.dateByAddingTimeInterval(maxIoB)
-        let lateEndTime = date.dateByAddingTimeInterval(+0.5*60.0*60.0)  //endTime.dateByAddingTimeInterval(timeExtensionForDataFetch)
+        let lateEndTime = date.dateByAddingTimeInterval(+0.0*60.0*60.0)  //endTime.dateByAddingTimeInterval(timeExtensionForDataFetch)
         var iobTime = maxIoB
         do {
             let events = try DatabaseUtils.getMealEvents(earlyStartTime, toTime: lateEndTime)
@@ -797,6 +797,40 @@ class NutUtils {
     
     
     
+    
+    
+    
+    //kbw add function to return hours - refactor and combine with fasting hours
+    class func tdd24String(date: NSDate) -> String{
+        //dataArray = []
+        var tddString = "  "
+        var tddCount = 0
+        //        let endTime = date  //.dateByAddingTimeInterval(timeIntervalForView)
+        //        let timeExtensionForDataFetch = NSTimeInterval(kMealTriangleTopWidth/viewPixelsPerSec)
+        let earlyStartTime = date.dateByAddingTimeInterval(-1.0*24*60*60)
+        let lateEndTime = date.dateByAddingTimeInterval(+0.0*60.0*60.0)  //endTime.dateByAddingTimeInterval(timeExtensionForDataFetch)
+        //var iobTime = maxIoB
+        tddString=""
+        do {
+            let events = try DatabaseUtils.getMealEvents(earlyStartTime, toTime: lateEndTime)
+            for mealEvent in events {
+                if let eventTime = mealEvent.time {
+                    
+                    //kbw  filter out bgl values
+                    if (mealEvent.title!.lowercaseString.rangeOfString("💉novalog") != nil)
+                    {
+                        tddCount++
+                        tddString = tddString + mealEvent.notes! + "\n"
+                        
+                    }
+                }
+            }
+        } catch let error as NSError {
+            NSLog("Error: \(error)")
+        }
+        //NSLog("loaded \(dataArray.count) meal events")
+        return tddString + "\n\(tddCount) shots in the last 24 hours"
+    }
     
     
     class func generateCSV() -> String{

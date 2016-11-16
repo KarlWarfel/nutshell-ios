@@ -96,6 +96,11 @@ class EventGroupTableViewCell: BaseUITableViewCell {
                 titleString.text = eventItem.notes + NutUtils.addOnTextBGL(eventItem.time)
             }
         }
+        
+        if (eventItem.title.lowercaseString.rangeOfString("tdd novalog fast insulin report") != nil)
+        {
+            titleString.text = titleString.text! +  NutUtils.tdd24String(eventItem.time) //(NSString(format: "\n%3.1f fasting hours",NutUtils.fastingHours(eventItem.time)) as String)
+        }
         //kbw  filter out bgl values
         if (eventItem.title.lowercaseString.rangeOfString("bgl") != nil)
             ||
