@@ -693,7 +693,7 @@ class NutUtils {
     class func fastingHoursText(date: NSDate) -> String{
         
         let fastingHoursTime = NutUtils.fastingHours(date)
-        var fastingIcon = ""
+        var fastingIcon = "🚫"
         if (fastingHoursTime>0){
             if fastingHoursTime > 10.0 {
                 fastingIcon = "\u{1F374} " //fork and knife
@@ -704,7 +704,7 @@ class NutUtils {
             return NSString(format: "%@Fasting hours: %3.1f",fastingIcon,fastingHoursTime) as String
         }
         else{
-            return NSString(format: "Digesting for %3.1f hrs",fastingHoursTime+4.0) as String
+            return NSString(format: "↗️Digesting for %3.1f hrs",fastingHoursTime+4.0) as String
         }
     }//fastingHoursText
     
@@ -779,23 +779,79 @@ class NutUtils {
     class func iobText(date: NSDate) -> String{
         
         let iobTime = NutUtils.iobHours(date)
-        var iobIcon = ""
+        var iobIcon = "👌"
         if (iobTime<2.5){
             if iobTime > 1.5 {
-                iobIcon = "💉❗️" //
+                iobIcon = "❗️💉" //
             }
             else
             {
-                iobIcon = "💉‼️" //syrynge
+                iobIcon = "‼️💉" //syrynge
             }
             return NSString(format: "%@ IoB for %3.1f hrs",iobIcon,iobTime) as String
         }
         else{
-            return NSString(format: "Insulin %3.1f hrs ago",iobTime) as String
+            return NSString(format: "%@ Insulin %3.1f hrs ago",iobIcon,iobTime) as String
         }
     }//iobText
     
     
+    
+    
+    
+    //kbw add function to return hours - refactor and combine with fasting hours
+    class func bglHours(date: NSDate) -> Double{
+        //dataArray = []
+        let maxBGL = -1.0*24.0*60.0*60.0
+        //        let endTime = date  //.dateByAddingTimeInterval(timeIntervalForView)
+        //        let timeExtensionForDataFetch = NSTimeInterval(kMealTriangleTopWidth/viewPixelsPerSec)
+        let earlyStartTime = date.dateByAddingTimeInterval(maxBGL)
+        let lateEndTime = date.dateByAddingTimeInterval(+0.0*60.0*60.0)  //endTime.dateByAddingTimeInterval(timeExtensionForDataFetch)
+        var bglTime = maxBGL
+        do {
+            let events = try DatabaseUtils.getMealEvents(earlyStartTime, toTime: lateEndTime)
+            for mealEvent in events {
+                if let eventTime = mealEvent.time {
+                    
+                    //kbw  filter out bgl values
+                    if (mealEvent.title!.lowercaseString.rangeOfString("bgl") != nil)
+                    {
+                        let deltaTime = eventTime.timeIntervalSinceDate(date)
+                        if (deltaTime > bglTime) {bglTime=deltaTime}
+                    }
+                    NSLog("\(mealEvent.title) \(bglTime)")
+                }
+            }
+        } catch let error as NSError {
+            NSLog("Error: \(error)")
+        }
+        //NSLog("loaded \(dataArray.count) meal events")
+        return -1.0*((bglTime)/(60.0*60.0))//+(4.0*60.0*60.0))/(60.0*60.0)
+    }
+    
+    
+    
+    
+    
+    //kbw a
+    class func bglText(date: NSDate) -> String{
+        
+        let bglTime = NutUtils.bglHours(date)
+        var bglIcon = "👌"
+        if (bglTime > 1.5){
+            if bglTime > 2.0 {
+                bglIcon = "‼️" //
+            }
+            else
+            {
+                bglIcon = "⏰" //
+            }
+            return NSString(format: "%@ been %3.1f hrs \n    time to check BGL",bglIcon,bglTime) as String
+        }
+        else{
+            return NSString(format: "%@ BGL checked %3.1f hrs ago",bglIcon,bglTime) as String
+        }
+    }//bglText
     
     
     
@@ -829,7 +885,7 @@ class NutUtils {
             NSLog("Error: \(error)")
         }
         //NSLog("loaded \(dataArray.count) meal events")
-        return tddString + "\n\(tddCount) shots in the last 24 hours"
+        return tddString + "-\(tddCount) shots in the last 24 hours"
     }
     
     
@@ -865,5 +921,98 @@ class NutUtils {
         return nutString
     }
     
+    
+    class func  nutEventIsDue(nutEvent: NutEvent) -> Bool
+    {
+        var addOnText = ""
+        var addOnTextExpire = ""
+        var timeSinceNow=nutEvent.itemArray[nutEvent.itemArray.count-1].time.timeIntervalSinceNow
+        var timeActive = 0.0
+        var timeExpire = -365.0*24.0*60*60
+        
+        for item in nutEvent.itemArray {
+            //KBW is there an activity tag?
+            if item.notes.rangeOfString("#A(") != nil {
+                var minInTextArr = item.notes.characters.split("(")
+                var minInText = String(minInTextArr[1])
+                var minInTextArr2 = minInText.characters.split(")")
+                var minInTextNum = String(minInTextArr2[0])
+                //[item.notes.rangeOfString("#A(")!]
+                //let tempString = minInTextArr
+                NSLog("**Active tag found in %@  with note \(item.notes) ",item.title)
+                NSLog("  number string ")//\(String(minInTextNum))")
+                ///addOnText="****Active****"
+                
+                //parse out time
+                timeActive = -4.0 * 60.0 * 60.0
+                
+                //minInTextNum = "10"
+                
+                timeActive = -60.0*Double(minInTextNum)!
+                addOnText="****Active****"
+                var addOnTextArr = item.notes.characters.split("\"")
+                if (addOnTextArr.count > 1) {
+                    addOnText = String(addOnTextArr[1])
+                }
+                else
+                {
+                    //addOnText = String("****Active****")
+                }
+                //and copy add on text
+                //titleLabel.textColor = UIColor.redColor()
+            }//End activity tag
+            
+            if item.notes.rangeOfString("#D(") != nil {
+                var minInTextArr = item.notes.characters.split("(")
+                var minInText = String(minInTextArr[1])
+                var minInTextArr2 = minInText.characters.split(")")
+                var minInTextNum = String(minInTextArr2[0])
+                //[item.notes.rangeOfString("#A(")!]
+                //let tempString = minInTextArr
+                NSLog("***DUE tag found in %@  with note \(item.notes) ",item.title)
+                NSLog("  number string ")//\(String(minInTextNum))")
+                ///addOnText="****Active****"
+                
+                //parse out time
+                timeExpire = -24.0 * 60.0 * 60.0
+                timeExpire = -60.0*Double(minInTextNum)!
+                addOnText="****Active****"
+                var addOnTextArr = item.notes.characters.split("\"")
+                if (addOnTextArr.count > 1) {
+                    addOnTextExpire = String(addOnTextArr[1])
+                }
+                else
+                {
+                    //addOnText = String("****Active****")
+                }
+                //and copy add on text
+                //titleLabel.textColor = UIColor.redColor()
+            }//End Due tag
+            
+            
+            if item.notes.lowercaseString.rangeOfString("#daily") != nil {
+                timeExpire = -23.5*60.0*60
+                addOnTextExpire = "!!!! Due !!!!"
+                
+            }
+            if item.notes.lowercaseString.rangeOfString("#weekly") != nil {
+                timeExpire = -6.75*24.0*60.0*60
+                addOnTextExpire = "!!!! Due !!!!"
+            }
+            
+            
+            //KBW Find the most recent time
+            if timeSinceNow < item.time.timeIntervalSinceNow {
+                timeSinceNow = item.time.timeIntervalSinceNow
+                NSLog("**** found better time****")
+            }
+        }// loop through nut array
+        
+        
+        
+        
+        NSLog(" Is the event DUE \(timeSinceNow) \(timeExpire)")
+        return (timeSinceNow < (timeExpire))
+    } //end of nutEventIsDue
     
 }

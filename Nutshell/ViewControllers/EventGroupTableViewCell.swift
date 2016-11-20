@@ -73,6 +73,8 @@ class EventGroupTableViewCell: BaseUITableViewCell {
     }
 
     private var photoContainerHeight: CGFloat = 79.0
+    
+    
     func configureCell(eventItem: NutEventItem) {
         if (eventItem.title.lowercaseString.rangeOfString("monthly") != nil)
         {
@@ -90,17 +92,25 @@ class EventGroupTableViewCell: BaseUITableViewCell {
                     as String)
             }
             else
-            {
-                
-                
-                titleString.text = eventItem.notes + NutUtils.addOnTextBGL(eventItem.time)
+                if (eventItem.title.lowercaseString.rangeOfString("tdd novalog fast insulin report") != nil)
+                {
+                    titleString.text = eventItem.notes +
+                        (NSString(format: "\n%3.1f avg BGL w StdDev:%3.1f\n",
+                            NutUtils.averageSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-1.0*24*60*60), endDate: eventItem.time),
+                            NutUtils.standardDeviationSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-1.0*24*60*60), endDate: eventItem.time)) as String)
+                          +  NutUtils.tdd24String(eventItem.time)
+                    
+                    //(NSString(format: "\n%3.1f fasting hours",NutUtils.fastingHours(eventItem.time)) as String)
+                }
+                else
+                {
+                    
+                    
+                    titleString.text = eventItem.notes + NutUtils.addOnTextBGL(eventItem.time)
             }
         }
         
-        if (eventItem.title.lowercaseString.rangeOfString("tdd novalog fast insulin report") != nil)
-        {
-            titleString.text = titleString.text! +  NutUtils.tdd24String(eventItem.time) //(NSString(format: "\n%3.1f fasting hours",NutUtils.fastingHours(eventItem.time)) as String)
-        }
+     
         //kbw  filter out bgl values
         if (eventItem.title.lowercaseString.rangeOfString("bgl") != nil)
             ||

@@ -70,12 +70,12 @@ class EventListViewController: BaseUIViewController, ENSideMenuDelegate {
     
     @IBAction func barbuttonRepeat(sender: AnyObject) {
         switch searchTextField.text! {
-        case "daily":
-            searchTextField.text = "weekly"
-        case "weekly":
-            searchTextField.text = "daily"
+        case "#a":
+            searchTextField.text = "#d"
+        case "#d":
+            searchTextField.text = "#a"
         default:
-            searchTextField.text = "daily"
+            searchTextField.text = "#d"
         }
         
         updateFilteredAndReload()
@@ -97,12 +97,12 @@ class EventListViewController: BaseUIViewController, ENSideMenuDelegate {
     }
     @IBAction func barButton3Press(sender: AnyObject) {
         switch searchTextField.text! {
-        case "daily":
-            searchTextField.text = "weekly"
-        case "weekly":
-            searchTextField.text = "daily"
+        case "#a":
+            searchTextField.text = "#d"
+        case "#d":
+            searchTextField.text = "#a"
         default:
-            searchTextField.text = "daily"
+            searchTextField.text = "#a"
         }
         
         updateFilteredAndReload()
@@ -503,8 +503,37 @@ extension EventListViewController: UITableViewDelegate {
         return 102.0;
     }
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath: NSIndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension;
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        //kbw experiment to clear out cell that are not due
+        
+        var cellId = EventViewStoryboard.TableViewCellIdentifiers.eventListCellNoLoc
+        var nutEvent: NutEvent?
+        if (indexPath.item < filteredNutEvents.count) {
+            let tuple = self.filteredNutEvents[indexPath.item]
+            nutEvent = tuple.1
+            
+            if !nutEvent!.location.isEmpty {
+                cellId = EventViewStoryboard.TableViewCellIdentifiers.eventListCellWithLoc
+            }
+        }
+        
+  /*      let cell = tableView.dequeueReusableCellWithIdentifier(cellId, forIndexPath: indexPath) as! EventListTableViewCell
+        if let nutEvent = nutEvent {
+            cell.configureCell(nutEvent)
+        }
+ 
+ */
+        if (false) {
+            if (!NutUtils.nutEventIsDue(nutEvent!)) {// shrink and hide
+                return 0.0
+            }else{
+                return UITableViewAutomaticDimension;
+            }
+        }
+        else
+        {
+            return UITableViewAutomaticDimension;
+        }
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -552,6 +581,16 @@ extension EventListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellId, forIndexPath: indexPath) as! EventListTableViewCell
         if let nutEvent = nutEvent {
             cell.configureCell(nutEvent)
+        }
+        
+        
+        
+        //kbw experiment to clear out cells that are not due
+        //NSLog("NUT EVENT for table view   \(nutEvent?.title) \(NutUtils.nutEventIsDue(nutEvent!))")
+        if (false) {
+            if (!NutUtils.nutEventIsDue(nutEvent!)) {// if cell is not due
+                cell.hidden = true
+            }
         }
         return cell
     }

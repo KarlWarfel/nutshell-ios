@@ -95,11 +95,14 @@ class EventListTableViewCell: BaseUITableViewCell {
                 //[item.notes.rangeOfString("#A(")!]
                 //let tempString = minInTextArr
                 NSLog("**Active tag found in %@  with note \(item.notes) ",item.title)
-                NSLog("  number string \(String(minInTextNum))")
+                NSLog("  number string ")//\(String(minInTextNum))")
                 ///addOnText="****Active****"
                 
                 //parse out time
                 timeActive = -4.0 * 60.0 * 60.0
+                
+                    //minInTextNum = "10"
+                
                 timeActive = -60.0*Double(minInTextNum)!
                 addOnText="****Active****"
                 var addOnTextArr = item.notes.characters.split("\"")
@@ -122,7 +125,7 @@ class EventListTableViewCell: BaseUITableViewCell {
                 //[item.notes.rangeOfString("#A(")!]
                 //let tempString = minInTextArr
                 NSLog("***DUE tag found in %@  with note \(item.notes) ",item.title)
-                NSLog("  number string \(String(minInTextNum))")
+                NSLog("  number string ")//\(String(minInTextNum))")
                 ///addOnText="****Active****"
                 
                 //parse out time
@@ -183,16 +186,22 @@ class EventListTableViewCell: BaseUITableViewCell {
                 titleLabel.text = titleLabel.text! + "\n" + addOnTextExpire
                 titleLabel.textColor = UIColor.redColor()
             }// Check expire time
+            else
+            {  // shirk non expired cells
+                
+            }
         }
         
         if   titleLabel.text!.lowercaseString.rangeOfString("quick summary") != nil {
-            titleLabel.text = titleLabel.text! + NutUtils.fastingHoursText(NSDate()) + "\n" + NutUtils.iobText(NSDate()) + "\n" +
+            titleLabel.text = titleLabel.text! + NutUtils.fastingHoursText(NSDate()) + "\n" + NutUtils.iobText(NSDate()) + "\n" + NutUtils.bglText(NSDate())
+   /*             +
                 (NSString(format: "\u{00B5} ToD BG:\t%3.1f/ %3.2f\n\u{03C3} ToD BG:\t%3.1f/ %3.2f\n...guidance here...",
                     NutUtils.averageSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
                     NutUtils.averageSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
                     NutUtils.standardDeviationSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
                     NutUtils.standardDeviationSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0))
                     ) as String)as String
+   */
             //add avgBGLTOD 30 day and std dev?
             //add fasting time
             //add IOB?
