@@ -523,7 +523,7 @@ extension EventListViewController: UITableViewDelegate {
         }
  
  */
-        if (false) {
+        if (searchTextField.text!.lowercaseString.rangeOfString("#d") != nil ) {
             if (!NutUtils.nutEventIsDue(nutEvent!)) {// shrink and hide
                 return 0.0
             }else{
@@ -587,7 +587,7 @@ extension EventListViewController: UITableViewDataSource {
         
         //kbw experiment to clear out cells that are not due
         //NSLog("NUT EVENT for table view   \(nutEvent?.title) \(NutUtils.nutEventIsDue(nutEvent!))")
-        if (false) {
+        if (searchTextField.text!.lowercaseString.rangeOfString("#d") != nil ) {
             if (!NutUtils.nutEventIsDue(nutEvent!)) {// if cell is not due
                 cell.hidden = true
             }

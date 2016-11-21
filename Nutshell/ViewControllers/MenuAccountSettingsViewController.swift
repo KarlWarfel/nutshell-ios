@@ -284,7 +284,7 @@ class MenuAccountSettingsViewController: UIViewController, UITextViewDelegate {
                 ts5 = "|"
             
         }// switch statements
- /* copy to a func and reduce to onepass
+ // copy to a func and reduce to onepass
         healthStatusLine2.text =  NSString(format: "\n%3.1f\(ts1)%3.1f\(ts2)%3.1f\(ts3)%3.1f\(ts4)%3.1f\(ts5)%3.1f\n%3.1f\(ts1)%3.1f\(ts2)%3.1f\(ts3)%3.1f\(ts4)%3.1f\(ts5)%3.1f\n",
                                            NutUtils.averageSMBGTOD(newCal.dateByAddingTimeInterval(+4.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
                                            NutUtils.averageSMBGTOD(newCal.dateByAddingTimeInterval(+8.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
@@ -300,7 +300,7 @@ class MenuAccountSettingsViewController: UIViewController, UITextViewDelegate {
                                            NutUtils.standardDeviationSMBGTOD(newCal.dateByAddingTimeInterval(+20.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
                                            NutUtils.standardDeviationSMBGTOD(newCal.dateByAddingTimeInterval(+24.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0))
             )as String
- */
+ 
  /*
             
             NSString(format: "Average ToD BGL: \t%3.1f/ %3.2f\nStdDev ToD BGL:  \t%3.1f/ %3.2f\n%3.1f\(ts1)%3.1f\(ts2)%3.1f\(ts3)%3.1f\(ts4)%3.1f\(ts5)%3.1f\n%3.1f\(ts1)%3.1f\(ts2)%3.1f\(ts3)%3.1f\(ts4)%3.1f\(ts5)%3.1f\n",
