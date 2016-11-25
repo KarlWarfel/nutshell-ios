@@ -229,15 +229,15 @@ class MenuAccountSettingsViewController: UIViewController, UITextViewDelegate {
             healthStatusLine3.text = ""
         }
         //kbw over ride text for reporting
-        healthStatusLine1.text = NSString(format: "\u{00B5} BGL:\t%3.1f/ %3.2f/ %3.2f\n\u{03C3} BGL:\t%3.1f/ %3.2f/ %3.2f",
+        healthStatusLine1.text = NSString(format: "\u{00B5} BGL:\t%3.1f/ %3.2f\n\u{03C3} BGL:\t%3.1f/ %3.2f",
                                           NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate()),
                                           NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate()),
-                                          NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-90.0*24.0*60.0*60.0), endDate: NSDate()),
+                                          //NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-90.0*24.0*60.0*60.0), endDate: NSDate()),
                                           NutUtils.standardDeviationSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
-                                          NutUtils.standardDeviationSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate()),
-                                          NutUtils.standardDeviationSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-90.0*24.0*60.0*60.0), endDate: NSDate())
+                                          NutUtils.standardDeviationSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate())
+                                          //NutUtils.standardDeviationSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-90.0*24.0*60.0*60.0), endDate: NSDate())
             ) as String
-        
+ /*
         let cal = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian )!
         let newCal = cal.startOfDayForDate(NSDate())
         let newDate = newCal.dateByAddingTimeInterval(0)
@@ -300,7 +300,7 @@ class MenuAccountSettingsViewController: UIViewController, UITextViewDelegate {
                                            NutUtils.standardDeviationSMBGTOD(newCal.dateByAddingTimeInterval(+20.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
                                            NutUtils.standardDeviationSMBGTOD(newCal.dateByAddingTimeInterval(+24.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0))
             )as String
- 
+ */
  /*
             
             NSString(format: "Average ToD BGL: \t%3.1f/ %3.2f\nStdDev ToD BGL:  \t%3.1f/ %3.2f\n%3.1f\(ts1)%3.1f\(ts2)%3.1f\(ts3)%3.1f\(ts4)%3.1f\(ts5)%3.1f\n%3.1f\(ts1)%3.1f\(ts2)%3.1f\(ts3)%3.1f\(ts4)%3.1f\(ts5)%3.1f\n",

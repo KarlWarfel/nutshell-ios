@@ -328,10 +328,91 @@ class EventDetailViewController: BaseUIViewController, GraphContainerViewDelegat
             }
             
             titleLabel = addLabel(eventItem.title, labelStyle: "detailHeaderTitle", currentView: titleLabel)
-            
+            //kbw
             var averageBGL = NutUtils.averageSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: eventItem.time)
             var notesText = eventItem.notes + "\n" + NutUtils.fastingHoursText(eventItem.time)//"\n \(averageBGL) 7 day average BGL "
 //            notesLabel = addLabel(eventItem.notes, labelStyle: "detailHeaderNotes", currentView: notesLabel)
+            
+            let cal = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian )!
+            let newCal = cal.startOfDayForDate(NSDate())
+            let newDate = newCal.dateByAddingTimeInterval(0)
+            //kbw add dynamic seperators so it is easy to see what time bin we are in
+            var ts1 = "|"
+            var ts2 = "|"
+            var ts3 = "|"
+            var ts4 = "|"
+            var ts5 = "|"
+            
+            let date = NSDate()
+            var hour = 0
+            let calendar = NSCalendar.currentCalendar()
+            if #available(iOS 8.0, *) {
+                calendar.getHour(&hour, minute: nil, second: nil, nanosecond: nil, fromDate: date)
+            }
+            
+            
+            switch hour {
+            case 2,3,4,5:
+                ts1 = "▪️ "
+            case 6,7,8,9:
+                ts1 = " ▪️"
+                ts2 = "▪️ "
+            case 10,11,12,13:
+                ts2 = " ▪️"
+                ts3 = "▪️ "
+            case 14,15,16,17:
+                ts3 = " ▪️"
+                ts4 = "▪️ "
+            case 18,19,20,21:
+                ts4 = " ▪️"
+                ts5 = "▪️ "
+            case 22,23,0,1:
+                ts5 = " ▪️"
+                
+                
+            default:
+                
+                ts1 = "|"
+                ts2 = "|"
+                ts3 = "|"
+                ts4 = "|"
+                ts5 = "|"
+                
+            }// switch statements
+            
+            var todString = NSString(format: "\n%3.1f\(ts1)%3.1f\(ts2)%3.1f\(ts3)%3.1f\(ts4)%3.1f\(ts5)%3.1f\n%3.1f\(ts1)%3.1f\(ts2)%3.1f\(ts3)%3.1f\(ts4)%3.1f\(ts5)%3.1f\n",
+                     NutUtils.averageSMBGTOD(newCal.dateByAddingTimeInterval(+4.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                     NutUtils.averageSMBGTOD(newCal.dateByAddingTimeInterval(+8.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                     NutUtils.averageSMBGTOD(newCal.dateByAddingTimeInterval(+12.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                     NutUtils.averageSMBGTOD(newCal.dateByAddingTimeInterval(+16.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                     NutUtils.averageSMBGTOD(newCal.dateByAddingTimeInterval(+20.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                     NutUtils.averageSMBGTOD(newCal.dateByAddingTimeInterval(+24.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                     
+                     NutUtils.standardDeviationSMBGTOD(newCal.dateByAddingTimeInterval(+4.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                     NutUtils.standardDeviationSMBGTOD(newCal.dateByAddingTimeInterval(+8.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                     NutUtils.standardDeviationSMBGTOD(newCal.dateByAddingTimeInterval(+12.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                     NutUtils.standardDeviationSMBGTOD(newCal.dateByAddingTimeInterval(+16.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                     NutUtils.standardDeviationSMBGTOD(newCal.dateByAddingTimeInterval(+20.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                     NutUtils.standardDeviationSMBGTOD(newCal.dateByAddingTimeInterval(+24.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0))
+                )as String
+
+  
+            
+
+            if titleLabel!.text!.lowercaseString.rangeOfString("quick summary") != nil {
+                notesText = eventItem.notes + "\n" +
+                    (NSString(format: "\u{00B5} BGL:\t%3.1f/ %3.2f/ %3.2f\n\u{03C3} BGL:\t%3.1f/ %3.2f/ %3.2f",
+                        NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate()),
+                        NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate()),
+                        NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-90.0*24.0*60.0*60.0), endDate: NSDate()),
+                        NutUtils.standardDeviationSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                        NutUtils.standardDeviationSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate()),
+                        NutUtils.standardDeviationSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-90.0*24.0*60.0*60.0), endDate: NSDate())
+                        ) as String) as String + "\n" + todString
+                
+                
+            }
+
             notesLabel = addLabel(notesText, labelStyle: "detailHeaderNotes", currentView: notesLabel)
             
             notesLabel!.hidden = eventItem.notes.isEmpty

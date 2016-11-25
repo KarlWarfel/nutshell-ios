@@ -73,9 +73,11 @@ class EventListViewController: BaseUIViewController, ENSideMenuDelegate {
         case "#a":
             searchTextField.text = "#d"
         case "#d":
+            searchTextField.text = "#due"
+        case "#due":
             searchTextField.text = "#a"
         default:
-            searchTextField.text = "#d"
+            searchTextField.text = "#due"
         }
         
         updateFilteredAndReload()
@@ -100,9 +102,11 @@ class EventListViewController: BaseUIViewController, ENSideMenuDelegate {
         case "#a":
             searchTextField.text = "#d"
         case "#d":
+            searchTextField.text = "#due"
+        case "#due":
             searchTextField.text = "#a"
         default:
-            searchTextField.text = "#a"
+            searchTextField.text = "#due"
         }
         
         updateFilteredAndReload()
@@ -523,7 +527,7 @@ extension EventListViewController: UITableViewDelegate {
         }
  
  */
-        if (searchTextField.text!.lowercaseString.rangeOfString("#d") != nil ) {
+        if (searchTextField.text!.lowercaseString.rangeOfString("#due") != nil ) {
             if (!NutUtils.nutEventIsDue(nutEvent!)) {// shrink and hide
                 return 0.0
             }else{
@@ -587,7 +591,7 @@ extension EventListViewController: UITableViewDataSource {
         
         //kbw experiment to clear out cells that are not due
         //NSLog("NUT EVENT for table view   \(nutEvent?.title) \(NutUtils.nutEventIsDue(nutEvent!))")
-        if (searchTextField.text!.lowercaseString.rangeOfString("#d") != nil ) {
+        if (searchTextField.text!.lowercaseString.rangeOfString("#due") != nil ) {
             if (!NutUtils.nutEventIsDue(nutEvent!)) {// if cell is not due
                 cell.hidden = true
             }
