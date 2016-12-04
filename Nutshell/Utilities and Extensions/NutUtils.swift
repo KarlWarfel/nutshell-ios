@@ -888,6 +888,38 @@ class NutUtils {
         return tddString + "-\(tddCount) shots in the last 24 hours"
     }
     
+    class func weekTDDString(date: NSDate) -> String{
+        //dataArray = []
+        var weekString = "  "
+        var weekCount = 0
+        //        let endTime = date  //.dateByAddingTimeInterval(timeIntervalForView)
+        //        let timeExtensionForDataFetch = NSTimeInterval(kMealTriangleTopWidth/viewPixelsPerSec)
+        let earlyStartTime = date.dateByAddingTimeInterval(-7.0*24*60*60)
+        let lateEndTime = date.dateByAddingTimeInterval(+0.0*60.0*60.0)  //endTime.dateByAddingTimeInterval(timeExtensionForDataFetch)
+        //var iobTime = maxIoB
+        weekString=""
+        do {
+            let events = try DatabaseUtils.getMealEvents(earlyStartTime, toTime: lateEndTime)
+            for mealEvent in events {
+                if let eventTime = mealEvent.time {
+                    
+                    //kbw  filter out bgl values
+                    if (mealEvent.title!.lowercaseString.rangeOfString("💉tdd") != nil)
+                    {
+                        weekCount++
+                        weekString = weekString + mealEvent.notes! + "\n"
+                        
+                    }
+                }
+            }
+        } catch let error as NSError {
+            NSLog("Error: \(error)")
+        }
+        //NSLog("loaded \(dataArray.count) meal events")
+        return weekString + "-\(weekCount) days with TDD "
+    }// end weekTDD
+
+    
     
     class func generateCSV() -> String{
         let csvString = nutEventCSVString

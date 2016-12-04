@@ -71,11 +71,11 @@ class EventListViewController: BaseUIViewController, ENSideMenuDelegate {
     @IBAction func barbuttonRepeat(sender: AnyObject) {
         switch searchTextField.text! {
         case "#a":
-            searchTextField.text = "#d"
-        case "#d":
             searchTextField.text = "#due"
-        case "#due":
+        case "#d":
             searchTextField.text = "#a"
+        case "#due":
+            searchTextField.text = "#d"
         default:
             searchTextField.text = "#due"
         }
@@ -100,11 +100,11 @@ class EventListViewController: BaseUIViewController, ENSideMenuDelegate {
     @IBAction func barButton3Press(sender: AnyObject) {
         switch searchTextField.text! {
         case "#a":
-            searchTextField.text = "#d"
-        case "#d":
             searchTextField.text = "#due"
-        case "#due":
+        case "#d":
             searchTextField.text = "#a"
+        case "#due":
+            searchTextField.text = "#d"
         default:
             searchTextField.text = "#due"
         }

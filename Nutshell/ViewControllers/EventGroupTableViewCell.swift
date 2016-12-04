@@ -86,10 +86,11 @@ class EventGroupTableViewCell: BaseUITableViewCell {
         {
             if (eventItem.title.lowercaseString.rangeOfString("experiment of the week") != nil)
             {
-                titleString.text = eventItem.notes + (NSString(format: "\n 7 day average: %3.1f %3.1f",
+                titleString.text = eventItem.notes + (NSString(format: "\n 7 day average: %3.1f %3.1f\n",
                     NutUtils.averageSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-7.0*24*60*60), endDate: eventItem.time),
                     NutUtils.standardDeviationSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-7.0*24*60*60), endDate: eventItem.time))
                     as String)
+                +  NutUtils.weekTDDString(eventItem.time)
             }
             else
                 if (eventItem.title.lowercaseString.rangeOfString("tdd novalog fast insulin report") != nil)

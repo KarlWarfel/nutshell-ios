@@ -65,7 +65,7 @@ class EventListTableViewCell: BaseUITableViewCell {
 
     func configureCell(nutEvent: NutEvent) {
         titleLabel.text = nutEvent.title
-        repeatCountLabel.text = "x " + String(nutEvent.itemArray.count)
+        repeatCountLabel.text = "x" + String(nutEvent.itemArray.count)
         eventGroup = nutEvent
         nutCrackedStar.hidden = true
         
@@ -163,6 +163,25 @@ class EventListTableViewCell: BaseUITableViewCell {
             }
         }// loop through nut array
         
+        if (timeSinceNow>(-24*60*60)){
+            repeatCountLabel.textColor = UIColor.blackColor() //"🌞" + repeatCountLabel.text!
+        }
+        else{
+            if (timeSinceNow>(-7*24*60*60)){
+                repeatCountLabel.textColor = UIColor.blueColor() //"wk " + repeatCountLabel.text!
+            }
+            else{
+                if (timeSinceNow>(-30*24*60*60)){
+                    repeatCountLabel.textColor = UIColor.darkGrayColor() //"mo " + repeatCountLabel.text!
+                }
+                else
+                {
+                    repeatCountLabel.textColor = UIColor.lightGrayColor()
+                }
+            }
+            
+        }
+        
         
         //check active flag and time?
         NSLog("new cell refresh %@  time \(timeSinceNow) ",titleLabel.text!)
@@ -183,12 +202,14 @@ class EventListTableViewCell: BaseUITableViewCell {
         else{
             if timeSinceNow < timeExpire {  //older than
                 //addOnText="****Active****"
-                titleLabel.text = titleLabel.text! + "\n" + addOnTextExpire
+                titleLabel.text = titleLabel.text! + "\n" + addOnTextExpire + "\n" + (NSString(format: "Due %3.1f days ago ",(timeSinceNow-timeExpire)/(24*60*60)) as String)
                 titleLabel.textColor = UIColor.redColor()
             }// Check expire time
             else
             {  // shirk non expired cells
-                
+                if ((timeSinceNow-timeExpire)<(7.0*24*60*60)) {
+                titleLabel.text = titleLabel.text! + "\n" + (NSString(format: "Due in %3.1f days ",(timeSinceNow-timeExpire)/(60*60*24)) as String)
+                }
             }
         }
         
