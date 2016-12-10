@@ -907,7 +907,9 @@ class NutUtils {
                     if (mealEvent.title!.lowercaseString.rangeOfString("💉tdd") != nil)
                     {
                         weekCount++
-                        weekString = weekString + mealEvent.notes! + "\n"
+                        weekString = weekString +
+                            (NSString(format:"aBGL %3.1f\t", self.averageSMBG(mealEvent.time!, startDate: mealEvent.time!.dateByAddingTimeInterval(-1.0*24*60*60.0), endDate: mealEvent.time!)) as String) as String
+                            + mealEvent.notes! + "\n"
                         
                     }
                 }

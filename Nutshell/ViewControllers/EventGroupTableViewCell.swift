@@ -90,7 +90,7 @@ class EventGroupTableViewCell: BaseUITableViewCell {
                     NutUtils.averageSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-7.0*24*60*60), endDate: eventItem.time),
                     NutUtils.standardDeviationSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-7.0*24*60*60), endDate: eventItem.time))
                     as String)
-                +  NutUtils.weekTDDString(eventItem.time)
+                    +  NutUtils.weekTDDString(eventItem.time)
             }
             else
                 if (eventItem.title.lowercaseString.rangeOfString("tdd novalog fast insulin report") != nil)
@@ -99,15 +99,39 @@ class EventGroupTableViewCell: BaseUITableViewCell {
                         (NSString(format: "\n%3.1f avg BGL w StdDev:%3.1f\n",
                             NutUtils.averageSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-1.0*24*60*60), endDate: eventItem.time),
                             NutUtils.standardDeviationSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-1.0*24*60*60), endDate: eventItem.time)) as String)
-                          +  NutUtils.tdd24String(eventItem.time)
+                        +  NutUtils.tdd24String(eventItem.time)
                     
                     //(NSString(format: "\n%3.1f fasting hours",NutUtils.fastingHours(eventItem.time)) as String)
                 }
                 else
-                {
-                    
-                    
-                    titleString.text = eventItem.notes + NutUtils.addOnTextBGL(eventItem.time)
+                    if (eventItem.title.lowercaseString.rangeOfString("hba1c") != nil)
+                    {
+                        titleString.text = eventItem.notes + (NSString(format: "\n90 day average: %3.1f %3.1f",
+                            NutUtils.averageSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-90.0*24*60*60), endDate: eventItem.time),
+                            NutUtils.standardDeviationSMBG(eventItem.time, startDate: eventItem.time.dateByAddingTimeInterval(-90.0*24*60*60), endDate: eventItem.time))  as String)
+                    }
+                    else
+                    {
+                        if (eventItem.title.lowercaseString.rangeOfString("hourly report") != nil)
+                        {
+                            var tempDate = eventItem.time.dateByAddingTimeInterval((24.0*60.0*60.0)*Double(Int(eventItem.time.timeIntervalSinceNow/(24*60*60))))
+                            
+                            
+                            titleString.text = (NSString(format: " wk: %3.1f %3.1f  ",
+                                NutUtils.averageSMBGTOD(tempDate, startDate: tempDate.dateByAddingTimeInterval(-7.0*24*60*60), endDate: tempDate),
+                                NutUtils.standardDeviationSMBGTOD(tempDate, startDate: tempDate.dateByAddingTimeInterval(-7.0*24*60*60), endDate: tempDate))
+                                as String)
+                            +
+                            
+                                (NSString(format: "\t mo : %3.1f %3.1f",
+                                NutUtils.averageSMBGTOD(tempDate, startDate: tempDate.dateByAddingTimeInterval(-30.0*24*60*60), endDate: tempDate),
+                                NutUtils.standardDeviationSMBGTOD(tempDate, startDate: tempDate.dateByAddingTimeInterval(-30.0*24*60*60), endDate: tempDate))  as String)
+                            }
+                        else
+                        {
+
+                        titleString.text = eventItem.notes + NutUtils.addOnTextBGL(eventItem.time)
+                        }
             }
         }
         
