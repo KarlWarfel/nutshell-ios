@@ -686,6 +686,13 @@ class NutUtils {
         return (CGFloat(Darwin.sqrt(Double(variance))))
     }
 
+    class func standardDeviationSMBGTOD(centerDate: NSDate ,startDate: NSDate, endDate: NSDate, timeWindow: Double)->CGFloat{
+        var stdDev = CGFloat(0.0)
+        var variance  = self.varianceSMBGTOD(centerDate, startDate: startDate, endDate: endDate, timeWindow: timeWindow)
+        
+        return (CGFloat(Darwin.sqrt(Double(variance))))
+    }
+
     
     
     
@@ -923,6 +930,181 @@ class NutUtils {
 
     
     
+    
+    
+    
+    
+    
+    
+    
+    class func avgSMBGToDbyHour (date :NSDate) -> String{
+        
+        //kbw averge 7 and 30 day 
+        var convertedValue = CGFloat(0);
+        var deltaTime = 99999999.0;
+        //       var timeWindow = 2.0;
+        var count = 0;
+        var totalSMBG = CGFloat(0.0);
+        var minSMBG = CGFloat(-999.0);
+        var maxSMBG = CGFloat(0.0);
+        var sdtDev  = CGFloat(0.0);
+        
+        var countArray:     [Int] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
+        var totalSMBGArray: [CGFloat] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
+        var minSMBGArray :  [CGFloat] = [-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,];
+        var maxSMBGArray :  [CGFloat] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
+        var sdtDevArray  :  [CGFloat] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
+        
+        var countArray30:     [Int] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
+        var totalSMBGArray30: [CGFloat] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
+        var minSMBGArray30 :  [CGFloat] = [-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,];
+        var maxSMBGArray30 :  [CGFloat] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
+        var sdtDevArray30  :  [CGFloat] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
+        
+        var countArray7:     [Int] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
+        var totalSMBGArray7: [CGFloat] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
+        var minSMBGArray7 :  [CGFloat] = [-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,];
+        var maxSMBGArray7 :  [CGFloat] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
+        var sdtDevArray7  :  [CGFloat] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
+        
+        var resultsString = ""
+        
+        let presentHour = NSCalendar.currentCalendar().component(.Hour, fromDate: NSDate())
+        
+        
+        
+        do {
+            let events = try DatabaseUtils.getTidepoolEvents(date.dateByAddingTimeInterval(-90.0*24.0*60.0*60), thruTime: date, objectTypes: ["smbg"])//[typeString()])
+            
+            for event in events {
+                if let event = event as? CommonData {
+                    if let eventTime = event.time {
+                        if (true) //(abs(eventTime.timeIntervalSinceDate(date))<deltaTime)
+                        {
+                            deltaTime=abs(eventTime.timeIntervalSinceDate(date))
+                            
+                            if let smbgEvent = event as? SelfMonitoringGlucose {
+                                //NSLog("Adding smbg event: \(event)")
+                                if let value = smbgEvent.value {
+                                    let kGlucoseConversionToMgDl = CGFloat(18.0)
+                                    convertedValue = round(CGFloat(value) * kGlucoseConversionToMgDl)
+                                    
+                                    
+                                    count = count+1;
+                                    totalSMBG = totalSMBG+convertedValue
+                                    if (convertedValue>maxSMBG) {maxSMBG=convertedValue}
+                                    if (convertedValue<minSMBG) {minSMBG=convertedValue}
+                                    // calc integer value of the hour
+                                    let hour = NSCalendar.currentCalendar().component(.Hour, fromDate: eventTime)
+                                    // use that for an array based version of the above statements
+                                    countArray[hour]=countArray[hour]+1
+                                    totalSMBGArray[hour] = totalSMBGArray[hour]+convertedValue
+                                    
+                                    if(eventTime.timeIntervalSinceNow > -30.0*24.0*60*60.0 )
+                                    {
+                                        countArray30[hour]=countArray30[hour]+1
+                                        totalSMBGArray30[hour] = totalSMBGArray30[hour]+convertedValue
+                                        if(eventTime.timeIntervalSinceNow > -7.0*24.0*60*60.0 )
+                                        {
+                                            countArray7[hour]=countArray7[hour]+1
+                                            totalSMBGArray7[hour] = totalSMBGArray7[hour]+convertedValue
+                                        }//7 day
+                                    }//30 day
+                                    
+                                    
+                                    //NSLog("\(convertedValue) \(eventTime) ")
+                                    var differenceTimeDays=date.timeIntervalSinceDate(smbgEvent.time!)/(24.0*60.0*60.0)
+                                    var differenceTimeHours = differenceTimeDays-Double(Int(differenceTimeDays+0.5))
+                                    if (abs(differenceTimeHours)<(1.0/24.0)){//only could measurement within 2 hours of centerdate
+                         //               NSLog("CvE\(centerDate) \(smbgEvent.time)   \(differenceTimeHours)")
+                         //               count = count+1;
+                         //               totalSMBG = totalSMBG+convertedValue
+                         //               if (convertedValue>maxSMBG) {maxSMBG=convertedValue}
+                         //               if (convertedValue<minSMBG) {minSMBG=convertedValue}
+                                        //dataArray.append(CbgGraphDataType(value: convertedValue, timeOffset: timeOffset))
+                                    }
+                                } else {
+                                    NSLog("ignoring smbg event with nil value")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch let error as NSError {
+            NSLog("Error: \(error)")
+        }
+        
+        for (var i=0;i<24;i++){
+            resultsString = resultsString + (NSString(format:"\n%dhr:",i) as String)
+            if presentHour == i {
+                resultsString = resultsString + "*"
+            }
+            
+            if countArray7[i]==0 {
+                resultsString = resultsString + (NSString(format:"\t%d \t\t",countArray7[i]) as String)
+            }
+            else
+            {
+                resultsString = resultsString + (NSString(format:"\t%d \t%3.1f",countArray7[i],Double(totalSMBGArray7[i])/Double(countArray7[i])) as String)
+                
+                if ((Double(totalSMBGArray7[i])/Double(countArray7[i])) < 87.0)
+                {
+                    resultsString = resultsString + "----"
+                }
+            }
+            
+            if countArray30[i]==0 {
+                resultsString = resultsString + (NSString(format:"\t%d \t\t",countArray30[i]) as String)
+            }
+            else
+            {
+                resultsString = resultsString + (NSString(format:"\t%d \t%3.1f",countArray30[i],Double(totalSMBGArray30[i])/Double(countArray30[i])) as String)
+                
+                if ((Double(totalSMBGArray30[i])/Double(countArray30[i])) < 87.0)
+                {
+                    resultsString = resultsString + "----"
+                }
+            }
+            
+            
+            resultsString = resultsString + (NSString(format:"\t %d \t%3.1f",countArray[i],Double(totalSMBGArray[i])/Double(countArray[i])) as String)
+            
+            if ((Double(totalSMBGArray[i])/Double(countArray[i])) < 87.0)
+            {
+                resultsString = resultsString + "--"
+            }
+
+
+        }
+    
+        return resultsString
+            //"\n30d: \(count) \(Double(totalSMBG)/Double(count))"+resultsString
+        
+ //       \nmidnight \n1am \n2am \n3am \n4am \n5am \n6am \n7am \n8am \n9am \n10am \n11am \nNoon \n1pm \n2pm \n3pm \n4pm \n5pm \n6pm \n7pm \n8pm \n9pm \n10pm \n11pm "
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     class func generateCSV() -> String{
         let csvString = nutEventCSVString
         return csvString()
@@ -1026,12 +1208,12 @@ class NutUtils {
             
             if item.notes.lowercaseString.rangeOfString("#daily") != nil {
                 timeExpire = -23.5*60.0*60
-                addOnTextExpire = "!!!! Due !!!!"
+                addOnTextExpire = ""
                 
             }
             if item.notes.lowercaseString.rangeOfString("#weekly") != nil {
                 timeExpire = -6.75*24.0*60.0*60
-                addOnTextExpire = "!!!! Due !!!!"
+                addOnTextExpire = ""
             }
             
             

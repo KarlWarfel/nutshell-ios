@@ -46,6 +46,8 @@ class EventListViewController: BaseUIViewController, ENSideMenuDelegate {
         case "🧀":
             searchTextField.text = "BGL"
         case "BGL":
+            searchTextField.text = "🏋"
+        case "🏋" :
             searchTextField.text = "🧀"
         default:
             searchTextField.text = "🧀"

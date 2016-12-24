@@ -134,10 +134,10 @@ class EventListTableViewCell: BaseUITableViewCell {
                 addOnText="****Active****"
                 var addOnTextArr = item.notes.characters.split("\"")
                 if (addOnTextArr.count > 1) {
-                    addOnTextExpire = String(addOnTextArr[1])
+                    addOnTextExpire = "\n" + String(addOnTextArr[1])
                 }
                 else
-                {
+                { 
                     //addOnText = String("****Active****")
                 }
                 //and copy add on text
@@ -147,12 +147,12 @@ class EventListTableViewCell: BaseUITableViewCell {
             
             if item.notes.lowercaseString.rangeOfString("#daily") != nil {
                 timeExpire = -23.5*60.0*60
-                addOnTextExpire = "!!!! Due !!!!"
+                addOnTextExpire = " "//"!! Due !! "
                 
             }
             if item.notes.lowercaseString.rangeOfString("#weekly") != nil {
                 timeExpire = -6.75*24.0*60.0*60
-                addOnTextExpire = "!!!! Due !!!!"
+                addOnTextExpire = " "//"!! Due !! "
             }
             
             
@@ -202,7 +202,7 @@ class EventListTableViewCell: BaseUITableViewCell {
         else{
             if timeSinceNow < timeExpire {  //older than
                 //addOnText="****Active****"
-                titleLabel.text = titleLabel.text! + "\n" + addOnTextExpire + "\n" + (NSString(format: "Due %3.1f days ago ",(timeSinceNow-timeExpire)/(24*60*60)) as String)
+                titleLabel.text = titleLabel.text! + addOnTextExpire + "\n" + (NSString(format: "Due %3.1f days ago ",(timeSinceNow-timeExpire)/(24*60*60)) as String)
                 titleLabel.textColor = UIColor.redColor()
             }// Check expire time
             else
@@ -211,6 +211,10 @@ class EventListTableViewCell: BaseUITableViewCell {
                 titleLabel.text = titleLabel.text! + "\n" + (NSString(format: "Due in %3.1f days ",(timeSinceNow-timeExpire)/(60*60*24)) as String)
                 }
             }
+        }
+        
+        if   titleLabel.text!.lowercaseString.rangeOfString("hour report") != nil {
+            titleLabel.text = titleLabel.text! + NutUtils.fastingHoursText(NSDate()) + "\n" + NutUtils.iobText(NSDate()) + "\n" + NutUtils.bglText(NSDate())
         }
         
         if   titleLabel.text!.lowercaseString.rangeOfString("quick summary") != nil {

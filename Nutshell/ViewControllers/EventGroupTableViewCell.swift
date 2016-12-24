@@ -118,19 +118,33 @@ class EventGroupTableViewCell: BaseUITableViewCell {
                             
                             
                             titleString.text = (NSString(format: " wk: %3.1f %3.1f  ",
-                                NutUtils.averageSMBGTOD(tempDate, startDate: tempDate.dateByAddingTimeInterval(-7.0*24*60*60), endDate: tempDate),
-                                NutUtils.standardDeviationSMBGTOD(tempDate, startDate: tempDate.dateByAddingTimeInterval(-7.0*24*60*60), endDate: tempDate))
+                                NutUtils.averageSMBGTOD(tempDate, startDate: tempDate.dateByAddingTimeInterval(-7.0*24*60*60), endDate: tempDate , timeWindow: 0.5 ),
+                                NutUtils.standardDeviationSMBGTOD(tempDate, startDate: tempDate.dateByAddingTimeInterval(-7.0*24*60*60), endDate: tempDate, timeWindow: 0.5))
                                 as String)
                             +
                             
                                 (NSString(format: "\t mo : %3.1f %3.1f",
-                                NutUtils.averageSMBGTOD(tempDate, startDate: tempDate.dateByAddingTimeInterval(-30.0*24*60*60), endDate: tempDate),
-                                NutUtils.standardDeviationSMBGTOD(tempDate, startDate: tempDate.dateByAddingTimeInterval(-30.0*24*60*60), endDate: tempDate))  as String)
+                                NutUtils.averageSMBGTOD(tempDate, startDate: tempDate.dateByAddingTimeInterval(-30.0*24*60*60), endDate: tempDate , timeWindow: 0.5 ),
+                                NutUtils.standardDeviationSMBGTOD(tempDate, startDate: tempDate.dateByAddingTimeInterval(-30.0*24*60*60), endDate: tempDate, timeWindow: 0.5))  as String)
+                            
+                          //  + NutUtils.avgSMBGToDbyHour(tempDate)
+                            
                             }
                         else
                         {
+                            if (eventItem.title.lowercaseString.rangeOfString("hour report") != nil)
+                            {
+                                var tempDate = eventItem.time.dateByAddingTimeInterval((24.0*60.0*60.0)*Double(Int(eventItem.time.timeIntervalSinceNow/(24*60*60))))
+                                
+                                
+                                titleString.text = NutUtils.avgSMBGToDbyHour(NSDate())
+                                
+                            }
+                            else
+                            {
 
                         titleString.text = eventItem.notes + NutUtils.addOnTextBGL(eventItem.time)
+                            }
                         }
             }
         }

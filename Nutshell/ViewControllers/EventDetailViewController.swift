@@ -408,7 +408,21 @@ class EventDetailViewController: BaseUIViewController, GraphContainerViewDelegat
                         NutUtils.standardDeviationSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
                         NutUtils.standardDeviationSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate()),
                         NutUtils.standardDeviationSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-90.0*24.0*60.0*60.0), endDate: NSDate())
-                        ) as String) as String + "\n" + todString
+                        ) as String) as String + "\n" + todString //+ NutUtils.avgSMBGToDbyHour()
+                
+                
+            }
+            
+            if titleLabel!.text!.lowercaseString.rangeOfString("hour") != nil {
+                notesText = eventItem.notes + "\n" +
+                    (NSString(format: "\u{00B5} BGL:\t%3.1f/ %3.2f/ %3.2f\n\u{03C3} BGL:\t%3.1f/ %3.2f/ %3.2f",
+                        NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate()),
+                        NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate()),
+                        NutUtils.averageSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-90.0*24.0*60.0*60.0), endDate: NSDate()),
+                        NutUtils.standardDeviationSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+                        NutUtils.standardDeviationSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate()),
+                        NutUtils.standardDeviationSMBG(NSDate(), startDate: NSDate().dateByAddingTimeInterval(-90.0*24.0*60.0*60.0), endDate: NSDate())
+                        ) as String) as String + "\n" + todString //+ NutUtils.avgSMBGToDbyHour()
                 
                 
             }
