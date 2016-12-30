@@ -381,6 +381,7 @@ class HealthKitManager {
                 for sample in newSamples! {
                     let sourceRevision = sample.sourceRevision
                     let source = sourceRevision.source
+                    NSLog("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~HK BGL %@ ",sourceRevision)
                     totalSamplesCount += 1
                     if source.name.lowercaseString.rangeOfString("dexcom") != nil {
                         totalDexcomSamplesCount += 1

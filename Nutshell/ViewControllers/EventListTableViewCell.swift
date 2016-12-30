@@ -81,9 +81,12 @@ class EventListTableViewCell: BaseUITableViewCell {
         NutUtils.setFormatterTimezone(nutEvent.itemArray[nutEvent.itemArray.count-1].tzOffsetSecs)
         var addOnText = ""
         var addOnTextExpire = ""
+        var addOnTextRepeat = ""
         var timeSinceNow=nutEvent.itemArray[nutEvent.itemArray.count-1].time.timeIntervalSinceNow
         var timeActive = 0.0
         var timeExpire = -365.0*24.0*60*60
+        var timeRepeat = -365.0*24.0*60*60
+        var autoRepeat = false
         
         for item in nutEvent.itemArray {
             //KBW is there an activity tag?
@@ -131,7 +134,7 @@ class EventListTableViewCell: BaseUITableViewCell {
                 //parse out time
                 timeExpire = -24.0 * 60.0 * 60.0
                 timeExpire = -60.0*Double(minInTextNum)!
-                addOnText="****Active****"
+                //addOnText="****Active****"
                 var addOnTextArr = item.notes.characters.split("\"")
                 if (addOnTextArr.count > 1) {
                     addOnTextExpire = "\n" + String(addOnTextArr[1])
@@ -143,6 +146,36 @@ class EventListTableViewCell: BaseUITableViewCell {
                 //and copy add on text
                 //titleLabel.textColor = UIColor.redColor()
             }//End Due tag
+            
+            
+            if item.notes.rangeOfString("#R(") != nil {
+                var minInTextArr = item.notes.characters.split("(")
+                var minInText = String(minInTextArr[1])
+                var minInTextArr2 = minInText.characters.split(")")
+                var minInTextNum = String(minInTextArr2[0])
+                autoRepeat = true
+                //[item.notes.rangeOfString("#A(")!]
+                //let tempString = minInTextArr
+                NSLog("***Repeat tag found in %@  with note \(item.notes) ",item.title)
+                NSLog("  number string ")//\(String(minInTextNum))")
+                ///addOnText="****Active****"
+                
+                //parse out time
+                //??timeExpire = -24.0 * 60.0 * 60.0
+                timeRepeat = -60.0*Double(minInTextNum)!
+                //addOnText="*Auto Add*"
+                var addOnTextArr = item.notes.characters.split("\"")
+                if (addOnTextArr.count > 1) {
+                    addOnTextRepeat = String(addOnTextArr[1])
+                }
+                else
+                {
+                    //addOnText = String("****Active****")
+                }
+                //and copy add on text
+                //titleLabel.textColor = UIColor.redColor()
+            }//End repeat tag
+            
             
             
             if item.notes.lowercaseString.rangeOfString("#daily") != nil {
@@ -183,11 +216,21 @@ class EventListTableViewCell: BaseUITableViewCell {
         }
         
         
+        if (timeSinceNow > 0) {  // future
+            //addOnText="****Active****"
+            //titleLabel.text = titleLabel.text! //+ "\n" + addOnText
+            //if addOnText.characters.count > 0 { titleLabel.text = titleLabel.text! + "\n" + addOnText }
+            titleLabel.textColor = UIColor.brownColor()
+            //titleLabel.textColor = UIColor.darkTextColor()
+        }// Check active time
+
+        
         //check active flag and time?
         NSLog("new cell refresh %@  time \(timeSinceNow) ",titleLabel.text!)
-        if timeSinceNow > timeActive {  //more recent than
+        if (timeSinceNow > timeActive) && (timeActive != 0) {  //more recent than
             //addOnText="****Active****"
-            titleLabel.text = titleLabel.text! + "\n" + addOnText
+            //titleLabel.text = titleLabel.text! //+ "\n" + addOnText
+            if addOnText.characters.count > 0 { titleLabel.text = titleLabel.text! + "\n" + addOnText }
             titleLabel.textColor = UIColor.blueColor()
             //titleLabel.textColor = UIColor.darkTextColor()
         }// Check active time
@@ -198,23 +241,49 @@ class EventListTableViewCell: BaseUITableViewCell {
             //addOnText="****Active****"
             titleLabel.text = titleLabel.text! + "\n" + "### Obsolete ###"
             titleLabel.textColor = UIColor.lightGrayColor()
+            
+            // need to refactor this code to new tag fir reoccring events 
+            if titleLabel.text!.rangeOfString("💉TDD Novalog Fast Insulin Report") != nil {
+                //add new
+                //NutEvent.createMealEvent(nutEvent.title, notes: "test auto add obsolete", location: "", photo: "", photo2: "", photo3: "", time: nutEvent.itemArray[nutEvent.itemArray.count-1].time.dateByAddingTimeInterval(24.0*60.0*60.0), timeZoneOffset: (-5*60*60)/*NSCalendar.currentCalendar().timeZone.secondsFromGMT/60*/)
+                NSLog("triggered TDD auto add obsolete ")
+            }
         }// way older than
         else{
             if timeSinceNow < timeExpire {  //older than
                 //addOnText="****Active****"
                 titleLabel.text = titleLabel.text! + addOnTextExpire + "\n" + (NSString(format: "Due %3.1f days ago ",(timeSinceNow-timeExpire)/(24*60*60)) as String)
                 titleLabel.textColor = UIColor.redColor()
+                //auto renew 
+                if titleLabel.text!.rangeOfString("💉TDD Novalog Fast Insulin Report") != nil {
+                    //add new
+                    //NutEvent.createMealEvent(titleLabel.text!, notes: "test auto add", location: "", photo: "", photo2: "", photo3: "", time: NSDate(), timeZoneOffset: NSCalendar.currentCalendar().timeZone.secondsFromGMT/60)
+                    NSLog("triggered TDD auto add")
+                }
+            
             }// Check expire time
             else
-            {  // shirk non expired cells
+            {  // check non expired cells
                 if ((timeSinceNow-timeExpire)<(7.0*24*60*60)) {
                 titleLabel.text = titleLabel.text! + "\n" + (NSString(format: "Due in %3.1f days ",(timeSinceNow-timeExpire)/(60*60*24)) as String)
                 }
             }
         }
         
+        //kbw check to see if auto repeat needed
+        if (autoRepeat)&&(timeSinceNow<0) {
+            //if titleLabel.text!.rangeOfString("💉TDD Novalog Fast Insulin Report") != nil {
+                //add new
+            NutEvent.createMealEvent(nutEvent.title, notes: "auto repeat ", location: "", photo: "", photo2: "", photo3: "", time: nutEvent.itemArray[nutEvent.itemArray.count-1].time.dateByAddingTimeInterval(timeRepeat * -1.0), timeZoneOffset: /*Int { NSTimeZone.localTimeZone.seconds secondsFromGMT()}*/(-5*60*60)/*NSCalendar.currentCalendar().timeZone.secondsFromGMT/60*/)
+                NSLog("triggered TDD auto add r tag \(timeRepeat)")
+                
+           // }
+        }
+        
+        
+        //specials
         if   titleLabel.text!.lowercaseString.rangeOfString("hour report") != nil {
-            titleLabel.text = titleLabel.text! + NutUtils.fastingHoursText(NSDate()) + "\n" + NutUtils.iobText(NSDate()) + "\n" + NutUtils.bglText(NSDate())
+            titleLabel.text = titleLabel.text! + "\n" + NutUtils.fastingHoursText(NSDate()) + "\n" + NutUtils.iobText(NSDate()) + "\n" + NutUtils.bglText(NSDate())
         }
         
         if   titleLabel.text!.lowercaseString.rangeOfString("quick summary") != nil {

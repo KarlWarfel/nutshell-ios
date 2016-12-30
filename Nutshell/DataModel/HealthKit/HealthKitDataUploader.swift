@@ -451,6 +451,7 @@ class HealthKitDataUploader {
     private func deviceModelForSourceBundleIdentifier(sourceBundleIdentifier: String) -> String {
         var deviceModel = ""
         
+        DDLogError("where did the hk data come from sourceBundleIdentifier: \(sourceBundleIdentifier)")
         if sourceBundleIdentifier.lowercaseString.rangeOfString("com.dexcom.cgm") != nil {
             deviceModel = "DexG5"
         } else if sourceBundleIdentifier.lowercaseString.rangeOfString("com.dexcom.share2") != nil {
@@ -478,10 +479,23 @@ class HealthKitDataUploader {
             let sourceRevision = sample.sourceRevision
             let source = sourceRevision.source
             let sourceBundleIdentifier = source.bundleIdentifier
-
+            let noteForNewNutEvent = "From " + source.name + "\n " + sample.description
+            let timeForNewNutEvent = sample.startDate
+          //  let bglValue = quan
+            NSLog("New BGL value %@ ", noteForNewNutEvent)
+            
             if source.name.lowercaseString.rangeOfString("dexcom") == nil {
-                DDLogInfo("Ignoring non-Dexcom glucose data")
+                NSLog("BGL source \(source.name)")
+                DDLogInfo("Ignoring non-Dexcom glucose data \(source.name)")
+               
+                //add nut event add here
+                
+                NutEvent.createMealEvent("BGL HealthKit", notes: noteForNewNutEvent, location: "", photo: "", photo2: "", photo3: "", time: timeForNewNutEvent, timeZoneOffset: /*Int { NSTimeZone.localTimeZone.seconds secondsFromGMT()}*/(-5*60*60)/*NSCalendar.currentCalendar().timeZone.secondsFromGMT/60*/)
+                
                 continue
+            }
+            else{
+                DDLogInfo("Decom glucose data \(source.name) ")
             }
 
             if samplesBySource[sourceBundleIdentifier] == nil {

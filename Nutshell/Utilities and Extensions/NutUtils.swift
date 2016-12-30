@@ -954,20 +954,30 @@ class NutUtils {
         var minSMBGArray :  [CGFloat] = [-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,];
         var maxSMBGArray :  [CGFloat] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
         var sdtDevArray  :  [CGFloat] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
+        var count1Star = 0
+        var count2Star = 0
+        var count3Star = 0
         
         var countArray30:     [Int] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
         var totalSMBGArray30: [CGFloat] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
         var minSMBGArray30 :  [CGFloat] = [-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,];
         var maxSMBGArray30 :  [CGFloat] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
         var sdtDevArray30  :  [CGFloat] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
+        var count1Star30 = 0
+        var count2Star30 = 0
+        var count3Star30 = 0
         
         var countArray7:     [Int] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
         var totalSMBGArray7: [CGFloat] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
         var minSMBGArray7 :  [CGFloat] = [-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,-999.0,];
         var maxSMBGArray7 :  [CGFloat] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
         var sdtDevArray7  :  [CGFloat] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
+        var count1Star7 = 0
+        var count2Star7 = 0
+        var count3Star7 = 0
         
         var resultsString = ""
+        let targetBGL = 83.0
         
         let presentHour = NSCalendar.currentCalendar().component(.Hour, fromDate: NSDate())
         
@@ -1046,38 +1056,108 @@ class NutUtils {
             }
             else
             {
-                resultsString = resultsString + (NSString(format:"\t%d \t%3.1f",countArray7[i],Double(totalSMBGArray7[i])/Double(countArray7[i])) as String)
+                var tempCount = NSString(format: "%d",countArray7[i])
+                if countArray7[i] < 3 {tempCount = (tempCount as String) + "*"}
+                resultsString = resultsString + (NSString(format:"\t%@ \t%3.1f",tempCount,Double(totalSMBGArray7[i])/Double(countArray7[i])) as String)
                 
-                if ((Double(totalSMBGArray7[i])/Double(countArray7[i])) < 87.0)
+                var tempBGLDelta = abs((Double(totalSMBGArray7[i])/Double(countArray7[i]))-targetBGL)
+                if (tempBGLDelta<20)
                 {
-                    resultsString = resultsString + "----"
+                    resultsString = resultsString + ""
+                    if (tempBGLDelta<12)
+                    {
+                        resultsString = resultsString + "*"
+                        count1Star7 = count1Star7+1
+                        if (tempBGLDelta<6)
+                        {
+                            resultsString = resultsString + "*"
+                            count2Star7 = count2Star7+1
+                            if (tempBGLDelta<3.5)
+                            {
+                                resultsString = resultsString + "*"
+                                count3Star7 = count3Star7+1
+                            }
+                            else{ // not in tightest group
+                                if ((Double(totalSMBGArray7[i])/Double(countArray7[i]))-targetBGL)<0 {
+                                    resultsString = resultsString + ".."
+                                }
+                            }
+                        }
+                        else{// not in 2nd tightest group
+                            if ((Double(totalSMBGArray7[i])/Double(countArray7[i]))-targetBGL)<0 {
+                                resultsString = resultsString + "...."
+                            }
+                            
+                        }
+                    }
+                    else{// not in 3nd tightest group
+                        if ((Double(totalSMBGArray7[i])/Double(countArray7[i]))-targetBGL)<0 {
+                            resultsString = resultsString + "......"
+                        }
+                    }
                 }
             }
             
             if countArray30[i]==0 {
-                resultsString = resultsString + (NSString(format:"\t%d \t\t",countArray30[i]) as String)
+                resultsString = resultsString + (NSString(format:"\t%d\t\t",countArray30[i]) as String)
             }
             else
             {
-                resultsString = resultsString + (NSString(format:"\t%d \t%3.1f",countArray30[i],Double(totalSMBGArray30[i])/Double(countArray30[i])) as String)
+                resultsString = resultsString + (NSString(format:"\t|\t%3.1f",Double(totalSMBGArray30[i])/Double(countArray30[i])) as String)
                 
-                if ((Double(totalSMBGArray30[i])/Double(countArray30[i])) < 87.0)
+                var tempBGLDelta = abs((Double(totalSMBGArray30[i])/Double(countArray30[i]))-targetBGL)
+                if (tempBGLDelta<20)
                 {
-                    resultsString = resultsString + "----"
+                    resultsString = resultsString + ""
+                    if (tempBGLDelta<12)
+                    {
+                        resultsString = resultsString + "*"
+                        count1Star30 += 1
+                        if (tempBGLDelta<6)
+                        {
+                            resultsString = resultsString + "*"
+                            count2Star30 += 1
+                            if (tempBGLDelta<3.5)
+                            {
+                                resultsString = resultsString + "*"
+                                count3Star30 += 1
+                            }
+                        }
+                    }
                 }
             }
             
             
-            resultsString = resultsString + (NSString(format:"\t %d \t%3.1f",countArray[i],Double(totalSMBGArray[i])/Double(countArray[i])) as String)
+            resultsString = resultsString + (NSString(format:"\t|\t%3.1f",Double(totalSMBGArray[i])/Double(countArray[i])) as String)
             
-            if ((Double(totalSMBGArray[i])/Double(countArray[i])) < 87.0)
+            var tempBGLDelta = abs((Double(totalSMBGArray[i])/Double(countArray[i]))-targetBGL)
+            if (tempBGLDelta<20)
             {
-                resultsString = resultsString + "--"
+                resultsString = resultsString + "'"
+                if (tempBGLDelta<12)
+                {
+                    resultsString = resultsString + "'"
+                    count1Star += 1
+                    if (tempBGLDelta<6)
+                    {
+                        resultsString = resultsString + "'"
+                        count2Star = count2Star+1
+                        if (tempBGLDelta<3.5)
+                        {
+                            resultsString = resultsString + "'"
+                            count3Star = count3Star+1
+                        }
+                    }
+                }
             }
 
 
         }
     
+        resultsString = resultsString + "\n" + (NSString(format: "*** \t\t%d \t\t\t%d \t\t\t%d", count3Star7,count3Star30,count3Star) as String)
+        resultsString = resultsString + "\n" + (NSString(format: "**  \t\t\t%d \t\t\t%d \t\t\t%d", count2Star7,count2Star30,count2Star) as String)
+        resultsString = resultsString + "\n" + (NSString(format: "*   \t\t\t%d \t\t\t%d \t\t\t%d", count1Star7,count1Star30,count1Star) as String)
+        
         return resultsString
             //"\n30d: \(count) \(Double(totalSMBG)/Double(count))"+resultsString
         
