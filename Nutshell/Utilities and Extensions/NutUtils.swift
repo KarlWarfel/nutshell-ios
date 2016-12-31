@@ -291,13 +291,14 @@ class NutUtils {
         if (hoursAgo < -24.0) {
             //hoursAgo = hoursAgo/24.0
            // hoursAgo = Double(Int(hoursAgo*10)/10.0)
-            hourString += "    \(Float(trunc(Float(hoursAgo/24.0 )*10.0)/10.0)) days ago "
+            // replsced with built in function   
+            //hourString += "    \(Float(trunc(Float(hoursAgo/24.0 )*10.0)/10.0)) days ago "
         }
         else
         {
-            hourString += "    \(Float(trunc(Float(hoursAgo)*10.0)/10.0)) hours ago "
+            //hourString += "    \(Float(trunc(Float(hoursAgo)*10.0)/10.0)) hours ago "
         }
-        return dayString + " at " + hourString
+        return dayString + " at " + hourString + " \t" +  NSDate().timeAgoInWords(date) //
     }
     
     

@@ -487,7 +487,7 @@ class HealthKitDataUploader {
             let sourceRevision = sample.sourceRevision
             let source = sourceRevision.source
             let sourceBundleIdentifier = source.bundleIdentifier
-            let noteForNewNutEvent =  NSString(format:"%3.0f mg/dL ",value) as String + "\n" + "From " + source.name + "\n " + sample.description
+            let noteForNewNutEvent =  NSString(format:"%3.0f mg/dL ",value) as String + " " + "From " + source.name //+ "\n " + sample.description
             let timeForNewNutEvent = sample.startDate
             
             NutEvent.createMealEvent("BGL HealthKit", notes: noteForNewNutEvent, location: "", photo: "", photo2: "", photo3: "", time: timeForNewNutEvent, timeZoneOffset: /*Int { NSTimeZone.localTimeZone.seconds secondsFromGMT()}*/(-5*60*60)/*NSCalendar.currentCalendar().timeZone.secondsFromGMT/60*/)

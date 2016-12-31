@@ -26,10 +26,18 @@ extension NSDate {
         // TODO: Localize these strings
         
         let timeAgoInSeconds = round(abs(date.timeIntervalSinceDate(self)))
+        var agoQ = ""
+        
+        if (date.timeIntervalSinceDate(self)) < 0 {
+            agoQ = "ago"
+        }
+        else{
+            agoQ = ""
+        }
         
         switch timeAgoInSeconds {
         case 0...59:
-            return "less than a minute ago"
+            return "less than a minute " + agoQ
         default:
             break
         }
@@ -37,9 +45,9 @@ extension NSDate {
         let timeAgoInMinutes = round(timeAgoInSeconds / 60.0)
         switch timeAgoInMinutes {
         case 0...1:
-            return "1 minute ago"
+            return "1 minute " + agoQ
         case 2...59:
-            return "\(Int(timeAgoInMinutes))" + " minutes ago"
+            return "\(Int(timeAgoInMinutes))" + " minutes " + agoQ
         default:
             break
         }
@@ -47,9 +55,9 @@ extension NSDate {
         let timeAgoInHours = round(timeAgoInMinutes / 60.0)
         switch timeAgoInHours {
         case 0...1:
-            return "1 hour ago"
+            return "1 hour " + agoQ
         case 2...23:
-            return "\(Int(timeAgoInHours))" + " hours ago"
+            return "\(Int(timeAgoInHours))" + " hours " + agoQ
         default:
             break
         }
@@ -57,9 +65,9 @@ extension NSDate {
         let timeAgoInDays = round(timeAgoInHours / 24.0)
         switch timeAgoInDays {
         case 0...1:
-            return "1 day ago"
+            return "1 day " + agoQ
         case 2...29:
-            return "\(Int(timeAgoInDays))" + " days ago"
+            return "\(Int(timeAgoInDays))" + " days " + agoQ
         default:
             break
         }
@@ -67,9 +75,9 @@ extension NSDate {
         let timeAgoInMonths = round(timeAgoInDays / 30.0)
         switch timeAgoInMonths {
         case 0...1:
-            return "1 month ago"
+            return "1 month " + agoQ
         case 2...11:
-            return "\(Int(timeAgoInMonths))" + " months ago"
+            return "\(Int(timeAgoInMonths))" + " months " + agoQ
         default:
             break
         }
@@ -77,9 +85,9 @@ extension NSDate {
         let timeAgoInYears = round(timeAgoInMonths / 12.0)
         switch timeAgoInYears {
         case 0...1:
-            return "1 year ago"
+            return "1 year " + agoQ
         default:
-            return "\(Int(timeAgoInYears))" + " years ago"
+            return "\(Int(timeAgoInYears))" + " years " + agoQ
         }
     }
 }

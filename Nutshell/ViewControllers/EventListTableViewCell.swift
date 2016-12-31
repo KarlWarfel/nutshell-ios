@@ -252,7 +252,7 @@ class EventListTableViewCell: BaseUITableViewCell {
         else{
             if timeSinceNow < timeExpire {  //older than
                 //addOnText="****Active****"
-                titleLabel.text = titleLabel.text! + addOnTextExpire + "\n" + (NSString(format: "Due %3.1f days ago ",(timeSinceNow-timeExpire)/(24*60*60)) as String)
+                titleLabel.text = titleLabel.text! + addOnTextExpire + "\n" + (NSString(format: "Due %@ ",NSDate().timeAgoInWords(NSDate().dateByAddingTimeInterval(timeSinceNow-timeExpire)),(timeSinceNow-timeExpire)/(24*60*60)) as String)
                 titleLabel.textColor = UIColor.redColor()
                 //auto renew 
                 if titleLabel.text!.rangeOfString("💉TDD Novalog Fast Insulin Report") != nil {
@@ -265,7 +265,7 @@ class EventListTableViewCell: BaseUITableViewCell {
             else
             {  // check non expired cells
                 if ((timeSinceNow-timeExpire)<(7.0*24*60*60)) {
-                titleLabel.text = titleLabel.text! + "\n" + (NSString(format: "Due in %3.1f days ",(timeSinceNow-timeExpire)/(60*60*24)) as String)
+                titleLabel.text = titleLabel.text! + "\n" + (NSString(format: "Due in %@ ",NSDate().timeAgoInWords(NSDate().dateByAddingTimeInterval(timeSinceNow-timeExpire)),(timeSinceNow-timeExpire)/(60*60*24)) as String)
                 }
             }
         }
