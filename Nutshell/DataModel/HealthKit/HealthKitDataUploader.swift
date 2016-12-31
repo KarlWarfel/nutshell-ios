@@ -474,6 +474,26 @@ class HealthKitDataUploader {
             return x.startDate.compare(y.startDate) == .OrderedAscending
         })
         
+        for sample in samples {
+            
+            
+            if let quantitySample = sample as? HKQuantitySample {
+                let units = "mg/dL"
+                //sampleToUploadDict["units"] = units
+                let unit = HKUnit(fromString: units)
+                let value = quantitySample.quantity.doubleValueForUnit(unit)
+                //sampleToUploadDict["value"] = value
+                
+            let sourceRevision = sample.sourceRevision
+            let source = sourceRevision.source
+            let sourceBundleIdentifier = source.bundleIdentifier
+            let noteForNewNutEvent =  NSString(format:"%3.0f mg/dL ",value) as String + "\n" + "From " + source.name + "\n " + sample.description
+            let timeForNewNutEvent = sample.startDate
+            
+            NutEvent.createMealEvent("BGL HealthKit", notes: noteForNewNutEvent, location: "", photo: "", photo2: "", photo3: "", time: timeForNewNutEvent, timeZoneOffset: /*Int { NSTimeZone.localTimeZone.seconds secondsFromGMT()}*/(-5*60*60)/*NSCalendar.currentCalendar().timeZone.secondsFromGMT/60*/)
+            }
+        }
+        
         // Group by source
         for sample in sortedSamples {
             let sourceRevision = sample.sourceRevision
@@ -490,7 +510,7 @@ class HealthKitDataUploader {
                
                 //add nut event add here
                 
-                NutEvent.createMealEvent("BGL HealthKit", notes: noteForNewNutEvent, location: "", photo: "", photo2: "", photo3: "", time: timeForNewNutEvent, timeZoneOffset: /*Int { NSTimeZone.localTimeZone.seconds secondsFromGMT()}*/(-5*60*60)/*NSCalendar.currentCalendar().timeZone.secondsFromGMT/60*/)
+            //    NutEvent.createMealEvent("BGL HealthKit", notes: noteForNewNutEvent, location: "", photo: "", photo2: "", photo3: "", time: timeForNewNutEvent, timeZoneOffset: /*Int { NSTimeZone.localTimeZone.seconds secondsFromGMT()}*/(-5*60*60)/*NSCalendar.currentCalendar().timeZone.secondsFromGMT/60*/)
                 
                 continue
             }
