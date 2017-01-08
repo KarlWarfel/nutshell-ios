@@ -87,7 +87,11 @@ class EventListTableViewCell: BaseUITableViewCell {
         var timeExpire = -365.0*24.0*60*60
         var timeRepeat = -365.0*24.0*60*60
         var autoRepeat = false
+        var duedate = false
+        var due = false
         
+        
+        // replace this with and tag detect function
         for item in nutEvent.itemArray {
             //KBW is there an activity tag?
             if item.notes.rangeOfString("#A(") != nil {
@@ -104,7 +108,7 @@ class EventListTableViewCell: BaseUITableViewCell {
                 //parse out time
                 timeActive = -4.0 * 60.0 * 60.0
                 
-                    //minInTextNum = "10"
+                //minInTextNum = "10"
                 
                 timeActive = -60.0*Double(minInTextNum)!
                 addOnText="****Active****"
@@ -128,7 +132,7 @@ class EventListTableViewCell: BaseUITableViewCell {
                 //[item.notes.rangeOfString("#A(")!]
                 //let tempString = minInTextArr
                 NSLog("***DUE tag found in %@  with note \(item.notes) ",item.title)
-                NSLog("  number string ")//\(String(minInTextNum))")
+                //NSLog("  number string ")//\(String(minInTextNum))")
                 ///addOnText="****Active****"
                 
                 //parse out time
@@ -140,12 +144,28 @@ class EventListTableViewCell: BaseUITableViewCell {
                     addOnTextExpire = "\n" + String(addOnTextArr[1])
                 }
                 else
-                { 
+                {
                     //addOnText = String("****Active****")
                 }
+                
+                due = true
                 //and copy add on text
                 //titleLabel.textColor = UIColor.redColor()
+                /// if there is no nutEvent with this title anf a tag - then creat one
+                // ?? double scan?
+                
+                if nutEvent.itemArray[nutEvent.itemArray.count-1].notes.rangeOfString("#NextDate") != nil {
+                    //set boolean that there is a due date item
+                    duedate=true
+                }
             }//End Due tag
+            
+            
+            //check to see if #NextDate is the most recent - otherwise disregard
+            if item.notes.rangeOfString("#NextDate") != nil {
+                //set boolean that there is a due date item
+                //duedate=true
+            }
             
             
             if item.notes.rangeOfString("#R(") != nil {
@@ -181,11 +201,23 @@ class EventListTableViewCell: BaseUITableViewCell {
             if item.notes.lowercaseString.rangeOfString("#daily") != nil {
                 timeExpire = -23.5*60.0*60
                 addOnTextExpire = " "//"!! Due !! "
+                due = true
+                
+                if nutEvent.itemArray[nutEvent.itemArray.count-1].notes.rangeOfString("#NextDate") != nil {
+                    //set boolean that there is a due date item
+                    duedate=true
+                }
                 
             }
             if item.notes.lowercaseString.rangeOfString("#weekly") != nil {
                 timeExpire = -6.75*24.0*60.0*60
                 addOnTextExpire = " "//"!! Due !! "
+                due = true
+                
+                if nutEvent.itemArray[nutEvent.itemArray.count-1].notes.rangeOfString("#NextDate") != nil {
+                    //set boolean that there is a due date item
+                    duedate=true
+                }
             }
             
             
@@ -195,6 +227,11 @@ class EventListTableViewCell: BaseUITableViewCell {
                 NSLog("**** found better time****")
             }
         }// loop through nut array
+        
+        
+        
+        
+        
         
         if (timeSinceNow>(-24*60*60)){
             repeatCountLabel.textColor = UIColor.blackColor() //"🌞" + repeatCountLabel.text!
@@ -223,7 +260,7 @@ class EventListTableViewCell: BaseUITableViewCell {
             titleLabel.textColor = UIColor.brownColor()
             //titleLabel.textColor = UIColor.darkTextColor()
         }// Check active time
-
+        
         
         //check active flag and time?
         NSLog("new cell refresh %@  time \(timeSinceNow) ",titleLabel.text!)
@@ -234,7 +271,7 @@ class EventListTableViewCell: BaseUITableViewCell {
             titleLabel.textColor = UIColor.blueColor()
             //titleLabel.textColor = UIColor.darkTextColor()
         }// Check active time
-       
+        
         
         //kbw check if expired
         if timeSinceNow < (timeExpire * 10.0) {  //way older then
@@ -242,7 +279,7 @@ class EventListTableViewCell: BaseUITableViewCell {
             titleLabel.text = titleLabel.text! + "\n" + "### Obsolete ###"
             titleLabel.textColor = UIColor.lightGrayColor()
             
-            // need to refactor this code to new tag fir reoccring events 
+            // need to refactor this code to new tag fir reoccring events
             if titleLabel.text!.rangeOfString("💉TDD Novalog Fast Insulin Report") != nil {
                 //add new
                 //NutEvent.createMealEvent(nutEvent.title, notes: "test auto add obsolete", location: "", photo: "", photo2: "", photo3: "", time: nutEvent.itemArray[nutEvent.itemArray.count-1].time.dateByAddingTimeInterval(24.0*60.0*60.0), timeZoneOffset: (-5*60*60)/*NSCalendar.currentCalendar().timeZone.secondsFromGMT/60*/)
@@ -254,18 +291,18 @@ class EventListTableViewCell: BaseUITableViewCell {
                 //addOnText="****Active****"
                 titleLabel.text = titleLabel.text! + addOnTextExpire + "\n" + (NSString(format: "Due %@ ",NSDate().timeAgoInWords(NSDate().dateByAddingTimeInterval(timeSinceNow-timeExpire)),(timeSinceNow-timeExpire)/(24*60*60)) as String)
                 titleLabel.textColor = UIColor.redColor()
-                //auto renew 
+                //auto renew
                 if titleLabel.text!.rangeOfString("💉TDD Novalog Fast Insulin Report") != nil {
                     //add new
                     //NutEvent.createMealEvent(titleLabel.text!, notes: "test auto add", location: "", photo: "", photo2: "", photo3: "", time: NSDate(), timeZoneOffset: NSCalendar.currentCalendar().timeZone.secondsFromGMT/60)
                     NSLog("triggered TDD auto add")
                 }
-            
+                
             }// Check expire time
             else
             {  // check non expired cells
-                if ((timeSinceNow-timeExpire)<(7.0*24*60*60)) {
-                titleLabel.text = titleLabel.text! + "\n" + (NSString(format: "Due in %@ ",NSDate().timeAgoInWords(NSDate().dateByAddingTimeInterval(timeSinceNow-timeExpire)),(timeSinceNow-timeExpire)/(60*60*24)) as String)
+                if ((timeSinceNow-timeExpire)<(90.0*24*60*60)) {
+                    titleLabel.text = titleLabel.text! + "\n" + (NSString(format: "Due %@ ",NSDate().timeAgoInWords(nutEvent.itemArray[nutEvent.itemArray.count-1].time),(timeSinceNow-timeExpire)/(60*24.0)) as String)
                 }
             }
         }
@@ -273,12 +310,59 @@ class EventListTableViewCell: BaseUITableViewCell {
         //kbw check to see if auto repeat needed
         if (autoRepeat)&&(timeSinceNow<0) {
             //if titleLabel.text!.rangeOfString("💉TDD Novalog Fast Insulin Report") != nil {
-                //add new
+            //add new
             NutEvent.createMealEvent(nutEvent.title, notes: "auto repeat ", location: "", photo: "", photo2: "", photo3: "", time: nutEvent.itemArray[nutEvent.itemArray.count-1].time.dateByAddingTimeInterval(timeRepeat * -1.0), timeZoneOffset: /*Int { NSTimeZone.localTimeZone.seconds secondsFromGMT()}*/(-5*60*60)/*NSCalendar.currentCalendar().timeZone.secondsFromGMT/60*/)
-                NSLog("triggered TDD auto add r tag \(timeRepeat)")
-                
-           // }
+            NSLog("triggered TDD auto add r tag \(timeRepeat)")
+            
+            // }
         }
+        
+        //kbw check to see if future event needs to be created
+        if (!duedate)&&(due)&&(timeExpire<(0)) {
+            //add new
+            // need to check if a meal or a workout and add the right one
+            
+            if nutEvent.itemArray[nutEvent.itemArray.count-1].notes.rangeOfString("#NextDate") != nil {
+                //set boolean that there is a due date item
+                duedate=true
+                if nutEvent.itemArray[nutEvent.itemArray.count-1].time.timeIntervalSinceNow < 0 {
+                    titleLabel.textColor = UIColor.redColor()
+                }
+                else{
+                    titleLabel.textColor = UIColor.blackColor()
+                }
+            }
+            else{
+                NutEvent.createMealEvent(nutEvent.title, notes: "#NextDate", location: "", photo: "", photo2: "", photo3: "", time: nutEvent.itemArray[nutEvent.itemArray.count-1].time.dateByAddingTimeInterval(timeExpire * -1.0), timeZoneOffset: /*Int { NSTimeZone.localTimeZone.seconds secondsFromGMT()}*/(-5*60*60)/*NSCalendar.currentCalendar().timeZone.secondsFromGMT/60*/)
+                NSLog("triggered new due event  \(timeRepeat)")
+            }
+            
+            // }
+        }
+        
+        if nutEvent.itemArray[nutEvent.itemArray.count-1].notes.rangeOfString("#NextDate") != nil {
+            //set boolean that there is a due date item
+            duedate=true
+            if nutEvent.itemArray[nutEvent.itemArray.count-1].time.timeIntervalSinceNow < 0 {
+                titleLabel.textColor = UIColor.redColor()
+            }
+            else{
+                titleLabel.textColor = UIColor.blackColor()
+            }
+            
+            if ((nutEvent.itemArray[nutEvent.itemArray.count-2].time.timeIntervalSinceDate(nutEvent.itemArray[nutEvent.itemArray.count-1].time)) - timeExpire) == 0 {
+                //okay Next date
+                
+            }else{
+                titleLabel.text = titleLabel.text! + " next date is off \(nutEvent.itemArray[nutEvent.itemArray.count-2].time.timeIntervalSinceDate(nutEvent.itemArray[nutEvent.itemArray.count-1].time))"
+                //this creates a bad condition between the new next date and the old x date   
+                
+               // NutEvent.createMealEvent(nutEvent.title, notes: "#NextDate from early update", location: "", photo: "", photo2: "", photo3: "", time: nutEvent.itemArray[nutEvent.itemArray.count-2].time.dateByAddingTimeInterval(timeExpire * -1.0), timeZoneOffset: /*Int { NSTimeZone.localTimeZone.seconds secondsFromGMT()}*/(-5*60*60)/*NSCalendar.currentCalendar().timeZone.secondsFromGMT/60*/)
+            }
+        }
+        
+        
+        
         
         
         //specials
@@ -288,14 +372,14 @@ class EventListTableViewCell: BaseUITableViewCell {
         
         if   titleLabel.text!.lowercaseString.rangeOfString("quick summary") != nil {
             titleLabel.text = titleLabel.text! + NutUtils.fastingHoursText(NSDate()) + "\n" + NutUtils.iobText(NSDate()) + "\n" + NutUtils.bglText(NSDate())
-   /*             +
-                (NSString(format: "\u{00B5} ToD BG:\t%3.1f/ %3.2f\n\u{03C3} ToD BG:\t%3.1f/ %3.2f\n...guidance here...",
-                    NutUtils.averageSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
-                    NutUtils.averageSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
-                    NutUtils.standardDeviationSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
-                    NutUtils.standardDeviationSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0))
-                    ) as String)as String
-   */
+            /*             +
+             (NSString(format: "\u{00B5} ToD BG:\t%3.1f/ %3.2f\n\u{03C3} ToD BG:\t%3.1f/ %3.2f\n...guidance here...",
+             NutUtils.averageSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+             NutUtils.averageSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+             NutUtils.standardDeviationSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-7.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0)),
+             NutUtils.standardDeviationSMBGTOD(NSDate().dateByAddingTimeInterval(+2.0*60.0*60.0), startDate: NSDate().dateByAddingTimeInterval(-30.0*24.0*60.0*60.0), endDate: NSDate().dateByAddingTimeInterval(1.0*24.0*60.0*60.0))
+             ) as String)as String
+             */
             //add avgBGLTOD 30 day and std dev?
             //add fasting time
             //add IOB?

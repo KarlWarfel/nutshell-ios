@@ -426,7 +426,21 @@ class EventDetailViewController: BaseUIViewController, GraphContainerViewDelegat
                 
                 
             }
-
+            
+            if titleLabel!.text!.lowercaseString.rangeOfString("tdd novalog fast insulin report") != nil {
+                notesText = eventItem.notes + "\n" +
+                    NutUtils.listNutEvents(eventItem.time.dateByAddingTimeInterval(-1.0*24*60*60), timeRange: (+24.0*60.0*60.0), titleFilter: "💉novalog") + "shots today"
+            }
+            
+            if titleLabel!.text!.lowercaseString.rangeOfString("bgl") != nil {
+            
+                notesText = eventItem.notes + "\n" +
+                   NutUtils.fastingHoursText(eventItem.time) + "\n" + NutUtils.iobText(eventItem.time)
+                    
+                    // + "\n" + eventItem.notes + "\nEvents:\n" + NutUtils.listNutEvents(eventItem.time.dateByAddingTimeInterval(-1.0), timeRange:(-3.0*60.0*60.0), titleFilter: "") + " events in the past 3 hours\n"
+            }
+            
+            
             notesLabel = addLabel(notesText, labelStyle: "detailHeaderNotes", currentView: notesLabel)
             
             notesLabel!.hidden = eventItem.notes.isEmpty
