@@ -73,13 +73,13 @@ class EventListViewController: BaseUIViewController, ENSideMenuDelegate {
     @IBAction func barbuttonRepeat(sender: AnyObject) {
         switch searchTextField.text! {
         case "#a":
-            searchTextField.text = "#NextDate"
-        case "#due":
-            searchTextField.text = "#a"
-        case "#NextDate":
             searchTextField.text = "#due"
+        case "#d":
+            searchTextField.text = "#a"
+        case "#due":
+            searchTextField.text = "#d"
         default:
-            searchTextField.text = "#NextDate"
+            searchTextField.text = "#due"
         }
         
         updateFilteredAndReload()
@@ -99,16 +99,16 @@ class EventListViewController: BaseUIViewController, ENSideMenuDelegate {
         
         updateFilteredAndReload()
     }
-    @IBAction func barButton3Press(sender: AnyObject) {// dead
+    @IBAction func barButton3Press(sender: AnyObject) {
         switch searchTextField.text! {
         case "#a":
-            searchTextField.text = "#NextDate"
-        case "#due":
-            searchTextField.text = "#a"
-        case "#NextDate":
             searchTextField.text = "#due"
+        case "#d":
+            searchTextField.text = "#a"
+        case "#due":
+            searchTextField.text = "#d"
         default:
-            searchTextField.text = "#NextDate"
+            searchTextField.text = "#due"
         }
         
         updateFilteredAndReload()

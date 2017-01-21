@@ -140,20 +140,10 @@ class EventGroupTableViewCell: BaseUITableViewCell {
                                 titleString.text = NutUtils.avgSMBGToDbyHour(NSDate())
                                 
                             }
-                            else{
-                                if ((eventItem.title.lowercaseString.rangeOfString("hypo") != nil)||(eventItem.title.lowercaseString.rangeOfString("hyper") != nil))
-                                {
-                                    let mealsString = "\nMeals:\n" + NutUtils.listNutEvents(eventItem.time.dateByAddingTimeInterval(-1.0), timeRange:(-5.0*60.0*60.0), titleFilter: "🧀") + " meals in the past 5 hours\n"
-                                    
-                                    let insulinString = "\nShots:\n" + NutUtils.listNutEvents(eventItem.time.dateByAddingTimeInterval(-1.0), timeRange:(-3.0*60.0*60.0), titleFilter: "💉") + " shots in the past 3 hours\n"
-                                    
-                                    titleString.text = eventItem.notes + NutUtils.addOnTextBGL(eventItem.time) + mealsString + insulinString
-                                }
-                                else
+                            else
                             {
 
-                               titleString.text = eventItem.notes + NutUtils.addOnTextBGL(eventItem.time)
-                            }
+                        titleString.text = eventItem.notes + NutUtils.addOnTextBGL(eventItem.time)
                             }
                         }
             }
@@ -167,17 +157,7 @@ class EventGroupTableViewCell: BaseUITableViewCell {
             ||
            (eventItem.title.lowercaseString.rangeOfString("bgl") != nil)
         {
-            let mealsString = "\nMeals:\n" + NutUtils.listNutEvents(eventItem.time.dateByAddingTimeInterval(-1.0), timeRange:(-5.0*60.0*60.0), titleFilter: "🧀") + " meals in the past 5 hours\n"
-            
-            let insulinString = "\nShots:\n" + NutUtils.listNutEvents(eventItem.time.dateByAddingTimeInterval(-1.0), timeRange:(-3.5*60.0*60.0), titleFilter: "💉novalog") + " shots in the past 3 1/2 hours\n"
-            
-            titleString.text = eventItem.notes + NutUtils.addOnTextBGL(eventItem.time) + mealsString + insulinString
-            
-            
-            //+  NutUtils.fastingHoursText(eventItem.time) + "\n" + NutUtils.iobText(eventItem.time) + "\n" + eventItem.notes + "\nEvents:\n" + NutUtils.listNutEvents(eventItem.time.dateByAddingTimeInterval(-1.0), timeRange:(-3.0*60.0*60.0), titleFilter: "") + " events in the past 3 hours\n"
-            
-            
-            //(NSString(format: "\n%3.1f fasting hours",NutUtils.fastingHours(eventItem.time)) as String)
+            titleString.text = titleString.text! +  NutUtils.fastingHoursText(eventItem.time) + "\n" + NutUtils.iobText(eventItem.time)//(NSString(format: "\n%3.1f fasting hours",NutUtils.fastingHours(eventItem.time)) as String)
         }
         
         if (eventItem.title.lowercaseString.rangeOfString("🧀") != nil)
@@ -186,17 +166,7 @@ class EventGroupTableViewCell: BaseUITableViewCell {
             ||
             (eventItem.title.lowercaseString.rangeOfString("🧀") != nil)
         {
-            
-            let bglString = "\nBGL:\n" + NutUtils.listNutEvents(eventItem.time.dateByAddingTimeInterval(1.0), timeRange:(5.0*60.0*60.0), titleFilter: "bgl") + " bgl in next 5 hours\n"
-            
-            let insulinString = "\nShots:\n" + NutUtils.listNutEvents(eventItem.time.dateByAddingTimeInterval(1.0), timeRange:(4.0*60.0*60.0), titleFilter: "💉novalog") + " shots in the next 4 hours\n"
-            
-            titleString.text = eventItem.notes + NutUtils.addOnTextBGL(eventItem.time) + bglString + insulinString
-            
-            //titleString.text = titleString.text! +  NutUtils.fastingHoursText(eventItem.time) + "\n" + eventItem.notes + "\nEvents:\n" + NutUtils.listNutEvents(eventItem.time.dateByAddingTimeInterval(1.0*60.0), timeRange:(4.0*60.0*60.0), titleFilter: "bgl") + " BGL 4 hours\n"
-            
-            
-            //+ "\n" + NutUtils.iobText(eventItem.time)//(NSString(format: "\n%3.1f fasting hours",NutUtils.fastingHours(eventItem.time)) as String)
+            titleString.text = titleString.text! +  NutUtils.fastingHoursText(eventItem.time) //+ "\n" + NutUtils.iobText(eventItem.time)//(NSString(format: "\n%3.1f fasting hours",NutUtils.fastingHours(eventItem.time)) as String)
         }
 
         NutUtils.setFormatterTimezone(eventItem.tzOffsetSecs)

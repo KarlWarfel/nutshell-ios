@@ -893,9 +893,7 @@ class NutUtils {
             NSLog("Error: \(error)")
         }
         //NSLog("loaded \(dataArray.count) meal events")
-        //test 
-        tddString = NutUtils.listNutEvents(earlyStartTime, timeRange: (+24.0*60.0*60.0), titleFilter: "💉novalog")
-        return tddString + " shots this day"
+        return tddString + "-\(tddCount) shots in the last 24 hours"
     }
     
     class func weekTDDString(date: NSDate) -> String{
@@ -930,62 +928,6 @@ class NutUtils {
         //NSLog("loaded \(dataArray.count) meal events")
         return weekString + "-\(weekCount) days with TDD "
     }// end weekTDD
-    
-    
-    
-    
-    
-    
-    //KBW build a generic function to retrive event betwwen a date and a delta and with optional title filter
-    class func listNutEvents(date: NSDate, timeRange: NSTimeInterval, titleFilter: String) -> String {
-       
-        var returnString = ""
-        var count = 0;
-        
-        var startTime = date
-        var endTime = date.dateByAddingTimeInterval(timeRange)
-        
-        if (timeRange<0){
-            startTime = date.dateByAddingTimeInterval(timeRange)
-            endTime = date
-        }
-        
-        // add function to switch dates to proper order if needed
-        do {
-            let events = try DatabaseUtils.getMealEvents(startTime, toTime: endTime)
-            for mealEvent in events {
-                if let eventTime = mealEvent.time {
-                    
-                    if titleFilter.isEmpty {
-                        count += 1
-                        returnString = returnString + "🔹" + date.timeAgoInWords(eventTime) + ":" + mealEvent.title! + ": " + mealEvent.notes! + "\n"
-                    }
-                    else{
-                        //kbw  filter out bgl values
-                        if (mealEvent.title!.lowercaseString.rangeOfString(titleFilter) != nil)
-                        {
-                            count += 1
-                            //format string based if there is a titke filter
-                            if titleFilter.characters.count < 3 {
-                                returnString = returnString + "🔹" + mealEvent.title! + ": " + mealEvent.notes! +  date.timeAgoInWords(eventTime) + "\n"
-
-                            }
-                            else{
-                            returnString = returnString +
-                                // (NSString(format:"aBGL %3.1f\t", self.averageSMBG(mealEvent.time!, startDate: mealEvent.time!.dateByAddingTimeInterval(-1.0*24*60*60.0), endDate: mealEvent.time!)) as String) as String
-                                "🔹" +  mealEvent.notes! + ":" + date.timeAgoInWords(eventTime) + "\n"
-                            }
-                            
-                        }
-                    }
-                }
-            }
-        } catch let error as NSError {
-            NSLog("Error: \(error)")
-        }
-      
-        return returnString + "\(count)"
-    }
 
     
     
@@ -1025,7 +967,6 @@ class NutUtils {
         var count1Star30 = 0
         var count2Star30 = 0
         var count3Star30 = 0
-        var countLower30 = 0
         
         var countArray7:     [Int] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
         var totalSMBGArray7: [CGFloat] = [0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0 ,0,0,0,0,0];
@@ -1035,7 +976,6 @@ class NutUtils {
         var count1Star7 = 0
         var count2Star7 = 0
         var count3Star7 = 0
-        var countLower7 = 0
         
         var resultsString = ""
         let targetBGL = 83.0
@@ -1075,7 +1015,7 @@ class NutUtils {
                                     {
                                         countArray30[hour]=countArray30[hour]+1
                                         totalSMBGArray30[hour] = totalSMBGArray30[hour]+convertedValue
-                                        if(eventTime.timeIntervalSinceNow > ((-7.0*24.0*60*60.0)+(3.0*60.0*60.0) ))  // pulled back the 3 hours so can see if upcomming hour will be short on measurements after the present hour is complete
+                                        if(eventTime.timeIntervalSinceNow > -7.0*24.0*60*60.0 )
                                         {
                                             countArray7[hour]=countArray7[hour]+1
                                             totalSMBGArray7[hour] = totalSMBGArray7[hour]+convertedValue
@@ -1111,15 +1051,6 @@ class NutUtils {
             if presentHour == i {
                 resultsString = resultsString + "*"
             }
-            if presentHour == i-1 {
-                resultsString = resultsString + ":"
-            }
-            if presentHour == i-2 {
-                resultsString = resultsString + ":"
-            }
-            if presentHour == i-3 {
-                resultsString = resultsString + ":"
-            }
             
             if countArray7[i]==0 {
                 resultsString = resultsString + (NSString(format:"\t%d \t\t",countArray7[i]) as String)
@@ -1127,7 +1058,7 @@ class NutUtils {
             else
             {
                 var tempCount = NSString(format: "%d",countArray7[i])
-                if countArray7[i] < 2 {tempCount = (tempCount as String) + "*"}
+                if countArray7[i] < 3 {tempCount = (tempCount as String) + "*"}
                 resultsString = resultsString + (NSString(format:"\t%@ \t%3.1f",tempCount,Double(totalSMBGArray7[i])/Double(countArray7[i])) as String)
                 
                 var tempBGLDelta = abs((Double(totalSMBGArray7[i])/Double(countArray7[i]))-targetBGL)
@@ -1136,36 +1067,33 @@ class NutUtils {
                     resultsString = resultsString + ""
                     if (tempBGLDelta<12)
                     {
-                        resultsString = resultsString + "|"
+                        resultsString = resultsString + "*"
                         count1Star7 = count1Star7+1
                         if (tempBGLDelta<6)
                         {
-                            resultsString = resultsString + "|"
+                            resultsString = resultsString + "*"
                             count2Star7 = count2Star7+1
                             if (tempBGLDelta<3.5)
                             {
-                                resultsString = resultsString + "|"
+                                resultsString = resultsString + "*"
                                 count3Star7 = count3Star7+1
                             }
                             else{ // not in tightest group
                                 if ((Double(totalSMBGArray7[i])/Double(countArray7[i]))-targetBGL)<0 {
-                                    resultsString = resultsString + "::"
-                                    countLower7 += 1
+                                    resultsString = resultsString + ".."
                                 }
                             }
                         }
                         else{// not in 2nd tightest group
                             if ((Double(totalSMBGArray7[i])/Double(countArray7[i]))-targetBGL)<0 {
-                                resultsString = resultsString + "::::"
-                                countLower7 += 1
+                                resultsString = resultsString + "...."
                             }
                             
                         }
                     }
                     else{// not in 3nd tightest group
                         if ((Double(totalSMBGArray7[i])/Double(countArray7[i]))-targetBGL)<0 {
-                            resultsString = resultsString + "::::::"
-                            countLower7 += 1
+                            resultsString = resultsString + "......"
                         }
                     }
                 }
@@ -1176,7 +1104,7 @@ class NutUtils {
             }
             else
             {
-                resultsString = resultsString + (NSString(format:"\t\t%3.1f",Double(totalSMBGArray30[i])/Double(countArray30[i])) as String)
+                resultsString = resultsString + (NSString(format:"\t|\t%3.1f",Double(totalSMBGArray30[i])/Double(countArray30[i])) as String)
                 
                 var tempBGLDelta = abs((Double(totalSMBGArray30[i])/Double(countArray30[i]))-targetBGL)
                 if (tempBGLDelta<20)
@@ -1184,61 +1112,40 @@ class NutUtils {
                     resultsString = resultsString + ""
                     if (tempBGLDelta<12)
                     {
-                        resultsString = resultsString + "|"
+                        resultsString = resultsString + "*"
                         count1Star30 += 1
                         if (tempBGLDelta<6)
                         {
-                            resultsString = resultsString + "|"
+                            resultsString = resultsString + "*"
                             count2Star30 += 1
                             if (tempBGLDelta<3.5)
                             {
-                                resultsString = resultsString + "|"
+                                resultsString = resultsString + "*"
                                 count3Star30 += 1
                             }
-                            else{ // not in tightest group
-                                if ((Double(totalSMBGArray30[i])/Double(countArray30[i]))-targetBGL)<0 {
-                                    resultsString = resultsString + "::"
-                                    countLower30 += 1
-                                }
-                            }
-                        }
-                        else{// not in 2nd tightest group
-                            if ((Double(totalSMBGArray30[i])/Double(countArray30[i]))-targetBGL)<0 {
-                                resultsString = resultsString + "::::"
-                                countLower30 += 1
-                            }
-                            
                         }
                     }
-                    else{// not in 3nd tightest group
-                        if ((Double(totalSMBGArray30[i])/Double(countArray30[i]))-targetBGL)<0 {
-                            resultsString = resultsString + "::::::"
-                            countLower30 += 1
-                        }
-                    }
-                    
-                
                 }
             }
             
             
-            resultsString = resultsString + (NSString(format:"\t\t %3.1f",Double(totalSMBGArray[i])/Double(countArray[i])) as String)
+            resultsString = resultsString + (NSString(format:"\t|\t%3.1f",Double(totalSMBGArray[i])/Double(countArray[i])) as String)
             
             var tempBGLDelta = abs((Double(totalSMBGArray[i])/Double(countArray[i]))-targetBGL)
             if (tempBGLDelta<20)
             {
-                resultsString = resultsString + ""
+                resultsString = resultsString + "'"
                 if (tempBGLDelta<12)
                 {
-                    resultsString = resultsString + ":"
+                    resultsString = resultsString + "'"
                     count1Star += 1
                     if (tempBGLDelta<6)
                     {
-                        resultsString = resultsString + ":"
+                        resultsString = resultsString + "'"
                         count2Star = count2Star+1
                         if (tempBGLDelta<3.5)
                         {
-                            resultsString = resultsString + ":"
+                            resultsString = resultsString + "'"
                             count3Star = count3Star+1
                         }
                     }
@@ -1248,7 +1155,7 @@ class NutUtils {
 
         }
     
-        resultsString = resultsString + "\n" + (NSString(format: "*** \t\t%d/%d \t\t%d/%d \t\t%d", count3Star7,count3Star7+countLower7,count3Star30,count3Star30+countLower30,count3Star) as String)
+        resultsString = resultsString + "\n" + (NSString(format: "*** \t\t%d \t\t\t%d \t\t\t%d", count3Star7,count3Star30,count3Star) as String)
         resultsString = resultsString + "\n" + (NSString(format: "**  \t\t\t%d \t\t\t%d \t\t\t%d", count2Star7,count2Star30,count2Star) as String)
         resultsString = resultsString + "\n" + (NSString(format: "*   \t\t\t%d \t\t\t%d \t\t\t%d", count1Star7,count1Star30,count1Star) as String)
         
@@ -1257,55 +1164,6 @@ class NutUtils {
         
  //       \nmidnight \n1am \n2am \n3am \n4am \n5am \n6am \n7am \n8am \n9am \n10am \n11am \nNoon \n1pm \n2pm \n3pm \n4pm \n5pm \n6pm \n7pm \n8pm \n9pm \n10pm \n11pm "
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    class func addBGLNutEvent (bgl: Double, sourceName: String,  date: NSDate) -> EventItem?{
-        
-    /*    
-        bglHyper
-        bglHyperMild
-        bglHypoMild
-        bglHypo
- */
-        
-  /*      if let quantitySample = sample as? HKQuantitySample {
-            let units = "mg/dL"
-            //sampleToUploadDict["units"] = units
-            let unit = HKUnit(fromString: units)
-            let value = quantitySample.quantity.doubleValueForUnit(unit)
-            //sampleToUploadDict["value"] = value
-            
-            let sourceRevision = sample.sourceRevision
-            let source = sourceRevision.source
-            let sourceBundleIdentifier = source.bundleIdentifier
- */
-            let noteForNewNutEvent = NSString(format:"%3.0f mg/dL ",bgl) as String + " " + "From " + sourceName //+ "\n " + sample.description
-            let timeForNewNutEvent = date
-            
-            let newEventItem = NutEvent.createMealEvent("BGL HealthKit", notes: noteForNewNutEvent, location: "", photo: "", photo2: "", photo3: "", time: timeForNewNutEvent, timeZoneOffset: /*Int { NSTimeZone.localTimeZone.seconds secondsFromGMT()}*/(-5*60*60)/*NSCalendar.currentCalendar().timeZone.secondsFromGMT/60*/)
-        
-            //kbw add test for hypo nf hyper...
-            //  if bgl < bglHypo {}    else if bgl < bglHypoMild {} else
-            //  if bgl > bglHyper {}   else if bgl > bglHyperMild {} 
-        
-        
-        return newEventItem
-    }
-    
-    
-    
-    
     
     
     
